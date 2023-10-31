@@ -1,6 +1,7 @@
 {
 	"recommendations": [
 		"esbenp.prettier-vscode",
+		"dbaeumer.vscode-eslint",
 		"ms-playwright.playwright",
 		"ms-azuretools.vscode-docker",
 		"github.vscode-github-actions",
