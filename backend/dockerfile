@@ -1,0 +1,29 @@
+FROM node:21-alpine as setup
+
+# INSTALL
+COPY /shared/package*.json /shared/
+WORKDIR /shared
+RUN npm install
+
+COPY /backend/package*.json /backend/
+WORKDIR /backend
+RUN npm install
+
+# BUILD
+COPY /shared /shared/
+COPY /backend /backend/
+
+WORKDIR /backend
+RUN npm run build
+
+# CLEAN (using debian for later administrating with bash)
+FROM node:21-bookworm-slim
+
+COPY --from=setup /backend/package*.json /backend/
+COPY --from=setup /backend/dist /backend/dist/
+WORKDIR /backend
+RUN npm install --omit=dev
+
+# HOST
+EXPOSE 3000
+CMD ["npm", "run", "server"]

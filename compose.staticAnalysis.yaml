@@ -1,0 +1,7 @@
+version: "3"
+services:
+  prettier:
+    image: "node:21-alpine"
+    volumes:
+      - ./:/dialplan
+    command: bash -c "cd dialplain && npm install && npm run prettier && npm run eslint"

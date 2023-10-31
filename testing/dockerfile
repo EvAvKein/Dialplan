@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/playwright:v1.29.2-focal
+
+# INSTALL
+COPY /shared/package*.json /shared/
+WORKDIR /shared
+RUN npm install
+
+COPY /testing/package*.json /testing/
+WORKDIR /testing
+RUN npm install
+
+# COPY
+COPY /shared/ /shared
+COPY /testing/ /testing
+
+# RUN
+CMD ["npx", "playwright", "test"]

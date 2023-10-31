@@ -1,0 +1,13 @@
+{
+	"type": "module",
+	"scripts": {
+		"install": "npx playwright install --with-deps",
+		"playwright": "npx playwright test --ui",
+		"showReport": "npx playwright show-report"
+	},
+	"devDependencies": {
+		"@playwright/test": "1.37.0",
+		"@types/node": "20.8.9",
+		"typescript": "4.9.5"
+	}
+}
