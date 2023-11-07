@@ -1,7 +1,29 @@
+:root {
+	--white: #f3f3f3;
+	--blue: #007ffe;
+	--black: #222222;
+
+	--textColor: var(--black);
+	--accentColor: var(--blue);
+	--backgroundColor: var(--white);
+	--successColor: #32db1f;
+	--failureColor: #db321f;
+}
+
+@media (prefers-color-scheme: dark) {
+	body {
+		--textColor: var(--white);
+		--accentColor: var(--blue);
+		--backgroundColor: var(--black);
+	}
+}
+
 body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-family: sans-serif;
+	color: var(--textColor);
+	background-color: var(--backgroundColor);
 	letter-spacing: 0.03em;
 	text-underline-offset: 0.05em;
 	box-sizing: border-box;
@@ -52,8 +74,8 @@ ul {
 }
 
 ::-webkit-scrollbar {
-	width: 1rem;
-	height: 1rem;
+	width: 0.65rem;
+	height: 0.65rem;
 }
 ::-webkit-scrollbar-track {
 	background-color: transparent;
@@ -63,10 +85,10 @@ ul {
 	background-color: transparent;
 }
 ::-webkit-scrollbar-thumb {
-	background-color: darkgray;
-	border: 0.25rem solid darkgrey;
-	border-radius: 3rem;
+	background-color: var(--textColor);
+	border: 0.15rem solid var(--textColor);
+	border-radius: 1rem;
 }
 ::-webkit-scrollbar-thumb:hover {
-	background-color: grey;
+	border-color: var(--backgroundColor);
 }
