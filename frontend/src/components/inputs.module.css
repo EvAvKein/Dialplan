@@ -1,0 +1,50 @@
+.input {
+	color: var(--textColor);
+	background-color: var(--backgroundColor);
+	box-sizing: border-box;
+	width: 100%;
+}
+textarea.input {
+	resize: vertical;
+}
+.input:focus {
+	border-color: var(--highlightColor);
+	outline: none;
+}
+
+.inputWrapper {
+	position: relative;
+}
+
+.inputWrapper > .input {
+	padding-top: 0.65em;
+}
+
+.inputLabel {
+	position: absolute;
+	top: 0em;
+	left: 0.1em;
+	font-size: 1.5em;
+	color: var(--textColor);
+	cursor: text;
+	transition: all 250ms;
+}
+.input:focus + .inputLabel,
+.input:not(:placeholder-shown) + .inputLabel {
+	font-size: 0.65em;
+	cursor: default;
+	transition: all 150ms;
+}
+
+.inputWrapper,
+.input {
+	border-left: 0em solid var(--textColor);
+	transition: all 150ms ease-in-out;
+}
+.inputWrapper:focus-within,
+.input:focus {
+	border-left-width: 0.2em;
+}
+.inputWrapper > .input {
+	border-left: none;
+}
