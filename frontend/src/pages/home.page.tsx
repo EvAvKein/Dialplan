@@ -1,9 +1,9 @@
-import "./home.module.css";
+import styles from "./home.module.css";
 
 export default function Home() {
 	return (
 		<>
-			<h1>Dialplan</h1>
+			<p className={styles.placeholder}>[Insert marketing content here]</p>
 		</>
 	);
 }
