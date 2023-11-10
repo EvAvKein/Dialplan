@@ -1,9 +1,9 @@
-header {
+.header {
 	padding: 0.5rem;
 	box-shadow: 0 0.01rem 0.25rem 0 color-mix(in srgb, var(--textColor), transparent);
 }
 
-h1 {
+.headerTitle {
 	color: var(--accentColor);
 	text-align: center;
 	font-size: 4rem;

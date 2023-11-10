@@ -1,11 +1,11 @@
 import {Outlet} from "react-router-dom";
-import "./visitor.layout.css";
+import styles from "./visitor.module.css";
 
 export default function layout() {
 	return (
 		<>
-			<header>
-				<h1>Dialplan</h1>
+			<header className={styles.header}>
+				<h1 className={styles.headerTitle}>Dialplan</h1>
 			</header>
 			<main>
 				<Outlet />
