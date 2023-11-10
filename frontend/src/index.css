@@ -1,7 +1,7 @@
 :root {
 	--white: #f3f3f3;
 	--blue: #007ffe;
-	--black: #222222;
+	--black: #0f0f0f;
 
 	--textColor: var(--black);
 	--accentColor: var(--blue);
