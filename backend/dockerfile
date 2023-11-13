@@ -24,6 +24,9 @@ COPY --from=setup /backend/dist /backend/dist/
 WORKDIR /backend
 RUN npm install --omit=dev
 
+COPY /backend/sql/ /backend/sql/
+COPY /backend/.env /backend/.env
+
 # HOST
 EXPOSE 3000
 CMD ["npm", "run", "server"]

@@ -1,5 +1,5 @@
 import {z, type ZodSchema} from "zod";
-import * as classes from "../../../../shared/objects/org.js";
+import * as classes from "../../../shared/objects/org.js";
 import * as shared from "./shared.js";
 
 const trueOrNone = z.literal(true).optional();

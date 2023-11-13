@@ -1,5 +1,5 @@
 import {z, type ZodSchema} from "zod";
-import * as classes from "../../../../shared/objects/inv.js";
+import * as classes from "../../../shared/objects/inv.js";
 import * as shared from "./shared.js";
 import {Agent, Org} from "./org.js";
 

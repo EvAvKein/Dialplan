@@ -1,6 +1,6 @@
 import {ZodSchema, z} from "zod";
-import {unix} from "../../../../shared/helpers/timestamps.js";
-import * as shared from "../../../../shared/objects/shared.js";
+import {unix} from "../../../shared/helpers/timestamps.js";
+import * as shared from "../../../shared/objects/shared.js";
 
 export const countryCode = z.string().regex(/^[1-9]\d{0,2}$/);
 export const phoneNumber = z.string().regex(/^[1-9]\d{8}$/);

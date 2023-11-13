@@ -10,6 +10,14 @@ services:
       - proxyToServer
     restart: unless-stopped
 
+  postgres:
+    image: postgres:16
+    env_file:
+      - ./backend/.env # change contents before deployment
+    networks:
+      - serverToDb
+    restart: unless-stopped
+
   backend:
     depends_on:
       - frontend
@@ -20,6 +28,9 @@ services:
       - webfiles:/frontend
     networks:
       - proxyToServer
+      - serverToDb
+    env_file:
+      - ./backend/.env
     restart: unless-stopped
 
   frontend:
@@ -35,3 +46,5 @@ volumes:
 networks:
   proxyToServer:
     name: custom_proxyToServer
+  serverToDb:
+    name: custom_serverToDb
