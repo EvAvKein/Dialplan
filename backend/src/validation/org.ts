@@ -1,16 +1,15 @@
 import {z, type ZodSchema} from "zod";
 import * as classes from "../../../shared/objects/org.js";
-import * as shared from "./shared.js";
+import * as schemas from "./shared.js";
 
 const trueOrNone = z.literal(true).optional();
 
-export const Org = z.object({
-	id: z.string(),
+export const OrgCreationRequest = z.object({
 	name: z.string(),
 	color: z.string().regex(/^[0-9A-F]{6}$/i),
 	timezone: z.string(),
-	availability: shared.availability,
-}) satisfies ZodSchema<classes.Org>;
+	availability: schemas.availability,
+}) satisfies ZodSchema<classes.OrgCreationRequest>;
 
 export const AgentInternals = z.object({
 	name: z.string().optional(),
@@ -22,11 +21,9 @@ export const AgentInternals = z.object({
 	}),
 }) satisfies ZodSchema<classes.AgentInternals>;
 
-export const Agent = z.object({
-	orgId: Org.shape.id,
-	id: z.string(),
+export const AgentCreationRequest = z.object({
 	name: z.string(),
 	department: z.string(),
-	countryCode: shared.countryCode,
+	countryCode: schemas.countryCode,
 	internals: AgentInternals,
-}) satisfies ZodSchema<classes.Agent>;
+}) satisfies ZodSchema<classes.AgentCreationRequest>;
