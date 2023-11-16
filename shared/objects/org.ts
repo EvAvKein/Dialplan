@@ -1,5 +1,5 @@
 import {v4 as newId} from "uuid";
-import {availability} from "./shared";
+// import {availability} from "./shared";
 
 export interface AgentInternals {
 	name?: string;
@@ -33,15 +33,14 @@ export class OrgCreationRequest {
 	constructor(
 		public name: string,
 		public color: string,
-		public timezone: string,
-		public availability: availability,
+		public timezone: string, // public availability: availability,
 	) {}
 }
 export class Org extends OrgCreationRequest {
 	id: string;
 
 	constructor(creationRequest: OrgCreationRequest) {
-		super(creationRequest.name, creationRequest.color, creationRequest.timezone, creationRequest.availability);
+		super(creationRequest.name, creationRequest.color, creationRequest.timezone /* creationRequest.availability*/);
 		this.id = newId();
 	}
 }

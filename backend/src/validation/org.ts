@@ -9,7 +9,7 @@ const OrgCreationRequest = z.object({
 	name: z.string(),
 	color: z.string().regex(/^[0-9A-F]{6}$/i),
 	timezone: z.string(),
-	availability: schemas.availability,
+	// availability: schemas.availability,
 }) satisfies ZodSchema<classes.OrgCreationRequest>;
 
 export const AgentInternals = z.object({

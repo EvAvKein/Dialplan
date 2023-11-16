@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS Org (
     name TEXT,
     color CHAR(6),
     timezone TEXT,
-    availability JSONB
+    -- availability JSONB
 );
 
 CREATE TABLE IF NOT EXISTS Agent (
