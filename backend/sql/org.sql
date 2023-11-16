@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS Org (
     id UUID PRIMARY KEY,
     name TEXT,
     color CHAR(6),
-    timezone TEXT,
+    timezone TEXT
     -- availability JSONB
 );
 
