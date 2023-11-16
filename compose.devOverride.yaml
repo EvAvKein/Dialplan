@@ -8,6 +8,7 @@ services:
     volumes:
       - ./shared:/shared
       - ./backend/src:/backend/src
+      - ./backend/sql:/backend/sql
 
   frontend:
     image: dialplan-frontend_dev
