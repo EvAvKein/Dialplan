@@ -4,7 +4,8 @@ import * as schemas from "./shared.js";
 
 const trueOrNone = z.literal(true).optional();
 
-export const OrgCreationRequest = z.object({
+const OrgCreationRequest = z.object({
+	// not exported as it should never be accepted without being part of a OrgAgentCreationDuo
 	name: z.string(),
 	color: z.string().regex(/^[0-9A-F]{6}$/i),
 	timezone: z.string(),
@@ -27,3 +28,8 @@ export const AgentCreationRequest = z.object({
 	countryCode: schemas.countryCode,
 	internals: AgentInternals,
 }) satisfies ZodSchema<classes.AgentCreationRequest>;
+
+export const OrgAgentCreationDuo = z.object({
+	org: OrgCreationRequest,
+	agent: AgentCreationRequest,
+});
