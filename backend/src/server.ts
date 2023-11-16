@@ -6,6 +6,7 @@ import {postgres} from "./postgres.js";
 
 const app = express();
 app.use(express.static("../frontend/dist"));
+app.use(express.json());
 app.use(helmetSecurity());
 
 postgres; // called purely to remove ESlint error, this'll later be replaced with passing this var to endpoints
