@@ -1,6 +1,6 @@
 # Dialplan
 
-App for scheduling calls via invites, currently in very early development
+Schedule calls via invite links! Currently in very early development
 
 ---
 
