@@ -6,10 +6,14 @@ export default function layout() {
 		<>
 			<header id={styles.header}>
 				<h1 id={styles.headerTitle}>
-					<Link to="/">Dialplan</Link>
+					<Link to="/" className={styles.headerLink}>
+						Dialplan
+					</Link>
 				</h1>
 				<nav className={styles.nav}>
-					<Link to="/signUp">Sign Up</Link>
+					<Link to="/signUp" className={styles.headerLink}>
+						Sign Up
+					</Link>
 				</nav>
 			</header>
 
