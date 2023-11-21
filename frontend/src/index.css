@@ -1,13 +1,15 @@
 :root {
 	--white: #f3f3f3;
-	--blue: #007ffe;
+	--grey: #818181;
 	--black: #0f0f0f;
+	--blue: #007ffe;
 
 	--textColor: var(--black);
-	--accentColor: var(--blue);
+	--midColor: var(--grey);
 	--backgroundColor: var(--white);
-	--successColor: #32db1f;
-	--failureColor: #db321f;
+	--accentColor: var(--blue);
+	--positiveColor: #32db1f;
+	--negativeColor: #db321f;
 }
 
 @media (prefers-color-scheme: dark) {
