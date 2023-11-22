@@ -8,8 +8,8 @@
 	--midColor: var(--grey);
 	--backgroundColor: var(--white);
 	--accentColor: var(--blue);
-	--positiveColor: #32db1f;
-	--negativeColor: #db321f;
+	--positiveColor: #11aa11;
+	--negativeColor: #aa1111;
 }
 
 @media (prefers-color-scheme: dark) {
