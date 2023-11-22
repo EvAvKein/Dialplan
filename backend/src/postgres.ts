@@ -16,7 +16,7 @@ const postgresP: pgpPool = pgp()(pgConfig);
 
 for (const fileName of ["org.sql", "inv.sql"]) {
 	const fileContent = readFileSync("/backend/sql/" + fileName, "utf-8");
-	postgres.query(fileContent).catch((error) => console.log(error));
+	await postgres.query(fileContent).catch((error) => console.log(error));
 }
 
 export {postgres, postgresP, type pgpPool};
