@@ -33,7 +33,7 @@ export function endpoints_org(app: Express, db: Pool, dbP: pgpPool) {
 				);
 			})
 			.then(() => {
-				response.status(200);
+				response.status(200).end();
 			})
 			.catch((error) => {
 				console.error("Org creation failure", error);
