@@ -1,0 +1,32 @@
+.notification {
+	padding: 0.3rem;
+	border-radius: 0.2rem;
+	color: var(--textColor);
+	background-color: var(--negativeColor);
+	overflow-anchor: none;
+	display: flex;
+	gap: 0.5rem;
+}
+
+.notification + .notification {
+	margin-top: 0.5rem;
+}
+
+.positive {
+	background-color: var(--positiveColor);
+}
+
+.dismissButton {
+	background-color: transparent;
+	border-left: 0.1rem solid var(--textColor);
+	margin-left: 0.5rem;
+}
+
+#notifsWrapper {
+	padding: 0.25rem;
+}
+
+#notifsScrollAnchor {
+	overflow-anchor: auto;
+	height: 1px;
+}
