@@ -1,7 +1,8 @@
 import {Link, Outlet} from "react-router-dom";
 import {Notifications} from "../../notifications";
-import styles from "./visitor.module.css";
 import {useNotifStore} from "../../stores/notifs";
+import coreStyles from "../../core.module.css";
+import styles from "./visitor.module.css";
 
 export default function layout() {
 	const notifs = useNotifStore();
@@ -10,12 +11,12 @@ export default function layout() {
 		<>
 			<header id={styles.header}>
 				<h1 id={styles.headerTitle}>
-					<Link to="/" className={styles.headerLink}>
+					<Link to="/" className={coreStyles.contentButton}>
 						Dialplan
 					</Link>
 				</h1>
 				<nav className={styles.nav}>
-					<Link to="/signUp" className={styles.headerLink}>
+					<Link to="/signUp" className={coreStyles.contentButton}>
 						Sign Up
 					</Link>
 				</nav>

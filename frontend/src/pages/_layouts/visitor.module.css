@@ -6,22 +6,11 @@
 	gap: 1rem;
 }
 
-.headerLink {
-	padding: 0.25rem 0.5rem;
-	border-radius: 0.2rem;
-	background-color: transparent;
-	transition: background-color 200ms ease-in-out;
-}
-.headerLink:hover,
-.headerLink:focus {
-	background-color: color-mix(in srgb, var(--midColor) 33%, transparent 67%);
-}
-
-#headerTitle .headerLink {
+#headerTitle {
 	color: var(--accentColor);
 	text-decoration: none;
 	text-align: center;
-	font-size: 3rem;
+	font-size: 2.5rem;
 	font-family: "Share Tech Mono", monospace;
 }
 
