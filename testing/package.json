@@ -6,8 +6,8 @@
 		"showReport": "npx playwright show-report"
 	},
 	"devDependencies": {
-		"@playwright/test": "1.37.0",
-		"@types/node": "20.8.9",
-		"typescript": "4.9.5"
+		"@playwright/test": "1.40.0",
+		"@types/node": "20.9.4",
+		"typescript": "5.3.2"
 	}
 }
