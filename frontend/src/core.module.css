@@ -1,5 +1,6 @@
 .contentButton {
 	color: var(--textColor);
+	text-decoration: none;
 	padding: 0.35rem 0.5rem;
 	background-color: transparent;
 	transition: background-color 200ms ease-in-out;
@@ -11,6 +12,7 @@
 
 .borderButton {
 	color: var(--textColor);
+	text-decoration: none;
 	border: 0.1rem solid var(--textColor);
 	padding: 0.25rem 0.5rem;
 	background-color: transparent;
@@ -24,6 +26,7 @@
 
 .backgroundButton {
 	color: var(--textColor);
+	text-decoration: none;
 	padding: 0.35rem 0.5rem;
 	background-color: var(--accentColor);
 	transition: all 200ms ease-in-out;
