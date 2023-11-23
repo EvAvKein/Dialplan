@@ -1,0 +1,35 @@
+.contentButton {
+	color: var(--textColor);
+	padding: 0.35rem 0.5rem;
+	background-color: transparent;
+	transition: background-color 200ms ease-in-out;
+}
+.contentButton:hover,
+.contentButton:focus {
+	background-color: color-mix(in srgb, var(--midColor) 33%, transparent 67%);
+}
+
+.borderButton {
+	color: var(--textColor);
+	border: 0.1rem solid var(--textColor);
+	padding: 0.25rem 0.5rem;
+	background-color: transparent;
+	transition: all 200ms ease-in-out;
+}
+.borderButton:hover,
+.borderButton:focus {
+	color: var(--backgroundColor);
+	background-color: var(--textColor);
+}
+
+.backgroundButton {
+	color: var(--textColor);
+	padding: 0.35rem 0.5rem;
+	background-color: var(--accentColor);
+	transition: all 200ms ease-in-out;
+}
+.backgroundButton:hover,
+.backgroundButton:focus {
+	color: var(--backgroundColor);
+	background-color: var(--textColor);
+}
