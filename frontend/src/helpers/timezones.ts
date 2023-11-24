@@ -1,4 +1,8 @@
-export const timezones = Intl.supportedValuesOf("timeZone").map((timeZone) => {
+export const timezoneValues = Intl.supportedValuesOf("timeZone");
+
+export const timezoneValuesRegex = new RegExp(timezoneValues.reduce((prev, current) => prev + "|" + current));
+
+export const timezones = timezoneValues.map((timeZone) => {
 	const offset = new Intl.DateTimeFormat("fr" /* UTC */, {timeZone: timeZone, timeZoneName: "shortOffset"})
 		.formatToParts()
 		.find((part) => part.type === "timeZoneName")!.value;
