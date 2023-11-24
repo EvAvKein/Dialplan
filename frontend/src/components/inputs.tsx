@@ -55,7 +55,7 @@ export function LabelledInput(props: labelledInputProps) {
 	);
 }
 
-interface searchableInputProps extends labelledInputProps {
+interface searchableInputProps extends Omit<labelledInputProps, "list"> {
 	id: string;
 	options: {value: string; text: string}[];
 	labelled?: true;
@@ -64,9 +64,9 @@ export function SearchableInput(props: searchableInputProps) {
 	return (
 		<div>
 			{props.labelled ? (
-				<LabelledInput {...props} id={"InputComponent"} />
+				<LabelledInput {...props} list={props.id} id={props.id + "InputComponent"} />
 			) : (
-				<Input {...props} placeholder={props.label} id={"InputComponent"} />
+				<Input {...props} list={props.id} id={props.id + "InputComponent"} placeholder={props.label} />
 			)}
 			<datalist id={props.id} onSelect={(event) => props.handler(event.currentTarget.nodeValue ?? "")}>
 				{props.options.map(({value, text}) => (
