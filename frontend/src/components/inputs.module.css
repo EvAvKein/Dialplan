@@ -12,11 +12,11 @@ textarea.input {
 	outline: none;
 }
 
-.inputWrapper {
+.labelledInputWrapper {
 	position: relative;
 }
 
-.inputWrapper > .input {
+.labelledInputWrapper > .input {
 	padding-top: 0.65em;
 }
 
@@ -36,15 +36,15 @@ textarea.input {
 	transition: all 150ms;
 }
 
-.inputWrapper,
+.labelledInputWrapper,
 .input {
 	border-left: 0em solid var(--textColor);
 	transition: all 150ms ease-in-out;
 }
-.inputWrapper:focus-within,
+.labelledInputWrapper:focus-within,
 .input:focus {
 	border-left-width: 0.2em;
 }
-.inputWrapper > .input {
+.labelledInputWrapper > .input {
 	border-left: none;
 }
