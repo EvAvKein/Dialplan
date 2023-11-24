@@ -1,43 +1,55 @@
 import {type HTMLInputTypeAttribute} from "react";
 import styles from "./inputs.module.css";
 
-interface props {
+interface textareaProps {
 	handler: (text: string) => void;
 	placeholder: string;
-	type?: "textarea" | HTMLInputTypeAttribute;
 	id?: string;
-	list?: string;
+	pattern?: RegExp;
 }
-
-export function Input({handler, placeholder, type, id, list}: props) {
-	return type === "textarea" ? (
+export function Textarea({handler, placeholder, id}: textareaProps) {
+	return (
 		<textarea
 			className={styles.input}
 			id={id}
 			placeholder={placeholder}
 			onInput={(event) => handler(event.currentTarget.value)}
 		/>
-	) : (
+	);
+}
+
+interface inputProps {
+	handler: (text: string) => void;
+	placeholder: string;
+	type?: HTMLInputTypeAttribute;
+	id?: string;
+	pattern?: RegExp;
+	list?: string;
+}
+
+export function Input({handler, placeholder, id, list, pattern}: inputProps) {
+	return (
 		<input
 			className={styles.input}
 			id={id}
 			list={list}
+			pattern={pattern?.source}
 			placeholder={placeholder}
 			onInput={(event) => handler(event.currentTarget.value)}
 		/>
 	);
 }
 
-interface labelledInputProps extends Omit<props, "placeholder"> {
+interface labelledInputProps extends Omit<inputProps, "placeholder"> {
 	label: string;
 	id: string;
 }
-export function LabelledInput({id, label, handler, list}: labelledInputProps) {
+export function LabelledInput(props: labelledInputProps) {
 	return (
 		<div className={styles.labelledInputWrapper}>
-			<Input id={id} placeholder={" "} handler={handler} list={list} />
-			<label className={styles.inputLabel} htmlFor={id}>
-				{label}
+			<Input {...props} placeholder={" "} />
+			<label className={styles.inputLabel} htmlFor={props.id}>
+				{props.label}
 			</label>
 		</div>
 	);
@@ -48,16 +60,16 @@ interface searchableInputProps extends labelledInputProps {
 	options: {value: string; text: string}[];
 	labelled?: true;
 }
-export function SearchableInput({id, options, label = " ", labelled, handler}: searchableInputProps) {
+export function SearchableInput(props: searchableInputProps) {
 	return (
 		<div>
-			{labelled ? (
-				<LabelledInput list={id} label={label} handler={handler} id={id + "LabelComponent"} />
+			{props.labelled ? (
+				<LabelledInput {...props} id={"InputComponent"} />
 			) : (
-				<Input list={id} placeholder={label} handler={handler} />
+				<Input {...props} placeholder={props.label} id={"InputComponent"} />
 			)}
-			<datalist id={id} onSelect={(event) => handler(event.currentTarget.nodeValue ?? "")}>
-				{options.map(({value, text}) => (
+			<datalist id={props.id} onSelect={(event) => props.handler(event.currentTarget.nodeValue ?? "")}>
+				{props.options.map(({value, text}) => (
 					<option value={value} key={value}>
 						{text}
 					</option>
