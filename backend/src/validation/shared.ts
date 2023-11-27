@@ -1,11 +1,12 @@
 import {ZodSchema, z} from "zod";
 import {unix} from "../../../shared/helpers/timestamps.js";
+import {regex} from "../../../shared/objects/validation.js";
 import * as shared from "../../../shared/objects/shared.js";
 
 export const id = z.string().uuid();
 
-export const countryCode = z.string().regex(/^[1-9]\d{0,2}$/);
-export const phoneNumber = z.string().regex(/^[1-9]\d{8}$/);
+export const countryCode = z.string().regex(regex.countryCode);
+export const phoneNumber = z.string().regex(regex.phoneNumber);
 
 export const timestamp = z
 	.string()

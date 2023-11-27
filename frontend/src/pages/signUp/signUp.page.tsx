@@ -2,7 +2,8 @@ import {OrgCreationRequest, AgentCreationRequest} from "../../../../shared/objec
 import {apiFetch} from "../../helpers/apiFetch";
 import {useState} from "react";
 import {Input, SearchableInput} from "../../components/inputs";
-import {timezones, timezoneValuesRegex} from "../../helpers/timezones";
+import {timezones} from "../../../../shared/objects/timezones";
+import {regex, length} from "../../../../shared/objects/validation";
 import {useNotifStore} from "../../stores/notifs";
 import coreStyles from "../../core.module.css";
 import styles from "./signUp.module.css";
@@ -38,13 +39,25 @@ export default function SignUp() {
 			>
 				<section id="org">
 					<h3>Organization data</h3>
-					<Input placeholder="Name" handler={(val) => setOrg({...org, name: val})} />
-					<Input placeholder="Color" handler={(val) => setOrg({...org, color: val})} />
+					<Input
+						placeholder="Name"
+						minLength={length.orgName.min}
+						maxLength={length.orgName.max}
+						required={true}
+						handler={(val) => setOrg({...org, name: val})}
+					/>
+					<Input
+						placeholder="Color"
+						pattern={regex.color}
+						required={true}
+						handler={(val) => setOrg({...org, color: val})}
+					/>
 					<SearchableInput
 						id={"timezoneInput"}
 						type={"search"}
 						label={"Timezone"}
-						pattern={timezoneValuesRegex} // has hilariously large HTML output, but i think it's worth it
+						pattern={regex.timezone} // has hilariously large HTML output, but i think it's worth it
+						required={true}
 						handler={(zone) => {
 							try {
 								new Date().toLocaleString([], {timeZone: zone});
@@ -59,9 +72,26 @@ export default function SignUp() {
 
 				<section id="agent">
 					<h3>Your personnel data</h3>
-					<Input placeholder="Name" handler={(val) => setAgent({...agent, name: val})} />
-					<Input placeholder="Department" handler={(val) => setAgent({...agent, department: val})} />
-					<Input placeholder="Country Code" handler={(val) => setAgent({...agent, countryCode: val})} />
+					<Input
+						placeholder="Name"
+						minLength={length.agentName.min}
+						maxLength={length.agentName.max}
+						required={true}
+						handler={(val) => setAgent({...agent, name: val})}
+					/>
+					<Input
+						placeholder="Department"
+						minLength={length.agentDepartment.min}
+						maxLength={length.agentDepartment.max}
+						required={true}
+						handler={(val) => setAgent({...agent, department: val})}
+					/>
+					<Input
+						placeholder="Country Code"
+						pattern={regex.countryCode}
+						required={true}
+						handler={(val) => setAgent({...agent, countryCode: val})}
+					/>
 				</section>
 				<button className={coreStyles.backgroundButton} type="submit">
 					Submit
