@@ -25,15 +25,21 @@ interface inputProps {
 	id?: string;
 	pattern?: RegExp;
 	list?: string;
+	minLength?: number;
+	maxLength?: number;
+	required?: boolean;
 }
 
-export function Input({handler, placeholder, id, list, pattern}: inputProps) {
+export function Input({handler, placeholder, id, list, pattern, minLength, maxLength, required}: inputProps) {
 	return (
 		<input
 			className={styles.input}
 			id={id}
 			list={list}
 			pattern={pattern?.source}
+			minLength={minLength}
+			maxLength={maxLength}
+			required={required}
 			placeholder={placeholder}
 			onInput={(event) => handler(event.currentTarget.value)}
 		/>
