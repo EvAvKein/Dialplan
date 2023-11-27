@@ -47,6 +47,7 @@ export default function SignUp() {
 						handler={(val) => setOrg({...org, name: val})}
 					/>
 					<Input
+						type={"color"}
 						placeholder="Color"
 						pattern={regex.color}
 						required={true}
