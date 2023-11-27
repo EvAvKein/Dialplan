@@ -30,10 +30,11 @@ interface inputProps {
 	required?: boolean;
 }
 
-export function Input({handler, placeholder, id, list, pattern, minLength, maxLength, required}: inputProps) {
+export function Input({handler, type, placeholder, id, list, pattern, minLength, maxLength, required}: inputProps) {
 	return (
 		<input
 			className={styles.input}
+			type={type}
 			id={id}
 			list={list}
 			pattern={pattern?.source}
