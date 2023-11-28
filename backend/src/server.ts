@@ -1,12 +1,14 @@
 import path from "node:path";
 import express from "express";
 import helmetSecurity from "helmet";
+import cookieParser from "cookie-parser";
 import * as timestamps from "../../shared/helpers/timestamps.js";
 import {postgres, postgresP} from "./postgres.js";
 import {endpoints_orgs} from "./endpoints/orgs.js";
 
 const app = express();
 app.use(express.static("../frontend/dist"));
+app.use(cookieParser());
 app.use(express.json());
 app.use(helmetSecurity());
 
