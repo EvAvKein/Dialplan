@@ -6,7 +6,7 @@ import {OrgAgentCreationDuo} from "../validation/org.js";
 import {FetchResponse} from "../../../shared/objects/api.js";
 import {Agent, Org} from "../../../shared/objects/org.js";
 
-export function endpoints_org(app: Express, db: Pool, dbP: pgpPool) {
+export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 	app.post("/api/orgs", async (request, response) => {
 		const validation = OrgAgentCreationDuo.safeParse(request.body);
 		if (!validation.success) {
