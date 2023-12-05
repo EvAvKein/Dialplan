@@ -1,6 +1,4 @@
-.contentButton svg,
-.borderButton svg,
-.backgroundButton svg {
+:is(.contentButton, .borderButton, .backgroundButton) svg {
 	display: block;
 } /* removes auto-created spacing */
 
@@ -12,13 +10,11 @@
 	background-color: transparent;
 	transition: background-color 200ms ease-in-out;
 }
-.contentButton:hover,
-.contentButton:focus {
+.contentButton:is(:hover, :focus) {
 	background-color: color-mix(in srgb, var(--midColor) 33%, transparent 67%);
 }
 
-.contentButton svg,
-.borderButton svg {
+:is(.contentButton, .borderButton) svg {
 	fill: var(--textColor);
 }
 
@@ -31,13 +27,11 @@
 	background-color: transparent;
 	transition: all 200ms ease-in-out;
 }
-.borderButton:hover,
-.borderButton:focus {
+.borderButton:is(:hover, :focus) {
 	color: var(--backgroundColor);
 	background-color: var(--textColor);
 }
-.borderButton:hover svg,
-.borderButton:focus svg {
+.borderButton:is(:hover, :focus) svg {
 	fill: var(--backgroundColor);
 }
 
@@ -49,12 +43,10 @@
 	background-color: var(--accentColor);
 	transition: all 200ms ease-in-out;
 }
-.backgroundButton:hover,
-.backgroundButton:focus {
+.backgroundButton:is(:hover, :focus) {
 	color: var(--backgroundColor);
 	background-color: var(--textColor);
 }
-.backgroundButton:hover svg,
-.backgroundButton:focus svg {
+.backgroundButton:is(:hover, :focus) svg {
 	fill: var(--backgroundColor);
 }
