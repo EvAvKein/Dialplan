@@ -1,4 +1,11 @@
+.contentButton svg,
+.borderButton svg,
+.backgroundButton svg {
+	display: block;
+} /* removes auto-created spacing */
+
 .contentButton {
+	display: inline-block;
 	color: var(--textColor);
 	text-decoration: none;
 	padding: 0.35rem 0.5rem;
@@ -10,7 +17,13 @@
 	background-color: color-mix(in srgb, var(--midColor) 33%, transparent 67%);
 }
 
+.contentButton svg,
+.borderButton svg {
+	fill: var(--textColor);
+}
+
 .borderButton {
+	display: inline-block;
 	color: var(--textColor);
 	text-decoration: none;
 	border: 0.1rem solid var(--textColor);
@@ -23,8 +36,13 @@
 	color: var(--backgroundColor);
 	background-color: var(--textColor);
 }
+.borderButton:hover svg,
+.borderButton:focus svg {
+	fill: var(--backgroundColor);
+}
 
 .backgroundButton {
+	display: inline-block;
 	color: var(--textColor);
 	text-decoration: none;
 	padding: 0.35rem 0.5rem;
@@ -35,4 +53,8 @@
 .backgroundButton:focus {
 	color: var(--backgroundColor);
 	background-color: var(--textColor);
+}
+.backgroundButton:hover svg,
+.backgroundButton:focus svg {
+	fill: var(--backgroundColor);
 }
