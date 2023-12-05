@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import * as timestamps from "../../shared/helpers/timestamps.js";
 import {postgres, postgresP} from "./postgres.js";
 import {endpoints_orgs} from "./endpoints/orgs.js";
+import {endpoints_sessions} from "./endpoints/sessions.js";
 
 const app = express();
 app.use(express.static("../frontend/dist"));
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(helmetSecurity());
 
 endpoints_orgs(app, postgres, postgresP);
+endpoints_sessions(app, postgres);
 
 app.get("*", function (request, response) {
 	response.sendFile(path.join(process.cwd() + "/../frontend/dist/index.html"));

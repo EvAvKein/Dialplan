@@ -3,6 +3,8 @@ import Core from "./pages/_layouts/_core.layout";
 import VisitorLayout from "./pages/_layouts/visitor.layout";
 import Home from "./pages/home.page";
 import SignUp from "./pages/signUp/signUp.page";
+import AgentLayout from "./pages/_layouts/agent.layout";
+import Invites_Dashboard from "./pages/dashboard/invites.page";
 
 export const router = createBrowserRouter([
 	{
@@ -18,6 +20,16 @@ export const router = createBrowserRouter([
 					{
 						path: "/signUp",
 						element: <SignUp />,
+					},
+				],
+			},
+			{
+				element: <AgentLayout />,
+				path: "/dashboard",
+				children: [
+					{
+						path: "",
+						element: <Invites_Dashboard />,
 					},
 				],
 			},

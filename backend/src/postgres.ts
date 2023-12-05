@@ -14,7 +14,7 @@ await postgres.connect().catch(() => console.log("Failed to connect to database"
 type pgpPool = pgp.IDatabase<{poolConfig: never}>;
 const postgresP: pgpPool = pgp()(pgConfig);
 
-for (const fileName of ["org.sql", "inv.sql"]) {
+for (const fileName of ["org.sql", "inv.sql", "session.sql"]) {
 	const fileContent = readFileSync("/backend/sql/" + fileName, "utf-8");
 	await postgres.query(fileContent).catch((error) => console.log(error));
 }

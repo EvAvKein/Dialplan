@@ -29,6 +29,12 @@ export class Agent extends AgentCreationRequest {
 	}
 }
 
+export interface AgentSession {
+	id: string;
+	orgId: Org["id"];
+	agentId: Agent["id"];
+}
+
 export class OrgCreationRequest {
 	constructor(
 		public name: string,

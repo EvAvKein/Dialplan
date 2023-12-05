@@ -5,6 +5,8 @@ import {fromZodError} from "zod-validation-error";
 import {OrgAgentCreationDuo} from "../validation/org.js";
 import {FetchResponse} from "../../../shared/objects/api.js";
 import {Agent, Org} from "../../../shared/objects/org.js";
+import {v4 as uuid} from "uuid";
+import {authAgent} from "../helpers/authUser.js";
 
 export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 	app.post("/api/orgs", async (request, response) => {
@@ -16,27 +18,65 @@ export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 
 		const org = new Org(validation.data.org);
 		const agent = new Agent(org.id, validation.data.agent);
+		const sessionId = uuid();
 
 		await dbP
 			.tx(async (statement) => {
 				await statement.none(
-					`INSERT INTO Org
-					(id, name, color, timezone)
+					`INSERT INTO "Org"
+					("id", "name", "color", "timezone")
 					VALUES ($1, $2, $3, $4);`,
 					[org.id, org.name, org.color, org.timezone],
 				);
 				await statement.none(
-					`INSERT INTO Agent
-					(id, orgId, name, department, countryCode, internals)
+					`INSERT INTO "Agent"
+					("id", "orgId", "name", "department", "countryCode", "internals")
 					VALUES ($1, $2, $3, $4, $5, $6)`,
 					[agent.id, agent.orgId, agent.name, agent.department, agent.countryCode, agent.internals],
 				);
+				await statement.none(
+					`INSERT INTO "AgentSession"
+					("id", "agentId")
+					VALUES ($1, $2);`,
+					[sessionId, agent.id],
+				);
 			})
 			.then(() => {
-				response.status(200).end();
+				response
+					.status(200)
+					.cookie("dialplan_agentid", agent.id, {secure: true})
+					.cookie("dialplan_sessionid", sessionId, {secure: true})
+					.end();
 			})
 			.catch((error) => {
 				console.error("Org creation failure", error);
+				response.status(500).json(new FetchResponse(null, {message: "Database error"}));
+			});
+	});
+
+	app.get("/api/orgs", async (request, response) => {
+		const agent = await authAgent(request);
+		if (!agent) {
+			response.status(400).json(new FetchResponse(null, {message: "Missing authentication cookies"}));
+			return;
+		}
+
+		await db
+			.query<Org>(
+				`SELECT *
+				FROM "Org"
+				WHERE "id" = $1
+				LIMIT 1
+				`,
+				[agent.orgId],
+			)
+			.then((value) => {
+				value.rowCount
+					? response.status(200).json(new FetchResponse(value.rows[0]))
+					: response.status(400).json(new FetchResponse(null, {message: "Org not found"}));
+			})
+			.catch((error) => {
+				console.error("Session GET failure", error);
 				response.status(500).json(new FetchResponse(null, {message: "Database error"}));
 			});
 	});

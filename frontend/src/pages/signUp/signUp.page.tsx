@@ -5,11 +5,13 @@ import {Input, SearchableInput} from "../../components/inputs";
 import {timezones} from "../../../../shared/objects/timezones";
 import {regex, length} from "../../../../shared/objects/validation";
 import {useNotifStore} from "../../stores/notifs";
+import {useNavigate} from "react-router-dom";
 import coreStyles from "../../core.module.css";
 import styles from "./signUp.module.css";
 
 export default function SignUp() {
 	const notifs = useNotifStore();
+	const navigate = useNavigate();
 
 	const [org, setOrg] = useState<OrgCreationRequest>({
 		name: "",
@@ -29,12 +31,18 @@ export default function SignUp() {
 			<form
 				onSubmit={async (e) => {
 					e.preventDefault();
-					const response = await apiFetch("POST", "/orgs", {org, agent});
-					notifs.create({
-						text: response.error?.message ?? "Success!",
-						desirability: !response.error,
-						manualDismiss: true,
-					});
+					const response = await apiFetch("POST", "/orgs", {agent, org: {...org, color: org.color.slice(1)}});
+
+					if (response.error?.message) {
+						notifs.create({
+							text: response.error.message,
+							desirability: false,
+							manualDismiss: true,
+						});
+						return;
+					}
+
+					navigate("/dashboard");
 				}}
 			>
 				<section id="org">

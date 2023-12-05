@@ -1,0 +1,21 @@
+#nav {
+	padding: 0.5rem;
+	box-shadow: 0 0.01rem 0.25rem 0 color-mix(in srgb, var(--textColor), transparent);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+}
+
+#leftPart {
+	font-size: 2rem;
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+}
+
+#leftPart svg {
+	height: 3rem;
+	width: 3rem;
+	fill: var(--textColor);
+}
