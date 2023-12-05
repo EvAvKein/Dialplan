@@ -1,18 +1,18 @@
 CREATE TABLE IF NOT EXISTS Invite (
-    id UUID PRIMARY KEY,
-    orgId UUID REFERENCES Org(id),
-    agentId UUID REFERENCES Agent(id),
-    recipient JSON,
-    callDuration SMALLINT,
-    expiry TIMESTAMP,
-    notes JSON
+    id UUID PRIMARY KEY NOT NULL,
+    orgId UUID REFERENCES Org(id) NOT NULL,
+    agentId UUID REFERENCES Agent(id) NOT NULL,
+    recipient JSON NOT NULL,
+    callDuration SMALLINT NOT NULL,
+    expiry TIMESTAMP NOT NULL,
+    notes JSON NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Call (
-    id UUID PRIMARY KEY,
-    orgId UUID REFERENCES Org(id),
-    agentId UUID REFERENCES Agent(id),
-    recipient JSON,
-    time TSRANGE,
-    notes JSON
+    id UUID PRIMARY KEY NOT NULL,
+    orgId UUID REFERENCES Org(id) NOT NULL,
+    agentId UUID REFERENCES Agent(id) NOT NULL,
+    recipient JSON NOT NULL,
+    time TSRANGE NOT NULL,
+    notes JSON NOT NULL
 );
