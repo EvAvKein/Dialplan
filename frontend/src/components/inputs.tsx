@@ -4,14 +4,16 @@ import styles from "./inputs.module.css";
 interface textareaProps {
 	handler: (text: string) => void;
 	placeholder: string;
+	defaultValue?: string;
 	id?: string;
 	pattern?: RegExp;
 }
-export function Textarea({handler, placeholder, id}: textareaProps) {
+export function Textarea({handler, defaultValue, placeholder, id}: textareaProps) {
 	return (
 		<textarea
 			className={styles.input}
 			id={id}
+			defaultValue={defaultValue}
 			placeholder={placeholder}
 			onInput={(event) => handler(event.currentTarget.value)}
 		/>
@@ -22,6 +24,7 @@ interface inputProps {
 	handler: (text: string) => void;
 	placeholder: string;
 	type?: HTMLInputTypeAttribute;
+	defaultValue?: string;
 	id?: string;
 	pattern?: RegExp;
 	list?: string;
@@ -30,11 +33,23 @@ interface inputProps {
 	required?: boolean;
 }
 
-export function Input({handler, type, placeholder, id, list, pattern, minLength, maxLength, required}: inputProps) {
+export function Input({
+	handler,
+	type,
+	defaultValue,
+	placeholder,
+	id,
+	list,
+	pattern,
+	minLength,
+	maxLength,
+	required,
+}: inputProps) {
 	return (
 		<input
 			className={styles.input}
 			type={type}
+			defaultValue={defaultValue}
 			id={id}
 			list={list}
 			pattern={pattern?.source}
