@@ -64,13 +64,17 @@ export function Input({
 
 interface labelledInputProps extends Omit<inputProps, "placeholder"> {
 	label: string;
+	collapsedLabel?: true;
 	id: string;
 }
 export function LabelledInput(props: labelledInputProps) {
 	return (
 		<div className={styles.labelledInputWrapper}>
 			<Input {...props} placeholder={" "} />
-			<label className={styles.inputLabel} htmlFor={props.id}>
+			<label
+				className={styles.inputLabel + (props.collapsedLabel ? " " + styles.collapsedLabel : "")}
+				htmlFor={props.id}
+			>
 				{props.label}
 			</label>
 		</div>

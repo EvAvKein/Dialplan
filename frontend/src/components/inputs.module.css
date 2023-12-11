@@ -36,7 +36,8 @@ textarea.input {
 	transition: all 250ms;
 }
 .input:focus + .inputLabel,
-.input:not(:placeholder-shown) + .inputLabel {
+.input:not(:placeholder-shown) + .inputLabel,
+.collapsedLabel {
 	font-size: 0.65em;
 	cursor: default;
 	transition: all 150ms;
