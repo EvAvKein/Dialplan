@@ -49,17 +49,17 @@ textarea.input {
 	border-left: none;
 }
 
-.labelledInputWrapper:has(> .input:invalid),
-.input:invalid {
+.labelledInputWrapper:has(> .input:user-invalid),
+.input:user-invalid {
 	border-color: var(--negativeColor);
 }
-.labelledInputWrapper:has(.input:invalid) label {
+.labelledInputWrapper:has(.input:user-invalid) label {
 	color: var(--negativeColor);
 }
-.labelledInputWrapper:not(:focus-within):has(.input:invalid) {
+.labelledInputWrapper:not(:focus-within):has(.input:user-invalid) {
 	outline-offset: 0.1rem;
 }
-.labelledInputWrapper:not(:focus-within):has(.input:invalid),
-.input:invalid:not(:focus) {
+.labelledInputWrapper:not(:focus-within):has(.input:user-invalid),
+.input:user-invalid:not(:focus) {
 	outline: 0.15rem solid var(--negativeColor);
 }
