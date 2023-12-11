@@ -40,6 +40,7 @@ textarea.input {
 .collapsedLabel {
 	font-size: 0.65em;
 	cursor: default;
+	text-decoration: underline var(--midColor);
 	transition: all 150ms;
 }
 
