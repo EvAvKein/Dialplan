@@ -20,6 +20,12 @@ textarea.input {
 	padding-top: 0.65em;
 }
 
+.input[type="color"] {
+	box-sizing: content-box; /* for reasonable sizing inside labelledInput, as it adds padding-top to the input which otherwise squashes the color input */
+	padding-inline: 0;
+	padding-bottom: 0;
+}
+
 .inputLabel {
 	position: absolute;
 	top: 0em;
