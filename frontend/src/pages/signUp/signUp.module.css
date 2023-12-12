@@ -1,26 +1,41 @@
-.signUpWrapper {
-	width: 18rem;
+#signUpWrapper {
+	width: clamp(20rem, 95%, 25rem);
 	margin-inline: auto;
 	padding: 1rem;
 }
 
-.signUpWrapper h2 {
-	font-size: 2.25rem;
+#signUpWrapper h2 {
+	font-size: 2.75rem;
 	text-align: center;
 }
 
-.signUpWrapper input {
-	font-size: 1.25rem;
-	margin-top: 0.5rem;
+.page {
+	margin-top: 1rem;
 }
 
-.signUpWrapper button {
+.page h3 {
+	font-size: 1.75rem;
+}
+
+.page p {
+	margin-top: 1rem;
+	text-align: center;
+}
+
+.page > div {
+	font-size: 1.5rem;
+}
+
+.page > * + * {
+	margin-top: 1rem;
+}
+
+#buttonsWrapper {
+	display: flex;
+}
+
+#buttonsWrapper button {
 	display: block;
 	font-size: 1.25em;
 	margin: 0.75rem auto 0;
-}
-
-.signUpWrapper p {
-	margin-top: 1rem;
-	text-align: center;
 }
