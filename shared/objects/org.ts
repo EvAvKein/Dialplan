@@ -50,3 +50,8 @@ export class Org extends OrgCreationRequest {
 		this.id = newId();
 	}
 }
+
+export interface OrgAgentCreationDuo {
+	org: OrgCreationRequest;
+	agent: AgentCreationRequest;
+}
