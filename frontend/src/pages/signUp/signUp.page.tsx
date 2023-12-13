@@ -13,9 +13,6 @@ export default function SignUp() {
 	const notifs = useNotifStore();
 	const navigate = useNavigate();
 
-	const defaultColor = getComputedStyle(document.body).getPropertyValue("--backgroundColor");
-	const defaultTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
 	const [page, setPage] = useState<number>(1);
 	const pageLabelledInputValidators: (() => boolean)[] = [
 		() => Boolean(org.name && org.color && org.timezone),
@@ -25,8 +22,8 @@ export default function SignUp() {
 
 	const [org, setOrg] = useState<OrgCreationRequest>({
 		name: "",
-		color: defaultColor,
-		timezone: defaultTimezone,
+		color: getComputedStyle(document.body).getPropertyValue("--backgroundColor"),
+		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 	});
 	const [agent, setAgent] = useState<AgentCreationRequest>({
 		name: "",
