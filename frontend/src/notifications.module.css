@@ -19,7 +19,6 @@
 .dismissButton {
 	background-color: transparent;
 	border-left: 0.1rem solid var(--textColor);
-	margin-left: 0.5rem;
 }
 
 #notifsWrapper {
