@@ -39,7 +39,6 @@ export default function SignUp() {
 			notifs.create({
 				text: "Please ensure all fields are filled",
 				desirability: false,
-				manualDismiss: true,
 			});
 		}
 
