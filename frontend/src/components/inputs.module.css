@@ -61,9 +61,6 @@ textarea.input {
 .input:user-invalid {
 	border-color: var(--negativeColor);
 }
-.labelledInputWrapper:has(.input:user-invalid) label {
-	color: var(--negativeColor);
-}
 .labelledInputWrapper:not(:focus-within):has(.input:user-invalid) {
 	outline-offset: 0.1rem;
 }
