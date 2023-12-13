@@ -148,12 +148,13 @@ export default function SignUp() {
 				</div>
 				<div id={styles.buttonsWrapper}>
 					{page > 1 && (
-						<button className={coreStyles.borderButton} type="button" onClick={() => setPage(page - 1)}>
+						<button id="prevPage" className={coreStyles.borderButton} type="button" onClick={() => setPage(page - 1)}>
 							Previous
 						</button>
 					)}
 					{page < pageCount ? (
 						<button
+							id="nextPage"
 							className={coreStyles.borderButton}
 							type="button"
 							onClick={() => validatePageLabelledInputs() && setPage(page + 1)}
@@ -162,6 +163,7 @@ export default function SignUp() {
 						</button>
 					) : (
 						<button
+							id="submitSignUp"
 							className={coreStyles.backgroundButton}
 							type="button"
 							onClick={() => validatePageLabelledInputs() && submit()}
