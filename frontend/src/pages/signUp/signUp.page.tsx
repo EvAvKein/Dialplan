@@ -3,7 +3,7 @@ import {apiFetch} from "../../helpers/apiFetch";
 import {useState} from "react";
 import {LabelledInput, SearchableInput} from "../../components/inputs";
 import {timezones} from "../../../../shared/objects/timezones";
-import {regex, length} from "../../../../shared/objects/validation";
+import {org as orgRegex, agent as agentRegex} from "../../../../shared/objects/validationRegex";
 import {useNotifStore} from "../../stores/notifs";
 import {useNavigate} from "react-router-dom";
 import coreStyles from "../../core.module.css";
@@ -74,8 +74,7 @@ export default function SignUp() {
 								label={"Name"}
 								collapsedLabel={true}
 								defaultValue={org.name}
-								minLength={length.orgName.min}
-								maxLength={length.orgName.max}
+								pattern={orgRegex.name}
 								required={true}
 								handler={(val) => setOrg({...org, name: val})}
 							/>
@@ -83,8 +82,8 @@ export default function SignUp() {
 								id={"orgColorInput"}
 								type={"color"}
 								defaultValue={org.color}
+								pattern={orgRegex.color}
 								label={"Color"}
-								pattern={regex.color}
 								required={true}
 								handler={(val) => setOrg({...org, color: val})}
 							/>
@@ -95,7 +94,7 @@ export default function SignUp() {
 								type={"search"}
 								labelled={true}
 								label={"Timezone"}
-								pattern={regex.timezone} // has hilariously large HTML output, but i think it's worth it
+								pattern={orgRegex.timezone} // has hilariously large HTML output, but i think it's worth it
 								required={true}
 								handler={(zone) => {
 									try {
@@ -117,8 +116,7 @@ export default function SignUp() {
 								label={"Name"}
 								collapsedLabel={true}
 								defaultValue={agent.name}
-								minLength={length.agentName.min}
-								maxLength={length.agentName.max}
+								pattern={agentRegex.name}
 								required={true}
 								handler={(val) => setAgent({...agent, name: val})}
 							/>
@@ -127,8 +125,7 @@ export default function SignUp() {
 								label={"Department"}
 								collapsedLabel={true}
 								defaultValue={agent.department}
-								minLength={length.agentDepartment.min}
-								maxLength={length.agentDepartment.max}
+								pattern={agentRegex.department}
 								required={true}
 								handler={(val) => setAgent({...agent, department: val})}
 							/>
@@ -138,7 +135,7 @@ export default function SignUp() {
 								type={"number"}
 								collapsedLabel={true}
 								defaultValue={agent.countryCode}
-								pattern={regex.countryCode}
+								pattern={agentRegex.countryCode}
 								required={true}
 								handler={(val) => setAgent({...agent, countryCode: val})}
 							/>

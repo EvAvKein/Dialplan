@@ -1,26 +1,24 @@
 import {ZodSchema, z} from "zod";
 import {unix} from "../../../shared/helpers/timestamps.js";
-import {regex} from "../../../shared/objects/validation.js";
-import * as shared from "../../../shared/objects/shared.js";
+import {shared} from "../../../shared/objects/validationRegex.js";
+import * as obj from "../../../shared/objects/shared.js";
 
 export const id = z.string().uuid();
 
-export const countryCode = z.string().regex(regex.countryCode);
-export const phoneNumber = z.string().regex(regex.phoneNumber);
+export const countryCode = z.string().regex(shared.countryCode);
+export const phoneNumber = z.string().regex(shared.phoneNumber);
 
-export const timestamp = z
-	.string()
-	.datetime({precision: process.env.PROD ? 0 : 3}) satisfies ZodSchema<shared.isoStamp>;
+export const timestamp = z.string().datetime({precision: process.env.PROD ? 0 : 3}) satisfies ZodSchema<obj.isoStamp>;
 export const timeRange = z
 	.tuple([timestamp, timestamp])
-	.refine(([stamp1, stamp2]) => unix(stamp1) < unix(stamp2)) satisfies ZodSchema<shared.timeRange>;
+	.refine(([stamp1, stamp2]) => unix(stamp1) < unix(stamp2)) satisfies ZodSchema<obj.timeRange>;
 
 export const dayAvailability = z.array(timeRange).refine((day) => {
 	const firstStamp = day[0][0];
 	const lastStamp = day[day.length - 1][1];
 	if (
 		new Date(firstStamp).getUTCDay() !== new Date(lastStamp).getUTCDay() ||
-		unix(lastStamp) - unix(firstStamp) > shared.units.day - shared.units.second
+		unix(lastStamp) - unix(firstStamp) > obj.units.day - obj.units.second
 	) {
 		return false;
 	}
@@ -31,7 +29,7 @@ export const dayAvailability = z.array(timeRange).refine((day) => {
 		latestStamp = unix(stamp[1]);
 	}
 	return true;
-}) satisfies ZodSchema<shared.dayAvailability>;
+}) satisfies ZodSchema<obj.dayAvailability>;
 
 export const weekAvailability = z.tuple([
 	dayAvailability,
@@ -41,6 +39,6 @@ export const weekAvailability = z.tuple([
 	dayAvailability,
 	dayAvailability,
 	dayAvailability,
-]) satisfies ZodSchema<shared.weekAvailability>;
+]) satisfies ZodSchema<obj.weekAvailability>;
 
-export const availability = z.array(weekAvailability).min(1) satisfies ZodSchema<shared.availability>;
+export const availability = z.array(weekAvailability).min(1) satisfies ZodSchema<obj.availability>;
