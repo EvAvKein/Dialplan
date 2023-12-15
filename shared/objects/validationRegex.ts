@@ -2,7 +2,7 @@ import {timezoneValues} from "./timezones.js";
 
 export const shared = {
 	phoneNumber: /^[1-9][0-9]{8}$/,
-	countryCode: /^[0-9]{1,3}$/,
+	countryCode: /^[1-9][0-9]{0,2}$/,
 	timezone: new RegExp(timezoneValues.reduce((prev, current) => prev + "|" + current)),
 };
 
