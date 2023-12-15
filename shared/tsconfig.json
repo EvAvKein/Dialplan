@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		// no "target" because these always get compiled based on another folder's config
+		"module": "esnext",
+		"lib": ["esnext"],
+
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true
+	}
+}
