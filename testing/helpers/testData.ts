@@ -5,8 +5,8 @@ type dataset<T, K extends keyof T = keyof T> = [T[K], T[K], T[K], T[K]];
 
 type validityDataObj<T, omitted extends string> = {
 	[key in keyof Omit<T, omitted>]: {
-		valid: dataset<T>;
-		invalid: dataset<T>;
+		valid: dataset<Omit<T, omitted>>;
+		invalid: dataset<Omit<T, omitted>>;
 	};
 };
 
