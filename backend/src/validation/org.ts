@@ -7,15 +7,15 @@ const trueOrNone = z.literal(true).optional();
 
 const OrgCreationRequest = z.object({
 	// not exported as it should never be accepted without being part of a OrgAgentCreationDuo
-	name: z.string().regex(org.name),
-	color: z.string().regex(org.color),
-	timezone: z.string().regex(org.timezone),
+	name: z.string().trim().regex(org.name),
+	color: z.string().trim().regex(org.color),
+	timezone: z.string().trim().regex(org.timezone),
 	// availability: schemas.availability,
 }) satisfies ZodSchema<classes.OrgCreationRequest>;
 
 export const AgentInternals = z.object({
-	name: z.string().optional(),
-	employeeId: z.string().optional(),
+	name: z.string().trim().optional(),
+	employeeId: z.string().trim().optional(),
 	permissions: z.object({
 		viewDetailedAvailability: trueOrNone,
 		editOwnDepartment: trueOrNone,
@@ -24,8 +24,8 @@ export const AgentInternals = z.object({
 }) satisfies ZodSchema<classes.AgentInternals>;
 
 export const AgentCreationRequest = z.object({
-	name: z.string().regex(agent.name),
-	department: z.string().regex(agent.department),
+	name: z.string().trim().regex(agent.name),
+	department: z.string().trim().regex(agent.department),
 	countryCode: schemas.countryCode,
 	internals: AgentInternals,
 }) satisfies ZodSchema<classes.AgentCreationRequest>;

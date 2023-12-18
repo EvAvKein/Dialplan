@@ -3,13 +3,13 @@ import * as classes from "../../../shared/objects/inv.js";
 import * as schemas from "./shared.js";
 
 const Recipient = z.object({
-	name: z.string(),
+	name: z.string().trim(),
 	phone: z.object({number: schemas.phoneNumber, countryCode: schemas.countryCode}),
 }) satisfies ZodSchema<classes.CallRecipient>;
 
 const InviteNotes = z.object({
-	forRecipient: z.string().optional(),
-	forOrg: z.string().optional(),
+	forRecipient: z.string().trim().optional(),
+	forOrg: z.string().trim().optional(),
 }) satisfies ZodSchema<classes.InviteNotes>;
 
 export const InviteCreationRequest = z.object({
@@ -17,7 +17,7 @@ export const InviteCreationRequest = z.object({
 	agentId: schemas.id,
 	recipient: Recipient,
 	callDuration: z.number().int().positive(),
-	expiry: z.string(),
+	expiry: z.string().trim(),
 	notes: InviteNotes,
 }) satisfies ZodSchema<classes.InviteCreationRequest>;
 
