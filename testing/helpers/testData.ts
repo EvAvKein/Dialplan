@@ -21,8 +21,8 @@ export const orgData: validityDataObj<Org, "id"> = {
 		invalid: ["", "            ", "Invalid symbol @", randomAlphanumString(31)],
 	},
 	color: {
-		valid: ["#123456", "#abcdef", "#ABCDEF", "#1b3D5f"],
-		invalid: ["#12345", "#1234567", "#5e6f7g", "123456"],
+		valid: ["123456", "abcdef", "ABCDEF", "1b3D5f"],
+		invalid: ["#123456", "12345", "1234567", "5e6f7g"],
 	},
 	timezone: {
 		valid: ["Europe/Helsinki", "America/Argentina/Rio_Gallegos", "Asia/Hong_Kong", "Africa/Algiers"],
