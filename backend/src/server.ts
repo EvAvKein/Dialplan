@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import * as timestamps from "../../shared/helpers/timestamps.js";
 import {postgres, postgresP} from "./postgres.js";
 import {endpoints_orgs} from "./endpoints/orgs.js";
+import {endpoints_agents} from "./endpoints/agents.js";
 import {endpoints_sessions} from "./endpoints/sessions.js";
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(helmetSecurity());
 
 endpoints_orgs(app, postgres, postgresP);
+endpoints_agents(app);
 endpoints_sessions(app, postgres);
 
 app.get("*", function (request, response) {
