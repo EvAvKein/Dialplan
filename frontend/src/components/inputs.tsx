@@ -6,13 +6,15 @@ interface textareaProps {
 	placeholder: string;
 	defaultValue?: string;
 	id?: string;
+	testId?: string;
 	pattern?: RegExp;
 }
-export function Textarea({handler, defaultValue, placeholder, id}: textareaProps) {
+export function Textarea({handler, defaultValue, placeholder, id, testId}: textareaProps) {
 	return (
 		<textarea
 			className={styles.input}
 			id={id}
+			data-testid={testId}
 			defaultValue={defaultValue}
 			placeholder={placeholder}
 			onInput={(event) => handler(event.currentTarget.value)}
@@ -26,6 +28,7 @@ interface inputProps {
 	type?: HTMLInputTypeAttribute;
 	defaultValue?: string;
 	id?: string;
+	testId?: string;
 	pattern?: RegExp;
 	list?: string;
 	minLength?: number;
@@ -39,6 +42,7 @@ export function Input({
 	defaultValue,
 	placeholder,
 	id,
+	testId,
 	list,
 	pattern,
 	minLength,
@@ -51,6 +55,7 @@ export function Input({
 			type={type}
 			defaultValue={defaultValue}
 			id={id}
+			data-testid={testId}
 			list={list}
 			pattern={pattern?.source}
 			minLength={minLength}
