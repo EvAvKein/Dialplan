@@ -8,7 +8,11 @@ interface notificationProps extends notif {
 }
 export function Notification({id, text, desirability, manualDismiss, dismissHandler}: notificationProps) {
 	return (
-		<div role="alert" className={`${styles.notification} ${desirability ? styles.positive : null}`}>
+		<div
+			role="alert"
+			className={`${styles.notification} ${desirability ? styles.positive : null}`}
+			data-testid={desirability ? "notifPositive" : "notifNegative"}
+		>
 			{text}
 			{manualDismiss ? (
 				<button
