@@ -15,8 +15,11 @@ export default function SignUp() {
 
 	const [page, setPage] = useState<number>(1);
 	const pageLabelledInputValidators: (() => boolean)[] = [
-		() => Boolean(org.name && org.color && org.timezone),
-		() => Boolean(agent.name && agent.department && agent.countryCode),
+		() => orgRegex.name.test(org.name) && orgRegex.color.test(org.color) && orgRegex.timezone.test(org.timezone),
+		() =>
+			agentRegex.name.test(agent.name) &&
+			agentRegex.department.test(agent.department) &&
+			agentRegex.countryCode.test(agent.countryCode),
 	];
 	const pageCount = pageLabelledInputValidators.length;
 
@@ -71,6 +74,7 @@ export default function SignUp() {
 							<h4></h4>
 							<LabelledInput
 								id={"orgNameInput"}
+								testId={"orgNameInput"}
 								label={"Name"}
 								collapsedLabel={true}
 								defaultValue={org.name}
@@ -80,15 +84,17 @@ export default function SignUp() {
 							/>
 							<LabelledInput
 								id={"orgColorInput"}
+								testId={"orgColorInput"}
 								type={"color"}
-								defaultValue={org.color}
+								defaultValue={"#" + org.color}
 								pattern={orgRegex.color}
 								label={"Color"}
 								required={true}
-								handler={(val) => setOrg({...org, color: val})}
+								handler={(val) => setOrg({...org, color: val.slice(1)})}
 							/>
 							<SearchableInput
 								id={"orgTimezoneInput"}
+								testId={"orgTimezoneInput"}
 								defaultValue={org.timezone}
 								collapsedLabel={true}
 								type={"search"}
@@ -113,6 +119,7 @@ export default function SignUp() {
 							<h3>Your Data</h3>
 							<LabelledInput
 								id={"agentNameInput"}
+								testId={"agentNameInput"}
 								label={"Name"}
 								collapsedLabel={true}
 								defaultValue={agent.name}
@@ -122,6 +129,7 @@ export default function SignUp() {
 							/>
 							<LabelledInput
 								id={"agentDepartmentInput"}
+								testId={"agentDepartmentInput"}
 								label={"Department"}
 								collapsedLabel={true}
 								defaultValue={agent.department}
@@ -131,6 +139,7 @@ export default function SignUp() {
 							/>
 							<LabelledInput
 								id={"agentCountryCodeInput"}
+								testId={"agentCountryCodeInput"}
 								label={"Country Code (Phone)"}
 								type={"number"}
 								collapsedLabel={true}
@@ -144,13 +153,18 @@ export default function SignUp() {
 				</div>
 				<div id={styles.buttonsWrapper}>
 					{page > 1 && (
-						<button id="prevPage" className={coreStyles.borderButton} type="button" onClick={() => setPage(page - 1)}>
+						<button
+							data-testid="prevSignUpPage"
+							className={coreStyles.borderButton}
+							type="button"
+							onClick={() => setPage(page - 1)}
+						>
 							Previous
 						</button>
 					)}
 					{page < pageCount ? (
 						<button
-							id="nextPage"
+							data-testid="nextSignUpPage"
 							className={coreStyles.borderButton}
 							type="button"
 							onClick={() => validatePageLabelledInputs() && setPage(page + 1)}
@@ -159,7 +173,7 @@ export default function SignUp() {
 						</button>
 					) : (
 						<button
-							id="submitSignUp"
+							data-testid="submitSignUp"
 							className={coreStyles.backgroundButton}
 							type="button"
 							onClick={() => validatePageLabelledInputs() && submit()}
