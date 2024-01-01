@@ -1,7 +1,7 @@
 .notification {
 	padding: 0.3rem;
 	border-radius: 0.2rem;
-	color: var(--textColor);
+	color: var(--white); /* not textColor because the darker one doesn't contrast enough */
 	background-color: var(--negativeColor);
 	overflow-anchor: none;
 	display: flex;
@@ -18,7 +18,7 @@
 
 .dismissButton {
 	background-color: transparent;
-	border-left: 0.1rem solid var(--textColor);
+	border-left: 0.1rem solid var(--white);
 }
 
 #notifsWrapper {
