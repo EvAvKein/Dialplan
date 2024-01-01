@@ -18,9 +18,10 @@ export const useNotifStore = create<notifStore>((set) => ({
 
 	create: (notif) =>
 		set((store) => {
-			const id = crypto.randomUUID(); // excessive but concise. replace with custom function if facing performance issues
+			const id = crypto.randomUUID(); // excessive but concise. replace if facing performance issues
 			const list = store.list.concat({id, ...notif});
-			if (!notif.manualDismiss) setTimeout(() => store.delete(id), notif.text.length * 200 + 3000);
+			const duration = notif.text.length * 75 + 3000; // *loosely* based on: https://ux.stackexchange.com/questions/11203/how-long-should-a-temporary-notification-toast-appear/85898#85898
+			if (!notif.manualDismiss) setTimeout(() => store.delete(id), duration);
 			return {list};
 		}),
 
