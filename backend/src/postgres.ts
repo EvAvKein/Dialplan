@@ -16,6 +16,7 @@ for (let attempt = 1; attempt < maxConnectionAttempts; attempt++) {
 	// TODO: improve readability
 	try {
 		await postgres.connect();
+		console.log(`Connected to postgres (${attempt}/${maxConnectionAttempts} attempts)`);
 		break;
 	} catch {
 		await new Promise((resolve) => setTimeout(resolve, 3000));
