@@ -9,9 +9,10 @@ interface notificationProps extends notif {
 export function Notification({id, text, desirability, manualDismiss, dismissHandler}: notificationProps) {
 	return (
 		<div
-			role="alert"
+			role={manualDismiss ? "alertdialog" : "alert"}
 			className={`${styles.notification} ${desirability ? styles.positive : null}`}
 			data-testid={desirability ? "notifPositive" : "notifNegative"}
+			data-notifid={id}
 		>
 			{text}
 			{manualDismiss ? (
@@ -34,7 +35,7 @@ interface notificationsProps {
 }
 export function Notifications({notifs, dismissHandler}: notificationsProps) {
 	return (
-		<div id={styles.notifsWrapper}>
+		<div id={styles.notifsWrapper} data-testid="notifsWrapper">
 			{notifs.map((notif) => (
 				<Notification key={notif.id} {...notif} dismissHandler={dismissHandler} />
 			))}
