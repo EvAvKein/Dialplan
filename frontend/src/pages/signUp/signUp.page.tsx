@@ -25,7 +25,7 @@ export default function SignUp() {
 
 	const [org, setOrg] = useState<OrgCreationRequest>({
 		name: "",
-		color: getComputedStyle(document.body).getPropertyValue("--backgroundColor"),
+		color: getComputedStyle(document.body).getPropertyValue("--backgroundColor").slice(1),
 		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 	});
 	const [agent, setAgent] = useState<AgentCreationRequest>({
@@ -40,7 +40,7 @@ export default function SignUp() {
 
 		if (!validation) {
 			notifs.create({
-				text: "Please ensure all fields are filled",
+				text: "Please fill all fields",
 				desirability: false,
 			});
 		}
@@ -49,7 +49,7 @@ export default function SignUp() {
 	}
 
 	async function submit() {
-		const response = await apiFetch("POST", "/orgs", {agent, org: {...org, color: org.color.slice(1)}});
+		const response = await apiFetch("POST", "/orgs", {agent, org: {...org, color: org.color}});
 
 		if (response.error?.message) {
 			notifs.create({
