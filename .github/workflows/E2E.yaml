@@ -22,7 +22,7 @@ jobs:
       - name: Launch tests
         run: |
           echo "Waiting for project setup..."
-          while ! curl --max-time 20 -s http://localhost:80; do
+          while ! curl --max-time 20 -s http://localhost:80 | grep -q "Dialplan"; do
             echo "Attempted connecting to server"
             sleep 3
           done
