@@ -22,7 +22,7 @@ jobs:
       - name: Launch tests
         run: |
           echo "Waiting for project setup..."
-          while ! curl -s http://localhost > /dev/null; do
+          while ! curl --max-time 20 -s http://localhost:80 > /dev/null; do
             sleep 2
           done
           echo "Project is ready. Launching tests..."
