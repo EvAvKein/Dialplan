@@ -2,7 +2,7 @@ import {readFileSync} from "fs";
 import pg from "pg"; // can't destructure because it's commonjs
 import pgp from "pg-promise";
 
-const maxConnectionAttempts = 10;
+const maxConnectionAttempts = process.env.CI ? 25 : 5;
 const pgConfig = {
 	host: "postgres",
 	database: process.env.POSTGRES_USER,
