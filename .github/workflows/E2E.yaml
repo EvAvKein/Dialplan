@@ -20,7 +20,13 @@ jobs:
         run: docker-compose up --env-file ./ci.env --detach
 
       - name: Launch tests
-        run: docker-compose -f compose.test.yaml --env-file ./ci.env up --exit-code-from playwright
+        run: |
+          echo "Waiting for project setup..."
+          while ! curl -s http://localhost > /dev/null; do
+            sleep 2
+          done
+          echo "Project is ready. Launching tests..."
+          docker-compose -f compose.test.yaml --env-file ./ci.env up --exit-code-from playwright
 
       - uses: actions/upload-artifact@v3
         if: failure()
