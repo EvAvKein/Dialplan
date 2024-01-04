@@ -25,6 +25,7 @@ jobs:
           ATTEMPT=1
           CONNECTED=false
           while ! $CONNECTED; do
+            echo $(curl --max-time 20 -s http://localhost:80 | grep -q "Dialplan") # temporary, debugging
             CONNECTED=$(curl --max-time 20 -s http://localhost:80 | grep -q "Dialplan" && echo true || echo false)
             echo "Server connection attempt $ATTEMPT"
             ATTEMPT=$(($ATTEMPT+1))
