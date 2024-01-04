@@ -22,11 +22,15 @@ jobs:
       - name: Launch tests
         run: |
           echo "Waiting for project setup..."
-          while ! curl --max-time 20 -s http://localhost:80 | grep -q "Dialplan"; do
-            echo "Attempted connecting to server"
+          ATTEMPT=1
+          CONNECTED=false
+          while ! $CONNECTED; do
+            CONNECTED=$(curl --max-time 20 -s http://localhost:80 | grep -q "Dialplan" && echo true || echo false)
+            echo "Server connection attempt $ATTEMPT"
+            ATTEMPT=$(($ATTEMPT+1))
             sleep 3
           done
-          echo "Project is ready. Launching tests..."
+          echo "Project server is ready!"
           docker-compose -f compose.test.yaml --env-file ./ci.env up --exit-code-from playwright
 
       - uses: actions/upload-artifact@v3
