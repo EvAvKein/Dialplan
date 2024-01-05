@@ -9,7 +9,7 @@ import {endpoints_orgs} from "./endpoints/orgs.js";
 import {endpoints_agents} from "./endpoints/agents.js";
 import {endpoints_sessions} from "./endpoints/sessions.js";
 
-dotenv.config(); // somehow unnecessary on my local machine, but needed in CI
+dotenv.config({path: "../../../../.env"}); // somehow unnecessary on my local machine, but needed in CI
 
 const app = express();
 app.use(express.static("../frontend/dist"));
