@@ -1,6 +1,8 @@
 import {readFileSync} from "fs";
+import dotenv from "dotenv";
 import pg from "pg"; // can't destructure because it's commonjs
 import pgp from "pg-promise";
+dotenv.config({path: "/backend/.env"}); // somehow unnecessary on my local machine, but needed in CI
 
 console.log(readFileSync("/backend/.env", "utf-8"));
 console.log(process.env);
