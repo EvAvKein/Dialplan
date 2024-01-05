@@ -1,4 +1,5 @@
 import path from "node:path";
+import dotenv from "dotenv";
 import express from "express";
 import helmetSecurity from "helmet";
 import cookieParser from "cookie-parser";
@@ -7,6 +8,8 @@ import {postgres, postgresP} from "./postgres.js";
 import {endpoints_orgs} from "./endpoints/orgs.js";
 import {endpoints_agents} from "./endpoints/agents.js";
 import {endpoints_sessions} from "./endpoints/sessions.js";
+
+dotenv.config(); // somehow unnecessary on my local machine, but needed in CI
 
 const app = express();
 app.use(express.static("../frontend/dist"));
