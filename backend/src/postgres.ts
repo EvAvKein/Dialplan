@@ -1,13 +1,8 @@
 import {readFileSync} from "fs";
-import dotenv from "dotenv";
 import pg from "pg"; // can't destructure because it's commonjs
 import pgp from "pg-promise";
-dotenv.config({path: "/backend/.env"}); // somehow unnecessary on my local machine, but needed in CI
 
-console.log(readFileSync("/backend/.env", "utf-8"));
-console.log(process.env);
-
-const maxConnectionAttempts = process.env.CI ? 25 : 5;
+const maxConnectionAttempts = 3;
 const pgConfig = {
 	host: "postgres",
 	database: process.env.POSTGRES_USER,
@@ -18,7 +13,6 @@ const pgConfig = {
 const postgres = new pg.Pool(pgConfig);
 for (let attempt = 1; attempt <= maxConnectionAttempts; attempt++) {
 	// very first setup from the postgres docker image takes a bit. without these retries, the non-dev version ends up with a borked db connection & setup
-	// TODO: improve readability
 	try {
 		await postgres.connect();
 		console.log(`Connected to postgres (${attempt}/${maxConnectionAttempts} attempts)`);

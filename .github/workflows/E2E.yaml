@@ -17,22 +17,19 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Launch project
-        run: docker-compose up --force-recreate # --detach
+        run: docker-compose up --detach
 
       - name: Launch tests
         run: |
-          echo "Waiting for project setup..."
           ATTEMPT=1
           CONNECTED=false
           while ! $CONNECTED; do
-            echo $(curl --max-time 20 -s http://localhost:80) # temporary, debugging
             CONNECTED=$(curl --max-time 20 -s http://localhost:80 | grep -q "Dialplan" && echo true || echo false)
-            echo "Server connection attempt $ATTEMPT"
             ATTEMPT=$(($ATTEMPT+1))
-            sleep 3
+            ! $CONNECTED && echo "Failed connection attempt $ATTEMPT" && sleep 3
           done
-          echo "Project server is ready!"
-          docker-compose -f compose.test.yaml --env-file ./ci.env up --exit-code-from playwright
+          echo "Project server is ready, launching tests..."
+          docker-compose -f compose.test.yaml --env-file ./testing/ci.env up --exit-code-from playwright
 
       - uses: actions/upload-artifact@v3
         if: failure()
