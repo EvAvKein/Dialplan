@@ -12,6 +12,8 @@ services:
 
   postgres:
     image: postgres:16
+    env_file:
+      - ./backend/.env # change contents before deployment
     networks:
       - serverToDb
     restart: unless-stopped
