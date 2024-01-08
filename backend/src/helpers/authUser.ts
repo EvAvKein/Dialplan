@@ -1,7 +1,7 @@
-import {Request} from "express";
-import {cookies} from "../../../shared/objects/cookies.js";
+import {type Request} from "express";
+import {type cookies} from "../../../shared/objects/cookies.js";
+import {type Agent} from "../../objects/org.js";
 import {postgres} from "../postgres.js";
-import {Agent} from "../../objects/org.js";
 
 export async function authAgent(request: Request) {
 	const cookies: cookies = request.cookies;
