@@ -1,0 +1,35 @@
+#signInWrapper {
+	width: clamp(20rem, 95%, 25rem);
+	margin-inline: auto;
+	padding: 1rem;
+}
+
+#signInWrapper > * + * {
+	margin-top: 0.5rem;
+}
+
+#signInWrapper h2 {
+	font-size: 2.75rem;
+	text-align: center;
+}
+
+#signInWrapper h3 {
+	font-size: 1rem;
+	color: var(--textColor);
+	opacity: 80%;
+	text-align: center;
+}
+
+#signInWrapper #inputsWrapper {
+	font-size: 1.5rem;
+}
+
+#inputsWrapper > * + * {
+	margin-top: 1rem;
+}
+
+#signInWrapper button {
+	display: block;
+	font-size: 1.25em;
+	margin: 0.75rem auto 0;
+}
