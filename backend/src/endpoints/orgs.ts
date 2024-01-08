@@ -57,7 +57,7 @@ export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 	app.get("/api/orgs", async (request, response) => {
 		const agent = await authAgent(request);
 		if (!agent) {
-			response.status(400).json(new FetchResponse(null, {message: "Missing authentication cookies"}));
+			response.status(400).json(new FetchResponse(null, {message: "User authentication failed"}));
 			return;
 		}
 
