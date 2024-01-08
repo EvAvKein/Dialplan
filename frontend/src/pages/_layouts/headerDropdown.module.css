@@ -5,6 +5,9 @@
 .expanded .dropdown {
 	border: 0.1rem solid var(--midColor);
 }
+.expanded .dropdown button {
+	border-bottom: 0.1rem solid var(--midColor);
+}
 
 .dropdown {
 	position: absolute;
