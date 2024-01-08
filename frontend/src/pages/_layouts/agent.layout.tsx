@@ -21,6 +21,15 @@ export default function AgentLayout() {
 			});
 	}, []);
 
+	async function logout() {
+		const response = await apiFetch("DELETE", "/sessions");
+		if (response.error) {
+			notifs.create({text: "Error while logging out", desirability: false, manualDismiss: true});
+			return;
+		}
+		navigate("/signIn");
+	}
+
 	return (
 		<>
 			<nav id={styles.nav}>
@@ -31,9 +40,9 @@ export default function AgentLayout() {
 					/ {org?.name || "[Loading]"}
 				</div>
 
-				<Link to="/signUp" className={coreStyles.contentButton}>
-					Sign Up
-				</Link>
+				<button onClick={logout} className={coreStyles.contentButton}>
+					Log Out
+				</button>
 			</nav>
 
 			<main>
