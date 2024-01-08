@@ -1,4 +1,5 @@
 import {Link, Outlet} from "react-router-dom";
+import HeaderDropdown from "./headerDropdown";
 import coreStyles from "../../core.module.css";
 import styles from "./visitor.module.css";
 
@@ -12,9 +13,14 @@ export default function VisitorLayout() {
 					</Link>
 				</h1>
 				<nav className={styles.nav}>
-					<Link to="/signUp" className={coreStyles.contentButton}>
-						Sign Up
-					</Link>
+					<HeaderDropdown buttonText="Account">
+						<Link to="/signIn" className={coreStyles.contentButton}>
+							Sign In
+						</Link>
+						<Link to="/signUp" className={coreStyles.contentButton}>
+							Sign Up
+						</Link>
+					</HeaderDropdown>
 				</nav>
 			</header>
 
