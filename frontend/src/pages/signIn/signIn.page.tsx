@@ -3,6 +3,7 @@ import {useState} from "react";
 import {LabelledInput} from "../../components/inputs";
 import {useNotifStore} from "../../stores/notifs";
 import {useNavigate} from "react-router-dom";
+import {tempSignInData} from "../../../../shared/objects/org";
 import coreStyles from "../../core.module.css";
 import styles from "./signIn.module.css";
 
@@ -10,9 +11,9 @@ export default function SignIn() {
 	const notifs = useNotifStore();
 	const navigate = useNavigate();
 
-	const [formData, setFormData] = useState({
+	const [formData, setFormData] = useState<tempSignInData>({
 		agentId: "",
-		sessionId: "",
+		orgId: "",
 	});
 
 	async function submit() {
@@ -34,7 +35,7 @@ export default function SignIn() {
 		<section id={styles.signInWrapper}>
 			<h2>Sign In</h2>
 			<h3>(Temporary, will change to a proper procedure)</h3>
-			<form>
+			<form onSubmit={(e) => e.preventDefault()}>
 				<div id={styles.inputsWrapper}>
 					<LabelledInput
 						id={"agentIdInput"}
@@ -46,13 +47,13 @@ export default function SignIn() {
 						handler={(val) => setFormData({...formData, agentId: val})}
 					/>
 					<LabelledInput
-						id={"sessionIdInput"}
-						testId={"sessionIdInput"}
-						label={"SessionId"}
+						id={"orgIdInput"}
+						testId={"orgIdInput"}
+						label={"OrgId"}
 						collapsedLabel={true}
-						defaultValue={formData.sessionId}
+						defaultValue={formData.orgId}
 						required={true}
-						handler={(val) => setFormData({...formData, sessionId: val})}
+						handler={(val) => setFormData({...formData, orgId: val})}
 					/>
 				</div>
 				<button onClick={submit} className={coreStyles.backgroundButton}>
