@@ -55,3 +55,9 @@ export interface OrgAgentCreationDuo {
 	org: OrgCreationRequest;
 	agent: AgentCreationRequest;
 }
+
+export interface tempSignInData {
+	// will be replaced with a proper sign-in process (currently prioritizing core features for product presentation's sake)
+	agentId: Agent["id"];
+	orgId: Org["id"];
+}

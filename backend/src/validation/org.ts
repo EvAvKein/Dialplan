@@ -34,3 +34,8 @@ export const OrgAgentCreationDuo = z.object({
 	org: OrgCreationRequest,
 	agent: AgentCreationRequest,
 }) satisfies ZodSchema<classes.OrgAgentCreationDuo>;
+
+export const tempSignInData = z.object({
+	agentId: schemas.id,
+	orgId: schemas.id,
+}) satisfies ZodSchema<classes.tempSignInData>;
