@@ -19,7 +19,7 @@ export async function signUp(request: Request, creationData?: partialCreationDuo
 				name: creationData?.agent?.name ?? randomAlphanumString(15),
 				department: creationData?.agent?.department ?? randomAlphanumString(20),
 				countryCode: creationData?.agent?.countryCode ?? "358",
-				internals: {permissions: {}},
+				internals: creationData?.agent?.internals ?? {permissions: {}},
 			},
 		} satisfies OrgAgentCreationDuo,
 	});
