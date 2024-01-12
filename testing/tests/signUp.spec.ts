@@ -1,7 +1,7 @@
-import {Page, expect, test} from "@playwright/test";
-import {type OrgAgentCreationDuo} from "../../shared/objects/org";
-import {orgData, agentData} from "../helpers/testData";
 import {type FetchResponse} from "../../shared/objects/api";
+import {expect, test, type Page} from "@playwright/test";
+import {orgData, agentData} from "../helpers/testData";
+import {signUp} from "../helpers/requestsByApi";
 
 test.describe("Sign Up", async () => {
 	test.describe("API", async () => {
@@ -9,16 +9,14 @@ test.describe("Sign Up", async () => {
 			test(`Invalid sign-up (data i-${i})`, async ({request, page}) => {
 				await page.goto("/");
 
-				const invalidData: OrgAgentCreationDuo = {
+				const response = await signUp(request, {
 					org: {name: orgData.name.invalid[i], color: orgData.color.invalid[i], timezone: orgData.timezone.invalid[i]},
 					agent: {
 						name: agentData.name.invalid[i],
 						department: agentData.department.invalid[i],
 						countryCode: agentData.countryCode.invalid[i],
-						internals: {permissions: {}},
 					},
-				};
-				const response = await request.post("/api/orgs", {data: invalidData});
+				});
 
 				expect(response.ok()).toBeFalsy();
 				expect(response.headers()["set-cookie"]).toBeUndefined();
@@ -29,19 +27,17 @@ test.describe("Sign Up", async () => {
 			test(`Valid sign-up (data i-${i})`, async ({request, page}) => {
 				await page.goto("/");
 
-				const creationData: OrgAgentCreationDuo = {
+				const response = await signUp(request, {
 					org: {name: orgData.name.valid[1], color: orgData.color.valid[1], timezone: orgData.timezone.valid[1]},
 					agent: {
 						name: agentData.name.valid[1],
 						department: agentData.department.valid[1],
 						countryCode: agentData.countryCode.valid[1],
-						internals: {permissions: {}},
 					},
-				};
-				const response1 = await request.post("/api/orgs", {data: creationData});
+				});
 
-				expect(response1.ok()).toBeTruthy();
-				expect(response1.headers()["set-cookie"]).toBeDefined();
+				expect(response.ok()).toBeTruthy();
+				expect(response.headers()["set-cookie"]).toBeDefined();
 
 				for (const response of [await request.get("/api/agents"), await request.get("/api/orgs")]) {
 					expect(response.ok()).toBeTruthy();
