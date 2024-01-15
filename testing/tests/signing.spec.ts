@@ -6,10 +6,11 @@ import {signUp} from "../helpers/requestsByApi";
 test.describe("Sign Up", async () => {
 	test.describe("API", async () => {
 		for (let i = 0; i < 4; i++) {
-			test(`Invalid sign-up (data i-${i})`, async ({request, page}) => {
+			test(`Invalid sign-up (data i-${i})`, async ({page}) => {
+				const context = page.context();
 				await page.goto("/");
 
-				const response = await signUp(request, {
+				const response = await signUp(context.request, {
 					org: {name: orgData.name.invalid[i], color: orgData.color.invalid[i], timezone: orgData.timezone.invalid[i]},
 					agent: {
 						name: agentData.name.invalid[i],
@@ -19,15 +20,16 @@ test.describe("Sign Up", async () => {
 				});
 
 				expect(response.ok()).toBeFalsy();
-				expect(response.headers()["set-cookie"]).toBeUndefined();
+				expect((await context.cookies()).length).toBeFalsy();
 				const jsonContent: FetchResponse = await response.json();
 				expect((jsonContent.error?.message.match(/Invalid/g) ?? []).length).toBe(6);
 			});
 
-			test(`Valid sign-up (data i-${i})`, async ({request, page}) => {
+			test(`Valid sign-up (data i-${i})`, async ({page}) => {
+				const context = page.context();
 				await page.goto("/");
 
-				const response = await signUp(request, {
+				const response = await signUp(context.request, {
 					org: {name: orgData.name.valid[1], color: orgData.color.valid[1], timezone: orgData.timezone.valid[1]},
 					agent: {
 						name: agentData.name.valid[1],
@@ -37,9 +39,10 @@ test.describe("Sign Up", async () => {
 				});
 
 				expect(response.ok()).toBeTruthy();
-				expect(response.headers()["set-cookie"]).toBeDefined();
+				expect((await context.cookies()).length).toBeTruthy();
+				await page.reload();
 
-				for (const response of [await request.get("/api/agents"), await request.get("/api/orgs")]) {
+				for (const response of [await context.request.get("/api/agents"), await context.request.get("/api/orgs")]) {
 					expect(response.ok()).toBeTruthy();
 					const jsonContent: FetchResponse = await response.json();
 					expect(jsonContent.error).toBeFalsy();
@@ -131,6 +134,7 @@ test.describe("Sign Up", async () => {
 				const {org, agent} = pageData;
 				const notifExpiryExpects: (() => Promise<unknown>)[] = [];
 
+				const context = page.context();
 				await page.goto("/signUp");
 
 				await validateCurrentPage(page, "Organization Data", true);
@@ -220,10 +224,53 @@ test.describe("Sign Up", async () => {
 				await page.getByTestId(pageButtons.submit).click();
 				const response = await request;
 				expect(response.ok()).toBeTruthy();
-				const cookies = (await response.allHeaders())["set-cookie"];
-				expect(cookies).toBeDefined(); // could be more specific, unsure what particular aspects are important without coupling to implementation
+				expect((await context.cookies()).length).toBeTruthy();
 				await expect(page).toHaveURL(/.*dashboard/);
 			});
 		}
 	});
 });
+
+test.describe("Sign Out", async () => {
+	test("API", async ({page}) => {
+		const context = page.context();
+		await page.goto("/");
+
+		await signUp(context.request);
+		const cookies = await context.cookies();
+		expect(cookies.length).toBeTruthy();
+
+		await context.request.delete("/api/sessions");
+		expect((await context.cookies()).length).toBeFalsy();
+		await context.addCookies(cookies);
+
+		for (const response of [await context.request.get("/api/agents"), await context.request.get("/api/orgs")]) {
+			expect(response.ok()).toBeFalsy();
+			const jsonContent: FetchResponse = await response.json();
+			expect(jsonContent.error?.message.includes("auth")).toBeTruthy();
+		}
+	});
+
+	test("UI", async ({page}) => {
+		const context = page.context();
+		await page.goto("/");
+
+		const response = await signUp(context.request);
+		expect(response.ok()).toBeTruthy();
+		const cookies = await context.cookies();
+		expect(cookies.length).toBe(2);
+
+		await page.goto("/dashboard");
+		await page.locator("button", {hasText: "Log Out"}).click();
+		await page.waitForURL("/signIn");
+
+		await page.goto("/dashboard");
+		await page.waitForURL("/signIn");
+
+		await context.addCookies(cookies);
+		await page.goto("/dashboard");
+		await page.waitForURL("/signIn");
+	});
+});
+
+// test.describe("Sign In", async () => {}); // pending proper sign-in process
