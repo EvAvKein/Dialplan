@@ -1,0 +1,19 @@
+.modalBackdrop {
+	/* because ::backdrop didn't work, for whatever reason */
+	z-index: 950;
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: #0008;
+	backdrop-filter: blur(1.5rem);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: auto;
+}
+
+.modal {
+	border: none;
+}
