@@ -7,6 +7,7 @@ import {postgres, postgresP} from "./postgres.js";
 import {endpoints_orgs} from "./endpoints/orgs.js";
 import {endpoints_agents} from "./endpoints/agents.js";
 import {endpoints_sessions} from "./endpoints/sessions.js";
+import {endpoints_invites} from "./endpoints/invites.js";
 
 const app = express();
 app.use(express.static("../frontend/dist"));
@@ -17,6 +18,7 @@ app.use(helmetSecurity());
 endpoints_orgs(app, postgres, postgresP);
 endpoints_agents(app);
 endpoints_sessions(app, postgres);
+endpoints_invites(app, postgres);
 
 app.get("*", function (request, response) {
 	response.sendFile(path.join(process.cwd() + "/../frontend/dist/index.html"));
