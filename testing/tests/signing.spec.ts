@@ -208,26 +208,28 @@ test.describe("Sign Up", async () => {
 					agentData.timezone.valid[i],
 				);
 
-				await page.getByTestId(pageData.agent.inputs.name).fill("");
-				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
-				await page.getByTestId(pageData.agent.inputs.department).fill("");
-				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
-				await page.getByTestId(pageData.agent.inputs.countryCode).fill("");
-				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
-				await page.getByTestId(pageData.agent.inputs.timezone).fill("");
-				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
-
-				await page.getByTestId(pageData.agent.inputs.name).fill(agentData.name.valid[i]);
-				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
-				await page.getByTestId(pageData.agent.inputs.department).fill(agentData.department.valid[i]);
-				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
-				await page.getByTestId(pageData.agent.inputs.countryCode).fill(agentData.countryCode.valid[i]);
-				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
-				await page.getByTestId(pageData.agent.inputs.timezone).fill(agentData.timezone.valid[i]);
-
-				for (const expectNotifExpiry of notifExpiryExpects) {
-					await expectNotifExpiry();
+				async function failToSubmit() {
+					await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
 				}
+
+				await page.getByTestId(agent.inputs.name).fill("");
+				await failToSubmit();
+				await page.getByTestId(agent.inputs.department).fill("");
+				await failToSubmit();
+				await page.getByTestId(agent.inputs.countryCode).fill("");
+				await failToSubmit();
+				await page.getByTestId(agent.inputs.timezone).fill("");
+				await failToSubmit();
+
+				await page.getByTestId(agent.inputs.name).fill(agentData.name.valid[i]);
+				await failToSubmit();
+				await page.getByTestId(agent.inputs.department).fill(agentData.department.valid[i]);
+				await failToSubmit();
+				await page.getByTestId(agent.inputs.countryCode).fill(agentData.countryCode.valid[i]);
+				await failToSubmit();
+				await page.getByTestId(agent.inputs.timezone).fill(agentData.timezone.valid[i]);
+
+				await Promise.all(notifExpiryExpects);
 				await expect(page.locator('[data-testid="notifNegative"]')).toHaveCount(0);
 
 				const request = page.waitForResponse("/api/orgs");
