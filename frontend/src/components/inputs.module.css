@@ -31,16 +31,17 @@ textarea.input {
 	top: 0em;
 	left: 0.1em;
 	font-size: 1.5em;
-	color: var(--textColor);
+	color: var(--midColor);
 	cursor: text;
 	transition: all 250ms;
 }
 .input:focus + .inputLabel,
 .input:not(:placeholder-shown) + .inputLabel,
 .collapsedLabel {
+	color: var(--textColor);
+	text-decoration: underline var(--midColor);
 	font-size: 0.65em;
 	cursor: default;
-	text-decoration: underline var(--midColor);
 	transition: all 150ms;
 }
 
