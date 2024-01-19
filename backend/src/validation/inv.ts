@@ -13,11 +13,9 @@ const InviteNotes = z.object({
 }) satisfies ZodSchema<classes.InviteNotes>;
 
 export const InviteCreationRequest = z.object({
-	orgId: schemas.id,
-	agentId: schemas.id,
 	recipient: Recipient,
-	callDuration: z.number().int().positive(),
-	expiry: z.string().trim(),
+	callDuration: z.number().int().min(1),
+	expiry: schemas.timestamp,
 	notes: InviteNotes,
 }) satisfies ZodSchema<classes.InviteCreationRequest>;
 

@@ -16,8 +16,6 @@ export interface InviteNotes {
 
 export class InviteCreationRequest {
 	constructor(
-		public orgId: string,
-		public agentId: string,
 		public recipient: CallRecipient,
 		public callDuration: number,
 		public expiry: isoStamp,
@@ -26,16 +24,13 @@ export class InviteCreationRequest {
 }
 export class Invite extends InviteCreationRequest {
 	id: string;
+	orgId: string;
+	agentId: string;
 
-	constructor(creationRequest: InviteCreationRequest) {
-		super(
-			creationRequest.orgId,
-			creationRequest.agentId,
-			creationRequest.recipient,
-			creationRequest.callDuration,
-			creationRequest.expiry,
-			creationRequest.notes,
-		);
+	constructor(creationRequest: InviteCreationRequest, agentId: string, orgId: string) {
+		super(creationRequest.recipient, creationRequest.callDuration, creationRequest.expiry, creationRequest.notes);
+		this.agentId = agentId;
+		this.orgId = orgId;
 		this.id = newId();
 	}
 }
