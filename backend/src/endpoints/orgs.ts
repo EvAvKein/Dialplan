@@ -24,15 +24,15 @@ export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 			.tx(async (statement) => {
 				await statement.none(
 					`INSERT INTO "Org"
-					("id", "name", "color", "timezone")
-					VALUES ($1, $2, $3, $4);`,
-					[org.id, org.name, org.color, org.timezone],
+					("id", "name", "color")
+					VALUES ($1, $2, $3);`,
+					[org.id, org.name, org.color],
 				);
 				await statement.none(
 					`INSERT INTO "Agent"
-					("id", "orgId", "name", "department", "countryCode", "internals")
-					VALUES ($1, $2, $3, $4, $5, $6)`,
-					[agent.id, agent.orgId, agent.name, agent.department, agent.countryCode, agent.internals],
+					("id", "orgId", "name", "department", "countryCode", "timezone", "internals")
+					VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+					[agent.id, agent.orgId, agent.name, agent.department, agent.countryCode, agent.timezone, agent.internals],
 				);
 				await statement.none(
 					`INSERT INTO "AgentSession"

@@ -9,7 +9,6 @@ const OrgCreationRequest = z.object({
 	// not exported as it should never be accepted without being part of a OrgAgentCreationDuo
 	name: z.string().trim().regex(org.name),
 	color: z.string().trim().regex(org.color),
-	timezone: z.string().trim().regex(org.timezone),
 	// availability: schemas.availability,
 }) satisfies ZodSchema<classes.OrgCreationRequest>;
 
@@ -27,6 +26,7 @@ export const AgentCreationRequest = z.object({
 	name: z.string().trim().regex(agent.name),
 	department: z.string().trim().regex(agent.department),
 	countryCode: schemas.countryCode,
+	timezone: z.string().trim().regex(agent.timezone),
 	internals: AgentInternals,
 }) satisfies ZodSchema<classes.AgentCreationRequest>;
 

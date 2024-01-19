@@ -15,28 +15,31 @@ export default function SignUp() {
 
 	const [page, setPage] = useState<number>(1);
 	const pageLabelledInputValidators: (() => boolean)[] = [
-		() => orgRegex.name.test(org.name) && orgRegex.color.test(org.color) && orgRegex.timezone.test(org.timezone),
+		() => orgRegex.name.test(org.name) && orgRegex.color.test(org.color),
 		() =>
 			agentRegex.name.test(agent.name) &&
 			agentRegex.department.test(agent.department) &&
-			agentRegex.countryCode.test(agent.countryCode),
+			agentRegex.countryCode.test(agent.countryCode) &&
+			agentRegex.timezone.test(agent.timezone),
 	];
 	const pageCount = pageLabelledInputValidators.length;
 
 	const [org, setOrg] = useState<OrgCreationRequest>({
 		name: "",
 		color: getComputedStyle(document.body).getPropertyValue("--backgroundColor").slice(1),
-		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 	});
 	const [agent, setAgent] = useState<AgentCreationRequest>({
 		name: "",
 		department: "",
 		countryCode: "",
+		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		internals: {permissions: {}},
 	});
 
 	function validatePageLabelledInputs() {
 		const validation = pageLabelledInputValidators[page - 1]();
+
+		console.log(validation);
 
 		if (!validation) {
 			notifs.create({
@@ -92,26 +95,6 @@ export default function SignUp() {
 								required={true}
 								handler={(val) => setOrg({...org, color: val.slice(1)})}
 							/>
-							<SearchableInput
-								id={"orgTimezoneInput"}
-								testId={"orgTimezoneInput"}
-								defaultValue={org.timezone}
-								collapsedLabel={true}
-								type={"search"}
-								labelled={true}
-								label={"Timezone"}
-								pattern={orgRegex.timezone} // has hilariously large HTML output, but i think it's worth it
-								required={true}
-								handler={(zone) => {
-									try {
-										new Date().toLocaleString([], {timeZone: zone});
-									} catch (err) {
-										return;
-									}
-									setOrg({...org, timezone: zone});
-								}}
-								options={timezones}
-							/>
 						</section>
 					)}
 					{page === 2 && (
@@ -147,6 +130,19 @@ export default function SignUp() {
 								pattern={agentRegex.countryCode}
 								required={true}
 								handler={(val) => setAgent({...agent, countryCode: val})}
+							/>
+							<SearchableInput
+								id={"agentTimezoneInput"}
+								testId={"agentTimezoneInput"}
+								defaultValue={agent.timezone}
+								collapsedLabel={true}
+								type={"search"}
+								labelled={true}
+								label={"Timezone"}
+								pattern={agentRegex.timezone} // has hilariously large HTML output, but i think it's worth it
+								required={true}
+								handler={(zone) => setAgent({...agent, timezone: zone})}
+								options={timezones}
 							/>
 						</section>
 					)}

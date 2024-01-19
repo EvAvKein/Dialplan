@@ -15,6 +15,7 @@ export class AgentCreationRequest {
 		public name: string,
 		public department: string,
 		public countryCode: string,
+		public timezone: string,
 		public internals: AgentInternals,
 	) {}
 }
@@ -23,7 +24,13 @@ export class Agent extends AgentCreationRequest {
 	id: string;
 
 	constructor(orgId: Agent["orgId"], creationRequest: AgentCreationRequest) {
-		super(creationRequest.name, creationRequest.department, creationRequest.countryCode, creationRequest.internals);
+		super(
+			creationRequest.name,
+			creationRequest.department,
+			creationRequest.countryCode,
+			creationRequest.timezone,
+			creationRequest.internals,
+		);
 		this.orgId = orgId;
 		this.id = newId();
 	}
@@ -39,14 +46,14 @@ export class OrgCreationRequest {
 	constructor(
 		public name: string,
 		public color: string,
-		public timezone: string, // public availability: availability,
+		// public availability: availability,
 	) {}
 }
 export class Org extends OrgCreationRequest {
 	id: string;
 
 	constructor(creationRequest: OrgCreationRequest) {
-		super(creationRequest.name, creationRequest.color, creationRequest.timezone /* creationRequest.availability*/);
+		super(creationRequest.name, creationRequest.color /* creationRequest.availability*/);
 		this.id = newId();
 	}
 }

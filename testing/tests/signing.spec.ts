@@ -11,11 +11,12 @@ test.describe("Sign Up", async () => {
 				await page.goto("/");
 
 				const response = await signUp(context.request, {
-					org: {name: orgData.name.invalid[i], color: orgData.color.invalid[i], timezone: orgData.timezone.invalid[i]},
+					org: {name: orgData.name.invalid[i], color: orgData.color.invalid[i]},
 					agent: {
 						name: agentData.name.invalid[i],
 						department: agentData.department.invalid[i],
 						countryCode: agentData.countryCode.invalid[i],
+						timezone: agentData.timezone.invalid[i],
 					},
 				});
 
@@ -30,11 +31,12 @@ test.describe("Sign Up", async () => {
 				await page.goto("/");
 
 				const response = await signUp(context.request, {
-					org: {name: orgData.name.valid[1], color: orgData.color.valid[1], timezone: orgData.timezone.valid[1]},
+					org: {name: orgData.name.valid[1], color: orgData.color.valid[1]},
 					agent: {
 						name: agentData.name.valid[1],
 						department: agentData.department.valid[1],
 						countryCode: agentData.countryCode.valid[1],
+						timezone: agentData.timezone.valid[1],
 					},
 				});
 
@@ -57,7 +59,6 @@ test.describe("Sign Up", async () => {
 			inputs: {
 				name: "orgNameInput",
 				color: "orgColorInput",
-				timezone: "orgTimezoneInput",
 			},
 		},
 		agent: {
@@ -66,6 +67,7 @@ test.describe("Sign Up", async () => {
 				name: "agentNameInput",
 				department: "agentDepartmentInput",
 				countryCode: "agentCountryCodeInput",
+				timezone: "agentTimezoneInput",
 			},
 		},
 	} as const;
@@ -154,19 +156,10 @@ test.describe("Sign Up", async () => {
 				// skipping testing the color input because it's not possible to input invalid values (and attempts to do so with JS throw an error). TODO: look into this with various OSs
 				await page.getByTestId(org.inputs.color).fill("#" + orgData.color.valid[i].toLowerCase());
 
-				await testInputInvalidAndValid(
-					page,
-					org.inputs.timezone,
-					orgData.timezone.invalid[i],
-					async () => {},
-					orgData.timezone.valid[i],
-				);
-
 				await validateButtonClick(page, "next", true, "Your Data", notifExpiryExpects);
 				await validateButtonClick(page, "prev", true, "Organization Data", notifExpiryExpects);
 				await expect(page.getByTestId(org.inputs.name)).toHaveValue(orgData.name.valid[i]);
 				await expect(page.getByTestId(org.inputs.color)).toHaveValue("#" + orgData.color.valid[i].toLowerCase());
-				await expect(page.getByTestId(org.inputs.timezone)).toHaveValue(orgData.timezone.valid[i]);
 				await validateButtonClick(page, "next", true, "Your Data", notifExpiryExpects);
 
 				await validateButtonClick(page, "prev", true, "Organization Data", notifExpiryExpects);
@@ -207,13 +200,30 @@ test.describe("Sign Up", async () => {
 					  )
 					: await page.locator(`[data-testid="${agent.inputs.countryCode}"]`).fill(agentData.countryCode.valid[i]);
 
+				await testInputInvalidAndValid(
+					page,
+					agent.inputs.timezone,
+					agentData.timezone.invalid[i],
+					async () => {},
+					agentData.timezone.valid[i],
+				);
+
 				await page.getByTestId(pageData.agent.inputs.name).fill("");
 				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
 				await page.getByTestId(pageData.agent.inputs.department).fill("");
 				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
+				await page.getByTestId(pageData.agent.inputs.countryCode).fill("");
+				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
+				await page.getByTestId(pageData.agent.inputs.timezone).fill("");
+				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
+
 				await page.getByTestId(pageData.agent.inputs.name).fill(agentData.name.valid[i]);
 				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
 				await page.getByTestId(pageData.agent.inputs.department).fill(agentData.department.valid[i]);
+				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
+				await page.getByTestId(pageData.agent.inputs.countryCode).fill(agentData.countryCode.valid[i]);
+				await validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects);
+				await page.getByTestId(pageData.agent.inputs.timezone).fill(agentData.timezone.valid[i]);
 
 				for (const expectNotifExpiry of notifExpiryExpects) {
 					await expectNotifExpiry();

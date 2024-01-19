@@ -24,10 +24,6 @@ export const orgData: validityDataObj<Org, "id"> = {
 		valid: ["123456", "abcdef", "ABCDEF", "1b3D5f"],
 		invalid: ["#123456", "12345", "1234567", "5e6f7g"],
 	},
-	timezone: {
-		valid: ["Europe/Helsinki", "America/Argentina/Rio_Gallegos", "Asia/Hong_Kong", "Africa/Algiers"],
-		invalid: ["Finland/Helsinki", "America/Rio Gallegos", "Asia/HongKong", "africa/algiers"],
-	},
 };
 
 export const agentData: validityDataObj<Agent, "id" | "orgId" | "internals"> = {
@@ -52,5 +48,9 @@ export const agentData: validityDataObj<Agent, "id" | "orgId" | "internals"> = {
 	countryCode: {
 		valid: ["1", "23", "456", "999"],
 		invalid: ["012", "+123", "1234", "1b3"],
+	},
+	timezone: {
+		valid: ["Europe/Helsinki", "America/Argentina/Rio_Gallegos", "Asia/Hong_Kong", "Africa/Algiers"],
+		invalid: ["Finland/Helsinki", "America/Rio Gallegos", "Asia/HongKong", "africa/algiers"],
 	},
 };
