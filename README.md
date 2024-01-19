@@ -7,7 +7,6 @@ Schedule calls via invite links! Currently in very early development
 ## Table of Contents
 
 - [Execution](#execution)
-- [Contributing](#contributing)
 - [Maintainers](#maintainers)
 - [License](#license)
 
