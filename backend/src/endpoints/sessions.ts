@@ -32,7 +32,7 @@ export function endpoints_sessions(app: Express, db: Pool) {
 			)
 			.then(() => {
 				response
-					.status(200)
+					.status(201)
 					.cookie(cookieKeys.agentid, signInData.data.agentId)
 					.cookie(cookieKeys.sessionid, newSessionId)
 					.end();

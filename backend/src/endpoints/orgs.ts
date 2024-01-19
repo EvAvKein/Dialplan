@@ -43,7 +43,7 @@ export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 			})
 			.then(() => {
 				response
-					.status(200)
+					.status(201)
 					.cookie("dialplan_agentid", agent.id, {secure: true})
 					.cookie("dialplan_sessionid", sessionId, {secure: true})
 					.end();
