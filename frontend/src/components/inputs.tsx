@@ -34,6 +34,7 @@ interface inputProps {
 	minLength?: number;
 	maxLength?: number;
 	required?: boolean;
+	autofocus?: boolean;
 }
 
 export function Input({
@@ -48,6 +49,7 @@ export function Input({
 	minLength,
 	maxLength,
 	required,
+	autofocus,
 }: inputProps) {
 	return (
 		<input
@@ -61,6 +63,7 @@ export function Input({
 			minLength={minLength}
 			maxLength={maxLength}
 			required={required}
+			autoFocus={autofocus}
 			placeholder={placeholder}
 			onInput={(event) => handler(event.currentTarget.value)}
 		/>
