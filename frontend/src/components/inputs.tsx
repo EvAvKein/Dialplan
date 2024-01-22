@@ -1,4 +1,4 @@
-import {type HTMLInputTypeAttribute} from "react";
+import {Children, cloneElement, type HTMLInputTypeAttribute} from "react";
 import styles from "./inputs.module.css";
 
 interface textareaProps {
@@ -70,22 +70,40 @@ export function Input({
 	);
 }
 
-interface labelledInputProps extends Omit<inputProps, "placeholder"> {
+interface labelWrapperProps {
 	label: string;
 	collapsedLabel?: true;
 	id: string;
 }
-export function LabelledInput(props: labelledInputProps) {
+export function LabelWrapper<T>(props: T & labelWrapperProps & {children: React.ReactElement}) {
+	const child = Children.only(props.children);
+	const {children, ...otherProps} = props;
+
 	return (
-		<div className={styles.labelledInputWrapper}>
-			<Input {...props} placeholder={" "} />
-			<label
-				className={styles.inputLabel + (props.collapsedLabel ? " " + styles.collapsedLabel : "")}
-				htmlFor={props.id}
-			>
+		<div className={styles.labelWrapper}>
+			{cloneElement(child, {...otherProps})}
+			<label className={styles.label + (props.collapsedLabel ? " " + styles.collapsedLabel : "")} htmlFor={props.id}>
 				{props.label}
 			</label>
 		</div>
+	);
+}
+
+type labelledInputProps = labelWrapperProps & Omit<inputProps, "placeholder">;
+export function LabelledInput(props: labelledInputProps) {
+	return (
+		<LabelWrapper {...props}>
+			<Input {...props} placeholder={" "} />
+		</LabelWrapper>
+	);
+}
+
+type labelledTextareaProps = labelWrapperProps & Omit<textareaProps, "placeholder">;
+export function LabelledTextarea(props: labelledTextareaProps) {
+	return (
+		<LabelWrapper {...props}>
+			<Textarea {...props} placeholder={" "} />
+		</LabelWrapper>
 	);
 }
 

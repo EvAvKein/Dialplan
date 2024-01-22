@@ -12,21 +12,17 @@ textarea.input {
 	outline: none;
 }
 
-.labelledInputWrapper {
-	position: relative;
-}
-
-.labelledInputWrapper > .input {
-	padding-top: 0.65em;
-}
-
 .input[type="color"] {
 	box-sizing: content-box; /* for reasonable sizing inside labelledInput, as it adds padding-top to the input which otherwise squashes the color input */
 	padding-inline: 0;
 	padding-bottom: 0;
 }
 
-.inputLabel {
+.labelWrapper {
+	position: relative;
+}
+
+.label {
 	position: absolute;
 	top: 0em;
 	left: 0.1em;
@@ -35,8 +31,8 @@ textarea.input {
 	cursor: text;
 	transition: all 250ms;
 }
-.input:focus + .inputLabel,
-.input:not(:placeholder-shown) + .inputLabel,
+.labelWrapper:focus-within .label,
+.labelWrapper :first-child:not(:placeholder-shown) + .label,
 .collapsedLabel {
 	color: var(--textColor);
 	text-decoration: underline var(--midColor);
@@ -45,27 +41,31 @@ textarea.input {
 	transition: all 150ms;
 }
 
-.labelledInputWrapper,
+.labelWrapper :first-child {
+	padding-top: 0.65em;
+}
+
+.labelWrapper,
 .input {
 	border-left: 0em solid var(--textColor);
 	transition: all 150ms ease-in-out;
 }
-.labelledInputWrapper:focus-within,
+.labelWrapper:focus-within,
 .input:focus {
 	border-left-width: 0.2em;
 }
-.labelledInputWrapper > .input {
+.labelWrapper > .input {
 	border-left: none;
 }
 
-.labelledInputWrapper:has(> .input:user-invalid),
+.labelWrapper:has(:user-invalid),
 .input:user-invalid {
 	border-color: var(--negativeColor);
 }
-.labelledInputWrapper:not(:focus-within):has(.input:user-invalid) {
+.labelWrapper:not(:focus-within):has(:user-invalid) {
 	outline-offset: 0.1rem;
 }
-.labelledInputWrapper:not(:focus-within):has(.input:user-invalid),
+.labelWrapper:not(:focus-within):has(:user-invalid),
 .input:user-invalid:not(:focus) {
 	outline: 0.15rem solid var(--negativeColor);
 }
