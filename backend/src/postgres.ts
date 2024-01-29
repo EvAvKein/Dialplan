@@ -15,7 +15,7 @@ for (let attempt = 1; attempt <= maxConnectionAttempts; attempt++) {
 	// very first setup from the postgres docker image takes a bit. without these retries, the non-dev version ends up with a borked db connection & setup
 	try {
 		await postgres.connect();
-		console.log(`Connected to postgres (${attempt}/${maxConnectionAttempts} attempts)`);
+		console.log(`Connected to postgres ${attempt > 1 ? `(${attempt}/${maxConnectionAttempts} attempts)` : ""}`);
 		break;
 	} catch {
 		await new Promise((resolve) => setTimeout(resolve, 3000));
