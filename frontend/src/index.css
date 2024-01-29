@@ -18,6 +18,11 @@
 		--accentColor: var(--blue);
 		--backgroundColor: var(--black);
 	}
+
+	input::-webkit-inner-spin-button,
+	input::-webkit-calendar-picker-indicator {
+		filter: invert(1);
+	}
 }
 
 body {
