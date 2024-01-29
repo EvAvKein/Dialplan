@@ -39,7 +39,7 @@ export default function SignIn() {
 				<div id={styles.inputsWrapper}>
 					<LabelledInput
 						id={"agentIdInput"}
-						testId={"agentIdInput"}
+						data-testid={"agentIdInput"}
 						label={"AgentId"}
 						collapsedLabel={true}
 						defaultValue={formData.agentId}
@@ -48,7 +48,7 @@ export default function SignIn() {
 					/>
 					<LabelledInput
 						id={"orgIdInput"}
-						testId={"orgIdInput"}
+						data-testId={"orgIdInput"}
 						label={"OrgId"}
 						collapsedLabel={true}
 						defaultValue={formData.orgId}

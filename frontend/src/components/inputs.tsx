@@ -1,71 +1,28 @@
-import {Children, cloneElement, type HTMLInputTypeAttribute} from "react";
+import {Children, cloneElement, type TextareaHTMLAttributes, type InputHTMLAttributes} from "react";
 import styles from "./inputs.module.css";
 
-interface textareaProps {
+interface textareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	handler: (text: string) => void;
-	placeholder: string;
-	defaultValue?: string;
-	id?: string;
-	testId?: string;
-	pattern?: RegExp;
 }
-export function Textarea({handler, defaultValue, placeholder, id, testId}: textareaProps) {
+export function Textarea(props: textareaProps) {
 	return (
 		<textarea
-			className={styles.input}
-			id={id}
-			data-testid={testId}
-			defaultValue={defaultValue}
-			placeholder={placeholder}
-			onInput={(event) => handler(event.currentTarget.value)}
+			onInput={(event) => props.handler(event.currentTarget.value)}
+			{...props} // intentionally after onInput, allows overriding it and getting access to event arg
+			className={styles.input + " " + (props.className ?? "")}
 		/>
 	);
 }
 
-interface inputProps {
+interface inputProps extends InputHTMLAttributes<HTMLInputElement> {
 	handler: (text: string) => void;
-	placeholder: string;
-	type?: HTMLInputTypeAttribute;
-	defaultValue?: string;
-	id?: string;
-	testId?: string;
-	pattern?: RegExp;
-	list?: string;
-	minLength?: number;
-	maxLength?: number;
-	required?: boolean;
-	autofocus?: boolean;
 }
-
-export function Input({
-	handler,
-	type,
-	defaultValue,
-	placeholder,
-	id,
-	testId,
-	list,
-	pattern,
-	minLength,
-	maxLength,
-	required,
-	autofocus,
-}: inputProps) {
+export function Input(props: inputProps) {
 	return (
 		<input
-			className={styles.input}
-			type={type}
-			defaultValue={defaultValue}
-			id={id}
-			data-testid={testId}
-			list={list}
-			pattern={pattern?.source}
-			minLength={minLength}
-			maxLength={maxLength}
-			required={required}
-			autoFocus={autofocus}
-			placeholder={placeholder}
-			onInput={(event) => handler(event.currentTarget.value)}
+			onInput={(event) => props.handler(event.currentTarget.value)}
+			{...props} // intentionally after onInput, allows overriding it and getting access to event arg
+			className={styles.input + " " + (props.className ?? "")}
 		/>
 	);
 }
@@ -77,13 +34,13 @@ interface labelWrapperProps {
 }
 export function LabelWrapper<T>(props: T & labelWrapperProps & {children: React.ReactElement}) {
 	const child = Children.only(props.children);
-	const {children, ...otherProps} = props;
+	const {children, label, collapsedLabel, ...otherProps} = props;
 
 	return (
 		<div className={styles.labelWrapper}>
 			{cloneElement(child, {...otherProps})}
-			<label className={styles.label + (props.collapsedLabel ? " " + styles.collapsedLabel : "")} htmlFor={props.id}>
-				{props.label}
+			<label className={styles.label + (collapsedLabel ? " " + styles.collapsedLabel : "")} htmlFor={props.id}>
+				{label}
 			</label>
 		</div>
 	);

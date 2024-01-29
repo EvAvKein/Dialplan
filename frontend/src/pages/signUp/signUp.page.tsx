@@ -77,20 +77,20 @@ export default function SignUp() {
 							<h4></h4>
 							<LabelledInput
 								id={"orgNameInput"}
-								testId={"orgNameInput"}
+								data-testId={"orgNameInput"}
 								label={"Name"}
 								collapsedLabel={true}
 								defaultValue={org.name}
-								pattern={orgRegex.name}
+								pattern={orgRegex.name.source}
 								required={true}
 								handler={(val) => setOrg({...org, name: val})}
 							/>
 							<LabelledInput
 								id={"orgColorInput"}
-								testId={"orgColorInput"}
+								data-testId={"orgColorInput"}
 								type={"color"}
 								defaultValue={"#" + org.color}
-								pattern={orgRegex.color}
+								pattern={orgRegex.color.source}
 								label={"Color"}
 								required={true}
 								handler={(val) => setOrg({...org, color: val.slice(1)})}
@@ -102,44 +102,44 @@ export default function SignUp() {
 							<h3>Your Data</h3>
 							<LabelledInput
 								id={"agentNameInput"}
-								testId={"agentNameInput"}
+								data-testId={"agentNameInput"}
 								label={"Name"}
 								collapsedLabel={true}
 								defaultValue={agent.name}
-								pattern={agentRegex.name}
+								pattern={agentRegex.name.source}
 								required={true}
 								handler={(val) => setAgent({...agent, name: val})}
 							/>
 							<LabelledInput
 								id={"agentDepartmentInput"}
-								testId={"agentDepartmentInput"}
+								data-testId={"agentDepartmentInput"}
 								label={"Department"}
 								collapsedLabel={true}
 								defaultValue={agent.department}
-								pattern={agentRegex.department}
+								pattern={agentRegex.department.source}
 								required={true}
 								handler={(val) => setAgent({...agent, department: val})}
 							/>
 							<LabelledInput
 								id={"agentCountryCodeInput"}
-								testId={"agentCountryCodeInput"}
+								data-testId={"agentCountryCodeInput"}
 								label={"Country Code (Phone)"}
 								type={"number"}
 								collapsedLabel={true}
 								defaultValue={agent.countryCode}
-								pattern={agentRegex.countryCode}
+								pattern={agentRegex.countryCode.source}
 								required={true}
 								handler={(val) => setAgent({...agent, countryCode: val})}
 							/>
 							<SearchableInput
 								id={"agentTimezoneInput"}
-								testId={"agentTimezoneInput"}
+								data-testId={"agentTimezoneInput"}
 								defaultValue={agent.timezone}
 								collapsedLabel={true}
 								type={"search"}
 								labelled={true}
 								label={"Timezone"}
-								pattern={agentRegex.timezone} // has hilariously large HTML output, but i think it's worth it
+								pattern={agentRegex.timezone.source} // has hilariously large HTML output, but i think it's worth it
 								required={true}
 								handler={(zone) => setAgent({...agent, timezone: zone})}
 								options={timezones}
