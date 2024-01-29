@@ -17,6 +17,11 @@ export default function SignIn() {
 	});
 
 	async function submit() {
+		if (!formData.agentId || !formData.orgId) {
+			notifs.create({text: "Please fill in all fields", desirability: false});
+			return;
+		}
+
 		const response = await apiFetch("POST", "/sessions", formData);
 
 		if (response.error?.message) {
