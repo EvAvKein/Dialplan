@@ -39,8 +39,6 @@ export default function SignUp() {
 	function validatePageLabelledInputs() {
 		const validation = pageLabelledInputValidators[page - 1]();
 
-		console.log(validation);
-
 		if (!validation) {
 			notifs.create({
 				text: "Please fill all fields",
