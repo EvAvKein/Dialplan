@@ -26,6 +26,6 @@ app.get("*", function (request, response) {
 
 app.listen(3000, () => {
 	// nginx recieves this 3000 via a shared network and exposes it to client via 80, am doing this to verify the client isn't connecting directly to node
-	console.log(`Server Online at http://localhost:80
+	console.log(`Server online at http://localhost:80
   Date: ${timestamps.iso()}`);
 });
