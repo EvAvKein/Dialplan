@@ -1,9 +1,9 @@
-import {OrgCreationRequest, AgentCreationRequest} from "../../../../shared/objects/org";
+import {type OrgAgentCreationDuo} from "../../../../shared/objects/org";
 import {apiFetch} from "../../helpers/apiFetch";
 import {useState} from "react";
 import {LabelledInput, SearchableInput} from "../../components/inputs";
 import {timezones} from "../../../../shared/objects/timezones";
-import {org as orgRegex, agent as agentRegex} from "../../../../shared/objects/validationRegex";
+import * as regex from "../../../../shared/objects/validationRegex";
 import {useNotifStore} from "../../stores/notifs";
 import {useNavigate} from "react-router-dom";
 import coreStyles from "../../core.module.css";
@@ -13,44 +13,79 @@ export default function SignUp() {
 	const notifs = useNotifStore();
 	const navigate = useNavigate();
 
-	const [page, setPage] = useState<number>(1);
-	const pageLabelledInputValidators: (() => boolean)[] = [
-		() => orgRegex.name.test(org.name) && orgRegex.color.test(org.color),
-		() =>
-			agentRegex.name.test(agent.name) &&
-			agentRegex.department.test(agent.department) &&
-			agentRegex.countryCode.test(agent.countryCode) &&
-			agentRegex.timezone.test(agent.timezone),
-	];
-	const pageCount = pageLabelledInputValidators.length;
+	type pages = OrgAgentCreationDuo;
+	type pageKey = keyof pages;
 
-	const [org, setOrg] = useState<OrgCreationRequest>({
-		name: "",
-		color: getComputedStyle(document.body).getPropertyValue("--backgroundColor").slice(1),
+	type dataRecord<T = unknown> = {
+		[K in keyof pages]: Record<keyof Omit<pages[K], "internals">, T>;
+	};
+
+	const [page, setPage] = useState<pageKey>("org");
+
+	const [formData, setFormData] = useState<dataRecord<string>>({
+		org: {
+			name: "",
+			color: getComputedStyle(document.body).getPropertyValue("--backgroundColor").slice(1),
+		},
+		agent: {
+			name: "",
+			department: "",
+			countryCode: "",
+			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+		},
 	});
-	const [agent, setAgent] = useState<AgentCreationRequest>({
-		name: "",
-		department: "",
-		countryCode: "",
-		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-		internals: {permissions: {}},
+
+	const [dataValidity, setDataValidity] = useState<dataRecord<boolean>>({
+		org: {
+			name: false,
+			color: true,
+		},
+		agent: {
+			name: false,
+			department: false,
+			countryCode: false,
+			timezone: true,
+		},
 	});
+	const patterns: dataRecord<RegExp> = {
+		org: {
+			name: regex.org.name,
+			color: regex.org.color,
+		},
+		agent: {
+			name: regex.agent.name,
+			department: regex.agent.department,
+			countryCode: regex.agent.countryCode,
+			timezone: regex.agent.timezone,
+		},
+	};
 
-	function validatePageLabelledInputs() {
-		const validation = pageLabelledInputValidators[page - 1]();
+	function processNewInput<
+		K extends pageKey = pageKey,
+		K2 extends keyof (typeof patterns)[K] = keyof (typeof patterns)[K],
+	>(pageKey: K, fieldKey: K2, newValue: string) {
+		const pattern = patterns[pageKey][fieldKey];
+		const validity = pattern.test(newValue);
 
-		if (!validation) {
-			notifs.create({
-				text: "Please fill all fields",
-				desirability: false,
-			});
-		}
-
-		return validation;
+		setFormData({...formData, [pageKey]: {...formData[pageKey], [fieldKey]: newValue}});
+		setDataValidity({...dataValidity, [pageKey]: {...dataValidity[pageKey], [fieldKey]: validity}});
 	}
 
 	async function submit() {
-		const response = await apiFetch("POST", "/orgs", {agent, org: {...org, color: org.color}});
+		const formDataValid = Object.values(dataValidity).every((page) => Object.values(page).every((field) => field));
+
+		if (!formDataValid) {
+			notifs.create({
+				text: "Please fill all fields correctly",
+				desirability: false,
+			});
+			return;
+		}
+
+		const response = await apiFetch("POST", "/orgs", {
+			...formData,
+			agent: {...formData.agent, internals: {permissions: {}}},
+		} satisfies OrgAgentCreationDuo);
 
 		if (response.error?.message) {
 			notifs.create({
@@ -67,113 +102,106 @@ export default function SignUp() {
 	return (
 		<section id={styles.signUpWrapper}>
 			<h2>Sign Up</h2>
-			<form>
+			<form onSubmit={(event) => event.preventDefault()}>
 				<div id={styles.pagesWrapper}>
-					{page === 1 && (
+					{page === "org" && (
 						<section className={styles.page}>
 							<h3>Organization Data</h3>
 							<h4></h4>
 							<LabelledInput
+								label={"Name"}
 								id={"orgNameInput"}
 								data-testId={"orgNameInput"}
-								label={"Name"}
+								aria-invalid={!dataValidity.org.name}
+								autoFocus={true}
 								collapsedLabel={true}
-								defaultValue={org.name}
-								pattern={orgRegex.name.source}
-								required={true}
-								handler={(val) => setOrg({...org, name: val})}
+								defaultValue={formData.org.name}
+								handler={(value) => processNewInput("org", "name", value)}
 							/>
 							<LabelledInput
+								label={"Color"}
 								id={"orgColorInput"}
 								data-testId={"orgColorInput"}
+								aria-invalid={!dataValidity.org.color}
 								type={"color"}
-								defaultValue={"#" + org.color}
-								pattern={orgRegex.color.source}
-								label={"Color"}
-								required={true}
-								handler={(val) => setOrg({...org, color: val.slice(1)})}
+								collapsedLabel={true}
+								defaultValue={"#" + formData.org.color}
+								handler={(value) => processNewInput("org", "color", value.slice(1))}
 							/>
 						</section>
 					)}
-					{page === 2 && (
+					{page === "agent" && (
 						<section className={styles.page}>
 							<h3>Your Data</h3>
 							<LabelledInput
+								label={"Name"}
 								id={"agentNameInput"}
 								data-testId={"agentNameInput"}
-								label={"Name"}
+								aria-invalid={!dataValidity.agent.name}
+								autoFocus={true}
 								collapsedLabel={true}
-								defaultValue={agent.name}
-								pattern={agentRegex.name.source}
-								required={true}
-								handler={(val) => setAgent({...agent, name: val})}
+								defaultValue={formData.agent.name}
+								handler={(value) => processNewInput("agent", "name", value)}
 							/>
 							<LabelledInput
+								label={"Department"}
 								id={"agentDepartmentInput"}
 								data-testId={"agentDepartmentInput"}
-								label={"Department"}
+								aria-invalid={!dataValidity.agent.department}
 								collapsedLabel={true}
-								defaultValue={agent.department}
-								pattern={agentRegex.department.source}
-								required={true}
-								handler={(val) => setAgent({...agent, department: val})}
+								defaultValue={formData.agent.department}
+								handler={(value) => processNewInput("agent", "department", value)}
 							/>
 							<LabelledInput
+								label={"Country Code (Phone)"}
 								id={"agentCountryCodeInput"}
 								data-testId={"agentCountryCodeInput"}
-								label={"Country Code (Phone)"}
+								aria-invalid={!dataValidity.agent.countryCode}
 								type={"number"}
 								collapsedLabel={true}
-								defaultValue={agent.countryCode}
-								pattern={agentRegex.countryCode.source}
-								required={true}
-								handler={(val) => setAgent({...agent, countryCode: val})}
+								defaultValue={formData.agent.countryCode}
+								handler={(value) => processNewInput("agent", "countryCode", value)}
 							/>
 							<SearchableInput
+								label={"Timezone"}
 								id={"agentTimezoneInput"}
 								data-testId={"agentTimezoneInput"}
-								defaultValue={agent.timezone}
-								collapsedLabel={true}
+								aria-invalid={!dataValidity.agent.timezone}
 								type={"search"}
 								labelled={true}
-								label={"Timezone"}
-								pattern={agentRegex.timezone.source} // has hilariously large HTML output, but i think it's worth it
-								required={true}
-								handler={(zone) => setAgent({...agent, timezone: zone})}
+								collapsedLabel={true}
+								defaultValue={formData.agent.timezone}
 								options={timezones}
+								handler={(value) => processNewInput("agent", "timezone", value)}
 							/>
 						</section>
 					)}
 				</div>
 				<div id={styles.buttonsWrapper}>
-					{page > 1 && (
-						<button
-							data-testid="prevSignUpPage"
-							className={coreStyles.borderButton}
-							type="button"
-							onClick={() => setPage(page - 1)}
-						>
-							Previous
-						</button>
-					)}
-					{page < pageCount ? (
+					{page === "org" ? (
 						<button
 							data-testid="nextSignUpPage"
 							className={coreStyles.borderButton}
-							type="button"
-							onClick={() => validatePageLabelledInputs() && setPage(page + 1)}
+							onClick={() => {
+								Object.values(dataValidity.org).every((valid) => valid)
+									? setPage("agent")
+									: notifs.create({
+											text: "Please fill all fields correctly",
+											desirability: false,
+									  });
+							}}
 						>
 							Next
 						</button>
 					) : (
-						<button
-							data-testid="submitSignUp"
-							className={coreStyles.backgroundButton}
-							type="button"
-							onClick={() => validatePageLabelledInputs() && submit()}
-						>
-							Submit
-						</button>
+						<>
+							<button data-testid="prevSignUpPage" className={coreStyles.borderButton} onClick={() => setPage("org")}>
+								Previous
+							</button>
+							<button data-testid="submitSignUp" className={coreStyles.backgroundButton} onClick={() => submit()}>
+								Submit
+							</button>
+						</>
 					)}
 				</div>
 			</form>

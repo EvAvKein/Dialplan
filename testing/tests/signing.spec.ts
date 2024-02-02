@@ -119,15 +119,11 @@ test.describe("Sign Up", async () => {
 		navTest: (page: Page) => Promise<void>,
 		validValue: string,
 	) {
-		const selector = `[data-testid="${testId}"]`;
-		await expect(page.locator(selector + ":not(:user-invalid)")).toBeVisible();
-		await page.locator(selector).fill(invalidValue);
-		await page.locator(selector).blur();
-		await expect(page.locator(selector + ":user-invalid")).toBeVisible();
+		await page.getByTestId(testId).fill(invalidValue);
+		await expect(page.getByTestId(testId)).toHaveAttribute("aria-invalid", "true");
 		await navTest(page);
-		await page.locator(selector).fill(validValue);
-		await page.locator(selector).blur();
-		await expect(page.locator(selector + ":not(:user-invalid)")).toBeVisible();
+		await page.getByTestId(testId).fill(validValue);
+		await expect(page.getByTestId(testId)).toHaveAttribute("aria-invalid", "false");
 	}
 
 	test.describe("UI", async () => {
