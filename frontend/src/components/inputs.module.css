@@ -58,14 +58,19 @@ textarea.input {
 	border-left: none;
 }
 
-.labelWrapper:has(:user-invalid),
-.input:user-invalid {
+/* not styling via the `:invalid`/`:user-invalid` selectors because:
+	 1. the `pattern` attribute doesn't work for some input types (e.g. number)
+	 2. i'd like to have the option to use custom validation logic
+	 3. this aria attribute should be added anyway, and styling through the attributes makes it much harder to forget about it
+*/
+.labelWrapper:has([aria-invalid="true"]),
+.input[aria-invalid="true"] {
 	border-color: var(--negativeColor);
 }
-.labelWrapper:not(:focus-within):has(:user-invalid) {
+.labelWrapper:not(:focus-within):has([aria-invalid="true"]) {
 	outline-offset: 0.1rem;
 }
-.labelWrapper:not(:focus-within):has(:user-invalid),
-.input:user-invalid:not(:focus) {
+.labelWrapper:not(:focus-within):has([aria-invalid="true"]),
+.input[aria-invalid="true"]:not(:focus) {
 	outline: 0.15rem solid var(--negativeColor);
 }
