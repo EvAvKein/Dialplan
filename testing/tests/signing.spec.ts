@@ -104,9 +104,9 @@ test.describe("Sign Up", async () => {
 			const newNotif = await page.waitForSelector(`[data-testid="notifNegative"]:nth-child(${notifsBeforeClick + 1})`);
 			const notifId = await newNotif.getAttribute("data-notifid");
 			expect(notifId).toBeDefined();
-			notifExpiryExpects.push(async () => {
-				await page.waitForSelector(`[data-testid="notifsWrapper"]:not(:has([data-notifid="${notifId}"]))`);
-			});
+			notifExpiryExpects.push(async () =>
+				page.waitForSelector(`[data-testid="notifsWrapper"]:not(:has([data-notifid="${notifId}"]))`),
+			);
 		}
 
 		await validateCurrentPage(page, outcomePage);
@@ -229,7 +229,9 @@ test.describe("Sign Up", async () => {
 				await failToSubmit();
 				await page.getByTestId(agent.inputs.timezone).fill(agentData.timezone.valid[i]);
 
-				await Promise.all(notifExpiryExpects);
+				for (const expectNotifExpired of notifExpiryExpects) {
+					await expectNotifExpired();
+				}
 				await expect(page.locator('[data-testid="notifNegative"]')).toHaveCount(0);
 
 				const request = page.waitForResponse("/api/orgs");
