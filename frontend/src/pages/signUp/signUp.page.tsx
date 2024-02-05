@@ -1,3 +1,4 @@
+import {type nestedRecord} from "../../helpers/dataRecord";
 import {type OrgAgentCreationDuo} from "../../../../shared/objects/org";
 import {apiFetch} from "../../helpers/apiFetch";
 import {useState} from "react";
@@ -13,16 +14,13 @@ export default function SignUp() {
 	const notifs = useNotifStore();
 	const navigate = useNavigate();
 
-	type pages = OrgAgentCreationDuo;
+	type pages = Omit<OrgAgentCreationDuo, "agent"> & {agent: Omit<OrgAgentCreationDuo["agent"], "internals">};
 	type pageKey = keyof pages;
-
-	type dataRecord<T = unknown> = {
-		[K in keyof pages]: Record<keyof Omit<pages[K], "internals">, T>;
-	};
+	type formRecord<T = unknown> = nestedRecord<pages, T>;
 
 	const [page, setPage] = useState<pageKey>("org");
 
-	const [formData, setFormData] = useState<dataRecord<string>>({
+	const [formData, setFormData] = useState<formRecord<string>>({
 		org: {
 			name: "",
 			color: getComputedStyle(document.body).getPropertyValue("--backgroundColor").slice(1),
@@ -35,7 +33,7 @@ export default function SignUp() {
 		},
 	});
 
-	const [dataValidity, setDataValidity] = useState<dataRecord<boolean>>({
+	const [dataValidity, setDataValidity] = useState<formRecord<boolean>>({
 		org: {
 			name: false,
 			color: true,
@@ -47,7 +45,7 @@ export default function SignUp() {
 			timezone: true,
 		},
 	});
-	const patterns: dataRecord<RegExp> = {
+	const patterns: formRecord<RegExp> = {
 		org: {
 			name: regex.org.name,
 			color: regex.org.color,
@@ -61,7 +59,7 @@ export default function SignUp() {
 	};
 
 	function processNewInput<
-		K extends pageKey = pageKey,
+		K extends keyof typeof patterns,
 		K2 extends keyof (typeof patterns)[K] = keyof (typeof patterns)[K],
 	>(pageKey: K, fieldKey: K2, newValue: string) {
 		const pattern = patterns[pageKey][fieldKey];
