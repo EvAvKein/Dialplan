@@ -1,4 +1,4 @@
-import {type nestedRecord} from "../../helpers/dataRecord";
+import {type nestedRecord} from "../../../../shared/helpers/dataRecord";
 import {type OrgAgentCreationDuo} from "../../../../shared/objects/org";
 import {apiFetch} from "../../helpers/apiFetch";
 import {useState} from "react";
