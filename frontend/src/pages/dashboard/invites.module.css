@@ -1,4 +1,83 @@
-#createInviteButton {
+#pageWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+#inviteCreationButton {
 	display: block;
 	margin: 1rem auto 0;
+}
+
+#invitesWrapper {
+	flex-grow: 1;
+	margin-top: 0.75rem;
+	overflow-x: scroll;
+}
+
+.invitesPlaceholder {
+	text-align: center;
+}
+
+#invitesTable {
+	margin: auto;
+	border-collapse: collapse;
+	border: none;
+}
+
+#invitesTable th,
+#invitesTable td {
+	border: 0.1rem solid var(--midColor);
+	padding: 0.35rem 0.5rem;
+}
+
+#invitesTable td:last-child details {
+	position: relative;
+}
+#invitesTable td:last-child details > section {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	max-width: 90vw;
+	overflow: visible;
+	background-color: var(--backgroundColor);
+	padding: 0.25rem;
+	border: 0.1rem solid var(--midColor);
+}
+
+#invitesTable td:last-child details > section div {
+	text-decoration: underline;
+	text-underline-offset: 0.1em;
+	margin-bottom: 0.25rem;
+}
+
+#inviteForm {
+	color: var(--textColor);
+	background-color: var(--backgroundColor);
+	box-sizing: border-box;
+	width: clamp(17.5rem, 95vw, 22.5rem);
+	padding: 1rem;
+	border: 0.1rem solid var(--midColor);
+}
+
+#inviteForm > * + * {
+	margin-top: 0.5rem;
+}
+
+#inviteForm #recipientPhoneWrapper {
+	display: flex;
+	align-items: center;
+}
+
+#inviteForm #recipientPhoneWrapper > :first-child {
+	flex-basis: 22%;
+}
+
+#inviteForm #recipientPhoneWrapper > :nth-child(2) {
+	flex-basis: 78%;
+}
+
+#inviteForm button {
+	display: block;
+	margin-left: auto;
 }

@@ -1,11 +1,11 @@
-import {createBrowserRouter} from "react-router-dom";
-import Core from "./pages/_layouts/_core.layout";
+import {createBrowserRouter, redirect} from "react-router-dom";
+import Core from "./pages/_layouts/_core";
 import VisitorLayout from "./pages/_layouts/visitor";
 import Home from "./pages/home.page";
 import SignUp from "./pages/signUp/signUp.page";
 import SignIn from "./pages/signIn/signIn.page";
 import AgentLayout from "./pages/_layouts/agent";
-import Invites_Dashboard from "./pages/dashboard/invites.page";
+import Dashboard_Invites from "./pages/dashboard/invites.page";
 
 export const router = createBrowserRouter([
 	{
@@ -33,8 +33,12 @@ export const router = createBrowserRouter([
 				path: "/dashboard",
 				children: [
 					{
-						path: "",
-						element: <Invites_Dashboard />,
+						index: true,
+						loader: async () => redirect("/dashboard/invites"),
+					},
+					{
+						path: "invites",
+						element: <Dashboard_Invites />,
 					},
 				],
 			},
