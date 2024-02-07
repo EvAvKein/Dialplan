@@ -1,12 +1,19 @@
-#header {
+#pageWrapper {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+#nav {
 	padding: 0.5rem;
 	box-shadow: 0 0.01rem 0.25rem 0 color-mix(in srgb, var(--textColor), transparent);
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	gap: 1rem;
 }
 
-#headerTitle {
+#title {
 	color: var(--accentColor);
 	text-decoration: none;
 	text-align: center;
@@ -14,20 +21,17 @@
 	font-family: "Share Tech Mono", monospace;
 }
 
-.nav {
+#nav ul {
+	list-style: none;
 	display: flex;
-	align-items: center;
 	gap: 0.5rem;
 }
 
-.nav .headerLink {
+#nav .headerLink {
 	color: var(--textColor);
 	text-decoration: none;
 }
 
-.notifsWrapper {
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	z-index: 99999;
+#main {
+	flex-grow: 1;
 }

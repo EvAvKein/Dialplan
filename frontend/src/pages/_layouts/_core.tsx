@@ -1,7 +1,7 @@
 import {Outlet} from "react-router-dom";
 import {Notifications} from "../../notifications";
 import {useNotifStore} from "../../stores/notifs";
-import styles from "./visitor.module.css";
+import styles from "./_core.module.css";
 
 export default function CoreLayout() {
 	const notifs = useNotifStore();
@@ -10,7 +10,7 @@ export default function CoreLayout() {
 		<>
 			<Outlet />
 
-			<div className={styles.notifsWrapper}>
+			<div id={styles.notifsWrapper}>
 				<Notifications notifs={notifs.list} dismissHandler={(notifId) => notifs.delete(notifId)} />
 			</div>
 		</>

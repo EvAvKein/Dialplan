@@ -31,7 +31,7 @@ export default function AgentLayout() {
 	}
 
 	return (
-		<>
+		<div id={styles.pageWrapper}>
 			<nav id={styles.nav}>
 				<div id={styles.leftPart}>
 					<Link to="/" className={coreStyles.contentButton}>
@@ -45,9 +45,9 @@ export default function AgentLayout() {
 				</button>
 			</nav>
 
-			<main>
+			<main id={styles.main}>
 				<Outlet />
 			</main>
-		</>
+		</div>
 	);
 }

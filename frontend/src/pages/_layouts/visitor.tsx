@@ -5,28 +5,31 @@ import styles from "./visitor.module.css";
 
 export default function VisitorLayout() {
 	return (
-		<>
-			<header id={styles.header}>
-				<h1 id={styles.headerTitle}>
+		<div id={styles.pageWrapper}>
+			<nav id={styles.nav}>
+				<h1 id={styles.title}>
 					<Link to="/" className={coreStyles.contentButton}>
 						Dialplan
 					</Link>
 				</h1>
-				<nav className={styles.nav}>
-					<HeaderDropdown buttonText="Account">
-						<Link to="/signIn" className={coreStyles.contentButton}>
-							Sign In
-						</Link>
-						<Link to="/signUp" className={coreStyles.contentButton}>
-							Sign Up
-						</Link>
-					</HeaderDropdown>
-				</nav>
-			</header>
 
-			<main>
+				<ul>
+					<li>
+						<HeaderDropdown buttonText="Account">
+							<Link to="/signIn" className={coreStyles.contentButton}>
+								Sign In
+							</Link>
+							<Link to="/signUp" className={coreStyles.contentButton}>
+								Sign Up
+							</Link>
+						</HeaderDropdown>
+					</li>
+				</ul>
+			</nav>
+
+			<main id={styles.main}>
 				<Outlet />
 			</main>
-		</>
+		</div>
 	);
 }

@@ -1,3 +1,9 @@
+#pageWrapper {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
 #nav {
 	padding: 0.5rem;
 	box-shadow: 0 0.01rem 0.25rem 0 color-mix(in srgb, var(--textColor), transparent);
@@ -18,4 +24,8 @@
 	height: 3rem;
 	width: 3rem;
 	fill: var(--textColor);
+}
+
+#main {
+	flex-grow: 1;
 }
