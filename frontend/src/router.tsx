@@ -1,10 +1,10 @@
 import {createBrowserRouter} from "react-router-dom";
 import Core from "./pages/_layouts/_core.layout";
-import VisitorLayout from "./pages/_layouts/visitor.layout";
+import VisitorLayout from "./pages/_layouts/visitor";
 import Home from "./pages/home.page";
 import SignUp from "./pages/signUp/signUp.page";
 import SignIn from "./pages/signIn/signIn.page";
-import AgentLayout from "./pages/_layouts/agent.layout";
+import AgentLayout from "./pages/_layouts/agent";
 import Invites_Dashboard from "./pages/dashboard/invites.page";
 
 export const router = createBrowserRouter([
