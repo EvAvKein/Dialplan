@@ -1,4 +1,4 @@
-import {Org, Agent} from "../../shared/objects/org";
+import {type Org, type Agent} from "../../shared/objects/org";
 import {randomAlphanumString} from "./randomAlphanumString";
 
 type dataset<T, K extends keyof T = keyof T> = [T[K], T[K], T[K], T[K]];
