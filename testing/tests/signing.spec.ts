@@ -1,7 +1,7 @@
 import {type FetchResponse} from "../../shared/objects/api";
 import {expect, test, type Page} from "@playwright/test";
 import {datasetLength, orgData, agentData} from "../helpers/testData";
-import {testInputInvalidAndValid} from "../helpers/routines";
+import {testInputInvalidAndValid, testInvalidBodyResponse} from "../helpers/routines";
 import {signUp} from "../helpers/requestsByApi";
 
 test.describe("Sign Up", async () => {
@@ -21,10 +21,8 @@ test.describe("Sign Up", async () => {
 					},
 				});
 
-				expect(response.ok()).toBeFalsy();
+				await testInvalidBodyResponse(response, 6);
 				expect((await context.cookies()).length).toBeFalsy();
-				const jsonContent: FetchResponse = await response.json();
-				expect((jsonContent.error?.message.match(/Invalid/g) ?? []).length).toBe(6);
 			});
 
 			test(`Valid sign-up (data i-${i})`, async ({page}) => {
