@@ -4,6 +4,9 @@ import {randomAlphanumString} from "./randomAlphanumString";
 
 type dataset<T> = [T, T, T, T];
 
+const dataExample: dataset<string> = ["", "", "", ""];
+export const datasetLength = dataExample.length;
+
 type validationValues<T> = {
 	valid: dataset<T>;
 	invalid: dataset<T>;
