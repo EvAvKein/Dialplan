@@ -16,7 +16,7 @@ export async function testInputInvalidAndValid(
 }
 
 export async function testInvalidBodyResponse(response: APIResponse, invalidProperties: number) {
-	expect(response.ok()).toBeFalsy();
+	expect(response).not.toBeOK();
 	const body: FetchResponse = await response.json();
 	expect((body.error?.message.match(/Invalid/g) ?? []).length).toBe(invalidProperties);
 }
