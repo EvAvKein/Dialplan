@@ -1,11 +1,11 @@
 import {type FetchResponse} from "../../shared/objects/api";
 import {expect, test, type Page} from "@playwright/test";
-import {orgData, agentData} from "../helpers/testData";
+import {datasetLength, orgData, agentData} from "../helpers/testData";
 import {signUp} from "../helpers/requestsByApi";
 
 test.describe("Sign Up", async () => {
 	test.describe("API", async () => {
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < datasetLength; i++) {
 			test(`Invalid sign-up (data i-${i})`, async ({page}) => {
 				const context = page.context();
 				await page.goto("/");
@@ -127,7 +127,7 @@ test.describe("Sign Up", async () => {
 	}
 
 	test.describe("UI", async () => {
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < datasetLength; i++) {
 			test(`Sign-Up interface (data i-${i})`, async ({page}) => {
 				const {org, agent} = pageData;
 				const notifExpiryExpects: (() => Promise<unknown>)[] = [];
