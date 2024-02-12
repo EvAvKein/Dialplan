@@ -1,6 +1,7 @@
 import {type FetchResponse} from "../../shared/objects/api";
 import {expect, test, type Page} from "@playwright/test";
 import {datasetLength, orgData, agentData} from "../helpers/testData";
+import {testInputInvalidAndValid} from "../helpers/routines";
 import {signUp} from "../helpers/requestsByApi";
 
 test.describe("Sign Up", async () => {
@@ -110,20 +111,6 @@ test.describe("Sign Up", async () => {
 		}
 
 		await validateCurrentPage(page, outcomePage);
-	}
-
-	async function testInputInvalidAndValid(
-		page: Page,
-		testId: string,
-		invalidValue: string,
-		navTest: (page: Page) => Promise<void>,
-		validValue: string,
-	) {
-		await page.getByTestId(testId).fill(invalidValue);
-		await expect(page.getByTestId(testId)).toHaveAttribute("aria-invalid", "true");
-		await navTest(page);
-		await page.getByTestId(testId).fill(validValue);
-		await expect(page.getByTestId(testId)).toHaveAttribute("aria-invalid", "false");
 	}
 
 	test.describe("UI", async () => {
