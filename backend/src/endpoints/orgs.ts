@@ -5,7 +5,7 @@ import {fromZodError} from "zod-validation-error";
 import {OrgAgentCreationDuo} from "../validation/org.js";
 import {FetchResponse} from "../../../shared/objects/api.js";
 import {Agent, Org} from "../../../shared/objects/org.js";
-import {v4 as uuid} from "uuid";
+import {newSessionId} from "../helpers/newSessionId.js";
 import {authAgent} from "../helpers/authUser.js";
 
 export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
@@ -18,7 +18,7 @@ export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 
 		const org = new Org(validation.data.org);
 		const agent = new Agent(org.id, validation.data.agent);
-		const sessionId = uuid();
+		const sessionId = newSessionId();
 
 		await dbP
 			.tx(async (statement) => {
@@ -42,11 +42,7 @@ export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 				);
 			})
 			.then(() => {
-				response
-					.status(201)
-					.cookie("dialplan_agentid", agent.id, {secure: true})
-					.cookie("dialplan_sessionid", sessionId, {secure: true})
-					.end();
+				response.status(201).cookie("dialplan_sessionid", sessionId, {secure: true}).end();
 			})
 			.catch((error) => {
 				console.error("Org creation failure", error);

@@ -6,7 +6,7 @@ import {postgres} from "../postgres.js";
 export async function authAgent(request: Request) {
 	const cookies: cookies = request.cookies;
 
-	if (!cookies.dialplan_agentid || !cookies.dialplan_sessionid) {
+	if (!cookies.dialplan_sessionid) {
 		return null;
 	}
 
@@ -16,10 +16,10 @@ export async function authAgent(request: Request) {
 		WHERE "id" IN (
 			SELECT "agentId"
 			FROM "AgentSession"
-			WHERE "id" = $1 AND "agentId" = $2
+			WHERE "id" = $1
 		)
 		LIMIT 1`,
-		[cookies.dialplan_sessionid, cookies.dialplan_agentid],
+		[cookies.dialplan_sessionid],
 	);
 
 	return dbResponse.rows[0];
