@@ -47,4 +47,4 @@ GitHub: [github.com/evavkein](https://github.com/EvAvKein)
 
 ## License
 
-This project is under the MIT License - see the LICENSE.txt file for details
+This project is under the AGPL-3.0 license - see the LICENSE.txt file for details
