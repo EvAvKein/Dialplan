@@ -118,7 +118,7 @@ export default function Invites_Dashboard() {
 								Call <br /> Duration
 							</th>
 							<th>
-								Invite <br /> Expiry
+								Invitation <br /> Expiry
 							</th>
 							<th>Notes</th>
 						</tr>
