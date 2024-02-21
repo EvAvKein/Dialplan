@@ -91,6 +91,7 @@ export default function Invites_Dashboard() {
 			<section>
 				<button
 					id={styles.inviteCreationButton}
+					data-testid={"openInviteCreationForm"}
 					className={coreStyles.backgroundButton}
 					onClick={() => setInviteCreationModal(true)}
 				>
@@ -105,7 +106,7 @@ export default function Invites_Dashboard() {
 				) : !invites.length ? (
 					<p className={styles.invitesPlaceholder}>No pending invites!</p>
 				) : (
-					<table id={styles.invitesTable}>
+					<table data-testid={"invitesTable"} id={styles.invitesTable}>
 						<tr>
 							<th>
 								Client <br /> Name
@@ -162,6 +163,7 @@ export default function Invites_Dashboard() {
 						<LabelledInput
 							label={"Recipient name"}
 							id={"recipientName"}
+							data-testid={"newRecipientName"}
 							autoFocus={true}
 							aria-invalid={!dataValidity.recipient.name}
 							defaultValue={formData.recipient.name}
@@ -177,6 +179,7 @@ export default function Invites_Dashboard() {
 							<LabelledInput
 								label={"Prefix"}
 								id={"countryCode"}
+								data-testid={"newCountryCode"}
 								type={"number"}
 								aria-invalid={!dataValidity.recipient.phone.countryCode}
 								defaultValue={formData.recipient.phone.countryCode}
@@ -201,6 +204,7 @@ export default function Invites_Dashboard() {
 							<LabelledInput
 								label={"Phone number"}
 								id={"phoneNumber"}
+								data-testid={"newPhoneNumber"}
 								type={"number"} // avoiding "tel" because it allows non-number characters
 								aria-invalid={!dataValidity.recipient.phone.number}
 								defaultValue={formData.recipient.phone.number}
@@ -225,6 +229,7 @@ export default function Invites_Dashboard() {
 						<LabelledInput
 							label={"Call duration (minutes)"}
 							id={"callDuration"}
+							data-testid={"newCallDuration"}
 							type={"number"}
 							aria-invalid={!dataValidity.callDuration}
 							defaultValue={formData.callDuration.toString()}
@@ -236,6 +241,7 @@ export default function Invites_Dashboard() {
 						<LabelledInput
 							label={"Invite Expiry"}
 							id={"expiry"}
+							data-testid={"newExpiry"}
 							type={"datetime-local"}
 							aria-invalid={!dataValidity.expiry}
 							defaultValue={formData.expiry.replace(":00Z", "")}
@@ -247,6 +253,7 @@ export default function Invites_Dashboard() {
 						<LabelledInput
 							label={"Notes for recipient"}
 							id={"notesForRecipient"}
+							data-testid={"newNotesForRecipient"}
 							aria-invalid={!dataValidity.notes.forRecipient}
 							defaultValue={formData.notes.forRecipient}
 							handler={(value) => {
@@ -260,6 +267,7 @@ export default function Invites_Dashboard() {
 						<LabelledInput
 							label={"Notes for organization"}
 							id={"notesForOrg"}
+							data-testid={"newNotesForOrg"}
 							type={"textarea"}
 							aria-invalid={!dataValidity.notes.forOrg}
 							defaultValue={formData.notes.forOrg}
@@ -271,7 +279,7 @@ export default function Invites_Dashboard() {
 								});
 							}}
 						/>
-						<button className={coreStyles.backgroundButton} onClick={submit}>
+						<button className={coreStyles.backgroundButton} data-testid={"newInviteSubmit"} onClick={submit}>
 							Send Invite
 						</button>
 					</form>
