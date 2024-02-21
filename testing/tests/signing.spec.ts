@@ -129,8 +129,8 @@ test.describe("Sign Up", async () => {
 							page,
 							org.inputs.name,
 							orgData.name.invalid[i],
-							async () => validateButtonClick(page, "next", false, "Organization Data", notifExpiryExpects),
 							orgData.name.valid[i],
+							async () => validateButtonClick(page, "next", false, "Organization Data", notifExpiryExpects),
 					  )
 					: await page.locator(`[data-testid="${org.inputs.name}"]`).fill(orgData.name.valid[i]);
 
@@ -148,27 +148,21 @@ test.describe("Sign Up", async () => {
 					page,
 					org.inputs.name,
 					orgData.name.invalid[i],
-					async () => validateButtonClick(page, "next", false, "Organization Data", notifExpiryExpects),
 					orgData.name.valid[i],
+					async () => validateButtonClick(page, "next", false, "Organization Data", notifExpiryExpects),
 				);
 				await validateButtonClick(page, "next", true, "Your Data", notifExpiryExpects);
 
 				agentData.name.invalid[i] // because one of them is empty, and filling an input with that doesn't trigger :user-invalid
-					? await testInputInvalidAndValid(
-							page,
-							agent.inputs.name,
-							agentData.name.invalid[i],
-							async () => {},
-							agentData.name.valid[i],
-					  )
+					? await testInputInvalidAndValid(page, agent.inputs.name, agentData.name.invalid[i], agentData.name.valid[i])
 					: await page.locator(`[data-testid="${agent.inputs.name}"]`).fill(agentData.name.valid[i]);
 
 				await testInputInvalidAndValid(
 					page,
 					agent.inputs.department,
 					agentData.department.invalid[i],
-					async () => validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects),
 					agentData.department.valid[i],
+					async () => validateButtonClick(page, "submit", false, "Your Data", notifExpiryExpects),
 				);
 
 				agentData.countryCode.invalid[i].match(/a-z/) // because one of them contains a letter, and since the input is type="number" it trying to fill with that throws an error
@@ -176,7 +170,6 @@ test.describe("Sign Up", async () => {
 							page,
 							agent.inputs.countryCode,
 							agentData.countryCode.invalid[i],
-							async () => {},
 							agentData.countryCode.valid[i],
 					  )
 					: await page.locator(`[data-testid="${agent.inputs.countryCode}"]`).fill(agentData.countryCode.valid[i]);
@@ -185,7 +178,6 @@ test.describe("Sign Up", async () => {
 					page,
 					agent.inputs.timezone,
 					agentData.timezone.invalid[i],
-					async () => {},
 					agentData.timezone.valid[i],
 				);
 
