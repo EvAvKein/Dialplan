@@ -53,7 +53,7 @@ export const agentData: validityDataObj<Agent, "id" | "orgId" | "internals"> = {
 	},
 	countryCode: {
 		valid: ["1", "23", "456", "999"],
-		invalid: ["012", "+123", "1234", "1b3"],
+		invalid: ["012", "1234", "+123", "1b3"],
 	},
 	timezone: {
 		valid: ["Europe/Helsinki", "America/Argentina/Rio_Gallegos", "Asia/Hong_Kong", "Africa/Algiers"],
@@ -61,7 +61,7 @@ export const agentData: validityDataObj<Agent, "id" | "orgId" | "internals"> = {
 	},
 };
 
-export const inviteData: validityDataObj<Invite, "id" | "orgId" | "agentId" | "expiry"> = {
+export const inviteData: validityDataObj<Invite, "id" | "orgId" | "agentId"> = {
 	recipient: {
 		name: {
 			valid: [
@@ -79,13 +79,18 @@ export const inviteData: validityDataObj<Invite, "id" | "orgId" | "agentId" | "e
 			},
 			countryCode: {
 				valid: ["1", "23", "456", "999"],
-				invalid: ["1234", "+123", "1 3", "1b3"],
+				invalid: ["012", "1234", "+123", "1b3"],
 			},
 		},
 	},
 	callDuration: {
 		valid: [1, 23, 456, 999],
 		invalid: [1234, -123, 12.3, 123.4],
+	},
+	expiry: {
+		// avoiding non-zero seconds because 1. no plans to ever support that granularity (frontend input nor backend) 2. replacing ":00Z" with nothing  (for datetime-local inputs) is more readable than removing a particular number of final characters
+		valid: ["2025-01-01T01:00:00Z", "2026-04-18T10:01:00Z", "2027-12-31T20:00:00Z", "2077-09-05T23:59:00Z"],
+		invalid: ["2025-02-30T23:59", "2025-1-1T9:31:00Z", "2025/01/01T21:16:00Z", "01-01-2025T20:01:00Z"],
 	},
 	notes: {
 		forRecipient: {
