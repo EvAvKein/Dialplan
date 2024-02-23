@@ -6,7 +6,7 @@ import {OrgAgentCreationDuo} from "../validation/org.js";
 import {FetchResponse} from "../../../shared/objects/api.js";
 import {Agent, Org} from "../../../shared/objects/org.js";
 import {newSessionId} from "../helpers/newSessionId.js";
-import {authAgent} from "../helpers/authUser.js";
+import {authUser} from "../helpers/authUser.js";
 
 export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 	app.post("/api/orgs", async (request, response) => {
@@ -51,7 +51,7 @@ export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 	});
 
 	app.get("/api/orgs", async (request, response) => {
-		const agent = await authAgent(request);
+		const agent = await authUser(request);
 		if (!agent) {
 			response.status(400).json(new FetchResponse(null, {message: "User authentication failed"}));
 			return;

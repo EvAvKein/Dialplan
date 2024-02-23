@@ -1,6 +1,6 @@
 import {type Express} from "express";
 import {type Pool} from "pg";
-import {authAgent} from "../helpers/authUser.js";
+import {authUser} from "../helpers/authUser.js";
 import {FetchResponse} from "../../../shared/objects/api.js";
 import {Invite} from "../../../shared/objects/inv.js";
 import {InviteCreationRequest} from "..//validation/inv.js";
@@ -8,7 +8,7 @@ import {fromZodError} from "zod-validation-error";
 
 export function endpoints_invites(app: Express, db: Pool /*dbP: pgpPool*/) {
 	app.post("/api/invites", async (request, response) => {
-		const agent = await authAgent(request);
+		const agent = await authUser(request);
 		if (!agent) {
 			response.status(400).json(new FetchResponse(null, {message: "User authentication failed"}));
 			return;
@@ -39,7 +39,7 @@ export function endpoints_invites(app: Express, db: Pool /*dbP: pgpPool*/) {
 
 	app.get("/api/invites", async (request, response) => {
 		// TODO: add functionality for getting all users in own org
-		const agent = await authAgent(request);
+		const agent = await authUser(request);
 		if (!agent) {
 			response.status(400).json(new FetchResponse(null, {message: "User authentication failed"}));
 			return;

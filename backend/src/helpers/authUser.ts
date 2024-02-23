@@ -3,7 +3,7 @@ import {type cookies} from "../../../shared/objects/cookies.js";
 import {type Agent} from "../../objects/org.js";
 import {postgres} from "../postgres.js";
 
-export async function authAgent(request: Request) {
+export async function authUser(request: Request) {
 	const cookies: cookies = request.cookies;
 
 	if (!cookies.dialplan_sessionid) {
