@@ -4,8 +4,6 @@ import {type Org, type Agent} from "./org.js";
 import {type Invite} from "./inv.js";
 import {timezoneValues} from "./timezones.js";
 
-// REMINDER: avoid regex flags for what's solvable with a pattern (except /u). these regexes are used for frontend inputs' "pattern" attribute using RegExp.source, which omits flags (but inputs apply /u automatically)
-
 export const shared = {
 	phoneNumber: /^[0-9]{9}$/,
 	countryCode: /^[1-9][0-9]{0,2}$/,
