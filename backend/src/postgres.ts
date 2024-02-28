@@ -11,6 +11,10 @@ const pgConfig = {
 } as const;
 
 const postgres = new pg.Pool(pgConfig);
+
+type pgpPool = pgp.IDatabase<{poolConfig: never}>;
+const postgresP: pgpPool = pgp()(pgConfig);
+
 for (let attempt = 1; attempt <= maxConnectionAttempts; attempt++) {
 	// very first setup from the postgres docker image takes a bit. without these retries, the non-dev version ends up with a borked db connection & setup
 	try {
@@ -25,9 +29,6 @@ for (let attempt = 1; attempt <= maxConnectionAttempts; attempt++) {
 		throw new Error(`Failed to connect to Postgres (${attempt}/${maxConnectionAttempts} attempts)`);
 	}
 }
-
-type pgpPool = pgp.IDatabase<{poolConfig: never}>;
-const postgresP: pgpPool = pgp()(pgConfig);
 
 for (const fileName of ["org.sql", "inv.sql", "session.sql"]) {
 	const fileContent = readFileSync("/backend/sql/" + fileName, "utf-8");
