@@ -22,5 +22,5 @@ export async function authUser(request: Request) {
 		[cookies.dialplan_sessionid],
 	);
 
-	return dbResponse.rows[0];
+	return dbResponse.rows[0] ?? null;
 }
