@@ -1,6 +1,6 @@
 import {v4 as newId} from "uuid";
-import {Org, Agent} from "./org";
-import {isoStamp, timeRange} from "./shared";
+import {Org, Agent} from "./org.js";
+import {isoStamp, timeRange} from "./shared.js";
 
 export interface CallRecipient {
 	name: string;

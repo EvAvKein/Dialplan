@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		// no "target" because these always get compiled based on another folder's config
-		"module": "esnext",
+		"module": "nodenext",
 		"lib": ["esnext"],
 
 		"strict": true,

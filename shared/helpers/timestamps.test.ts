@@ -1,4 +1,4 @@
-import {unix, iso} from "./timestamps";
+import {unix, iso} from "./timestamps.js";
 
 describe("unix", () => {
 	it("Return current timestamp in seconds", () => {
