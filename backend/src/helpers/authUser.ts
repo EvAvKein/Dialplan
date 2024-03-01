@@ -1,6 +1,6 @@
 import {type Request} from "express";
 import {type cookies} from "../../../shared/objects/cookies.js";
-import {type Agent} from "../../objects/org.js";
+import {type Agent} from "../../../shared/objects/org.js";
 import {postgres} from "../postgres.js";
 
 export async function authUser(request: Request) {
