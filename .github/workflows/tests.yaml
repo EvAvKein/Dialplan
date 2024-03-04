@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-node@v4
 
       - name: Launch tests
-        run: npm installAll && npm run jest
+        run: npm run installAll && npm run jest
 
   Playwright:
     runs-on: ubuntu-latest
