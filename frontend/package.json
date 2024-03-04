@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"scripts": {
-		"test": "npx jest",
+		"jest": "npx jest",
 		"vite": "vite",
 		"build": "vite build",
 		"buildDev": "vite build --watch"

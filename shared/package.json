@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"scripts": {
-		"test": "npx jest"
+		"jest": "npx jest"
 	},
 	"dependencies": {
 		"uuid": "9.0.1"

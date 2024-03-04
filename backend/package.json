@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"scripts": {
-		"test": "npx jest",
+		"jest": "npx jest",
 		"build": "tsc",
 		"buildDev": "tsc --watch",
 		"server": "node dist/backend/src/server.js",
