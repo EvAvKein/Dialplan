@@ -23,6 +23,7 @@ jobs:
         run: |
           npm ci
           npx prettier --check .
+
   ESLint:
     runs-on: ubuntu-latest
     steps:
