@@ -4,4 +4,4 @@ services:
     image: "node:21-alpine"
     volumes:
       - ./:/dialplan
-    command: bash -c "cd dialplain && npm install && npm run prettier && npm run eslint"
+    command: bash -c "cd dialplan && npm install && npm run prettier && npm run eslint"
