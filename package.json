@@ -13,7 +13,7 @@
 		"test": "npm run jest && npm run pw",
 		"docker": "docker-compose up --build --force-recreate",
 		"dockerDev": "docker-compose -f compose.yaml -f compose.devOverride.yaml up --build --force-recreate",
-		"dockerTest": "docker-compose -f compose.test.yaml up --build --force-recreate",
+		"dockerJest": "docker-compose -f compose.jest.yaml up --build --force-recreate",
 		"dockerSA": "docker-compose -f compose.staticAnalysis.yaml up --build --force-recreate"
 	},
 	"type": "module",

@@ -1,0 +1,7 @@
+version: "3"
+services:
+  jest:
+    image: "node:21-bookworm-slim"
+    volumes:
+      - ./:/dialplan
+    command: bash -c "cd dialplan && npm run installAll && npm run jest"

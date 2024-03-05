@@ -14,4 +14,4 @@ COPY /shared/ /shared
 COPY /testing/ /testing
 
 # RUN
-CMD ["npx", "playwright", "test"]
+CMD ["npm", "run", "playwright"]

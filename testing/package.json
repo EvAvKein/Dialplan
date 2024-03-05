@@ -6,6 +6,7 @@
 		"playwright": "npx playwright test",
 		"pwUi": "npx playwright test --ui",
 		"pwReport": "npx playwright show-report",
+		"dockerPw": "docker-compose -f compose.pw.yaml up --build --force-recreate",
 		"test": "npm run jest && npm run playwright"
 	},
 	"devDependencies": {
