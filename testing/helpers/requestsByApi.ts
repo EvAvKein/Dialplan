@@ -1,6 +1,6 @@
 import {type APIRequestContext as Request} from "@playwright/test";
 import {type OrgCreationRequest, type AgentCreationRequest, OrgAgentCreationDuo} from "../../shared/objects/org";
-import {randomAlphanumString} from "./randomAlphanumString";
+import {randomAlphanumString} from "../../shared/helpers/randomAlphanumString";
 
 interface partialCreationDuo {
 	org?: Partial<OrgCreationRequest>;
