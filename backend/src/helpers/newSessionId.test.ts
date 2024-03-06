@@ -7,13 +7,13 @@ it("Generate a new session ID", () => {
 	expect(id).not.toMatch(/ /g);
 });
 
-it("Generate a unique session ID", () => {
+it("Generate unique session IDs", () => {
 	// "unique" is an overstatement, but this test seems reasonable enough
-	const idSamples = Array(250)
+	const ids = Array(250)
 		.fill(null)
 		.map(() => newSessionId());
 
-	const newId = newSessionId();
+	const idsSet = new Set(ids);
 
-	expect(idSamples).not.toContain(newId);
+	expect(idsSet.size).toBe(ids.length);
 });
