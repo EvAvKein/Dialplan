@@ -1,6 +1,6 @@
 import {type Org, type Agent} from "../../shared/objects/org";
 import {type Invite} from "../../shared/objects/inv";
-import {randomAlphanumString} from "./randomAlphanumString";
+import {randomAlphanumString} from "./../../shared/helpers/randomAlphanumString";
 
 type dataset<T> = [T, T, T, T];
 
