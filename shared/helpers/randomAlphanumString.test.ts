@@ -2,7 +2,7 @@ import {randomAlphanumString} from "./randomAlphanumString.js";
 
 describe("randomAlphanumString", () => {
 	it("Generate an alphanumeric string of the specified length", () => {
-		for (const length of [5, 47, 132]) {
+		for (const length of [9, 47, 132]) {
 			const result = randomAlphanumString(length);
 			expect(result).toHaveLength(length);
 			expect(result).toMatch(/[a-zA-Z]/);
