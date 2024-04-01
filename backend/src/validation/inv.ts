@@ -24,9 +24,7 @@ export const InviteCreationRequest = z.object({
 }) satisfies ZodSchema<classes.InviteCreationRequest>;
 
 export const CallCreationRequest = z.object({
-	orgId: schemas.id,
-	agentId: schemas.id,
-	recipient: Recipient,
-	time: schemas.timeRange,
-	notes: InviteNotes.extend({byRecipient: z.string().optional()}),
+	inviteId: schemas.id,
+	time: schemas.timestamp,
+	notes: z.object({byRecipient: z.string().optional()}),
 }) satisfies ZodSchema<classes.CallCreationRequest>;

@@ -1,6 +1,6 @@
 import {v4 as newId} from "uuid";
 import {Org, Agent} from "./org.js";
-import {isoStamp, timeRange} from "./shared.js";
+import {isoStamp} from "./shared.js";
 
 export interface CallRecipient {
 	name: string;
@@ -12,6 +12,10 @@ export interface CallRecipient {
 export interface InviteNotes {
 	forRecipient?: string;
 	forOrg?: string;
+}
+
+export interface CallNotes {
+	byRecipient?: string;
 }
 
 export class InviteCreationRequest {
@@ -35,40 +39,47 @@ export class Invite extends InviteCreationRequest {
 	}
 }
 
-export class InviteClientData {
-	constructor(
-		public id: string,
-		public org: Pick<Org, "id" | "name" | "color">,
-		public agent: Pick<Agent, "id" | "name" | "department">,
-		public recipient: CallRecipient,
-		public callDuration: number,
-		public expiry: isoStamp,
-		public notes: InviteNotes,
-	) {}
+export class InvitePayload {
+	id: string;
+	org: Pick<Org, "name" | "color">;
+	agent: Pick<Agent, "name" | "department">;
+	recipient: CallRecipient;
+	callDuration: number;
+	expiry: isoStamp;
+	message: string | undefined;
+
+	constructor(invite: Invite, org: Org, agent: Agent) {
+		this.id = invite.id;
+		this.org = {name: org.name, color: org.color};
+		this.agent = {name: agent.name, department: agent.department};
+		this.recipient = invite.recipient;
+		this.callDuration = invite.callDuration;
+		this.expiry = invite.expiry;
+		this.message = invite.notes.forRecipient;
+	}
 }
 
 export class CallCreationRequest {
 	constructor(
-		public orgId: string,
-		public agentId: string,
-		public recipient: CallRecipient,
-		public time: timeRange,
-		public notes: InviteNotes & {
-			byRecipient?: string;
-		},
+		public inviteId: string,
+		public time: isoStamp,
+		public notes: CallNotes,
 	) {}
 }
-export class Call extends CallCreationRequest {
+export class Call {
 	id: string;
+	orgId: string;
+	agentId: string;
+	recipient: CallRecipient;
+	time: isoStamp;
+	notes: InviteNotes & CallNotes;
 
-	constructor(creationRequest: CallCreationRequest) {
-		super(
-			creationRequest.orgId,
-			creationRequest.orgId,
-			creationRequest.recipient,
-			creationRequest.time,
-			creationRequest.notes,
-		);
-		this.id = newId();
+	constructor(invite: Invite, callCreationRequest: CallCreationRequest) {
+		this.id = invite.id;
+		this.orgId = invite.orgId;
+		this.agentId = invite.agentId;
+		this.recipient = invite.recipient;
+		this.time = callCreationRequest.time;
+		this.notes = {...invite.notes, ...callCreationRequest.notes};
 	}
 }
