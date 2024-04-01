@@ -147,6 +147,7 @@ test.describe("Invites", () => {
 				const newRow = page.getByTestId("invitesTable").locator("tr:nth-child(2)");
 
 				async function validateNewRow() {
+					// TODO: more thorough validation once settled on design
 					await expect(newRow.locator("> :nth-child(2)")).toContainText(inviteData.recipient.name.valid[i]);
 					await expect(newRow.locator("> :nth-child(3)")).toContainText(inviteData.recipient.phone.number.valid[i]);
 					// omitting callDuration test pending upcoming project-wide test refactors
