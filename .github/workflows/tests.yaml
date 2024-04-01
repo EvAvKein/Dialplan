@@ -12,6 +12,7 @@ on:
 
 jobs:
   Jest:
+    name: Jest (Unit & Integration)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +22,7 @@ jobs:
         run: npm run installAll && npm run jest
 
   Playwright:
+    name: Playwright (API & E2E)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
