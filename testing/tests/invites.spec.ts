@@ -151,8 +151,7 @@ test.describe("Invites", () => {
 					await expect(newRow.locator("> :nth-child(2)")).toContainText(inviteData.recipient.name.valid[i]);
 					await expect(newRow.locator("> :nth-child(3)")).toContainText(inviteData.recipient.phone.number.valid[i]);
 					// omitting callDuration test pending upcoming project-wide test refactors
-					console.log(new Date(inviteData.expiry.valid[i]).toLocaleString().replace(":00", ""));
-					expect(new Date(await newRow.locator("> :nth-child(4)").innerText()).toLocaleString()).toBe(
+					expect(new Date(await newRow.locator("> :nth-child(5)").innerText()).toLocaleString()).toBe(
 						// doing conversion of innerText because the locales are somehow different between the test runner and the tests' browser
 						new Date(inviteData.expiry.valid[i]).toLocaleString(),
 					);
