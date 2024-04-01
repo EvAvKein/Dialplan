@@ -11,7 +11,7 @@ on:
       - "**.md"
 
 jobs:
-  "Jest (Unit & Integration)":
+  Jest (Unit & Integration):
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
       - name: Launch tests
         run: npm run installAll && npm run jest
 
-  "Playwright (API & E2E)":
+  Playwright (API & E2E):
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
