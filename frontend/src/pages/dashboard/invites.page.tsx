@@ -49,6 +49,17 @@ export default function Invites_Dashboard() {
 		},
 	});
 
+	function copyIdToClipboard(id: string) {
+		navigator.clipboard
+			.writeText(id)
+			.then(() => {
+				notifs.create({text: "Invite ID copied", desirability: true});
+			})
+			.catch(() => {
+				notifs.create({text: "Failed to copy invite ID", desirability: false});
+			});
+	}
+
 	async function submit() {
 		if (
 			[
@@ -107,7 +118,9 @@ export default function Invites_Dashboard() {
 					<p className={styles.invitesPlaceholder}>No pending invites!</p>
 				) : (
 					<table data-testid={"invitesTable"} id={styles.invitesTable}>
+						{/* TODO: replace this with a <ul> of collapsible items */}
 						<tr>
+							<th>ID</th>
 							<th>
 								Client <br /> Name
 							</th>
@@ -124,8 +137,21 @@ export default function Invites_Dashboard() {
 						</tr>
 						{invites.map((invite) => (
 							<tr key={invite.id}>
+								<td>
+									<button className={coreStyles.contentButton} onClick={() => copyIdToClipboard(invite.id)}>
+										📋
+									</button>
+								</td>
 								<td>{invite.recipient.name}</td>
-								<td>+{invite.recipient.phone.countryCode + " " + invite.recipient.phone.number}</td>
+								<td>
+									+{invite.recipient.phone.countryCode + " " + invite.recipient.phone.number}{" "}
+									<a
+										className={coreStyles.contentButton}
+										href={"tel:" + invite.recipient.phone.countryCode + invite.recipient.phone.number}
+									>
+										☎️
+									</a>
+								</td>
 								{/* TODO when adding SSR, replace countryCode and space with 0 if it matches the agent's countryCode */}
 								<td>{secsToReadableDuration(invite.callDuration)}</td>
 								<td>{new Date(invite.expiry).toLocaleString().replace(":00", "")}</td>
