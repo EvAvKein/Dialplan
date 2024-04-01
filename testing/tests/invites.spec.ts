@@ -147,8 +147,8 @@ test.describe("Invites", () => {
 				const newRow = page.getByTestId("invitesTable").locator("tr:nth-child(2)");
 
 				async function validateNewRow() {
-					await expect(newRow.locator("> :nth-child(1)")).toContainText(inviteData.recipient.name.valid[i]);
-					await expect(newRow.locator("> :nth-child(2)")).toContainText(inviteData.recipient.phone.number.valid[i]);
+					await expect(newRow.locator("> :nth-child(2)")).toContainText(inviteData.recipient.name.valid[i]);
+					await expect(newRow.locator("> :nth-child(3)")).toContainText(inviteData.recipient.phone.number.valid[i]);
 					// omitting callDuration test pending upcoming project-wide test refactors
 					console.log(new Date(inviteData.expiry.valid[i]).toLocaleString().replace(":00", ""));
 					expect(new Date(await newRow.locator("> :nth-child(4)").innerText()).toLocaleString()).toBe(
