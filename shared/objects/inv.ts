@@ -14,10 +14,6 @@ export interface InviteNotes {
 	forOrg?: string;
 }
 
-export interface CallNotes {
-	byRecipient?: string;
-}
-
 export class InviteCreationRequest {
 	constructor(
 		public recipient: CallRecipient,
@@ -63,7 +59,7 @@ export class CallCreationRequest {
 	constructor(
 		public inviteId: string,
 		public time: isoStamp,
-		public notes: CallNotes,
+		public note: string,
 	) {}
 }
 export class Call {
@@ -72,7 +68,7 @@ export class Call {
 	agentId: string;
 	recipient: CallRecipient;
 	time: isoStamp;
-	notes: InviteNotes & CallNotes;
+	notes: InviteNotes & {byRecipient?: string};
 
 	constructor(invite: Invite, callCreationRequest: CallCreationRequest) {
 		this.id = invite.id;
@@ -80,6 +76,6 @@ export class Call {
 		this.agentId = invite.agentId;
 		this.recipient = invite.recipient;
 		this.time = callCreationRequest.time;
-		this.notes = {...invite.notes, ...callCreationRequest.notes};
+		this.notes = {...invite.notes, byRecipient: callCreationRequest.note};
 	}
 }
