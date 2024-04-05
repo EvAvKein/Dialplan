@@ -4,6 +4,7 @@ import VisitorLayout from "./pages/_layouts/visitor";
 import Home from "./pages/home.page";
 import SignUp from "./pages/signUp/signUp.page";
 import SignIn from "./pages/signIn/signIn.page";
+import Invite from "./pages/invite/invite.page";
 import AgentLayout from "./pages/_layouts/agent";
 import Dashboard_Invites from "./pages/dashboard/invites.page";
 
@@ -27,6 +28,11 @@ export const router = createBrowserRouter([
 						element: <SignIn />,
 					},
 				],
+			},
+			{
+				path: "/invite/:id",
+				element: <Invite />,
+				index: false,
 			},
 			{
 				element: <AgentLayout />,

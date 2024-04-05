@@ -1,0 +1,180 @@
+.invCard {
+	margin-top: 1rem;
+	color: #121212;
+	background-color: #fefefe;
+	width: clamp(15rem, 100vw, 25rem);
+	min-width: 15rem; /* surprisingly necessary despite clamp */
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.35rem;
+	--placeholderColor: #aaa;
+}
+
+.orgSection {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+	height: 2.75rem;
+}
+.orgName {
+	color: var(--orgColor);
+	text-align: center;
+	font-size: 2.5rem;
+	font-weight: bold;
+}
+.orgLogoPlaceholder {
+	height: 3rem;
+	width: 3rem;
+	margin-top: 0.5rem;
+	border-radius: 3rem;
+	background-color: var(--placeholderColor);
+	border: 0.2rem solid var(--orgColor);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.25rem;
+	padding-bottom: 0.2rem; /* centers the camera emoji */
+}
+
+.agentSection {
+	font-size: 1.25rem;
+	padding-bottom: 0.25rem;
+	border-bottom: 0.1rem solid black;
+	margin-bottom: 0.2rem;
+}
+.agentName,
+.agentDepartment,
+.recipientSection,
+.recipientName,
+.recipientNumber,
+.callDuration {
+	display: inline-block;
+}
+.agentDepartment::after,
+.recipientName::after {
+	content: "-";
+	margin-inline: 0.25rem;
+}
+
+.message {
+	font-family: monospace;
+	margin-top: 0.25rem;
+	padding-bottom: 0.25rem;
+	border-bottom: 0.1rem solid black;
+	margin-bottom: 0.2rem;
+}
+
+.recipientAndCallSection {
+	display: flex;
+	justify-content: space-between;
+}
+
+.callDuration::before {
+	content: "📞";
+}
+
+.schedulingComponentPlaceholder {
+	height: 20rem;
+	width: 100%;
+	background-color: var(--placeholderColor);
+	border: 0.2rem solid var(--orgColor);
+	margin-top: 0.25rem;
+	border-radius: 0.2rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 4rem;
+	transition: filter 0.5s ease-in-out;
+}
+.timeSelected .schedulingComponentPlaceholder {
+	filter: brightness(0.5);
+}
+.schedulingClearButton {
+	border-radius: 0.25rem;
+}
+
+.schedulingExpiry {
+	margin-top: 0.1rem;
+	text-align: center;
+	max-height: 1.1rem;
+	opacity: 1;
+}
+.schedulingExpiry::before,
+.schedulingExpiry::after {
+	opacity: 1;
+	content: "⏳";
+	margin-inline: 0.25rem;
+}
+.schedulingExpiry,
+.schedulingExpiry::before,
+.schedulingExpiry::after {
+	transition:
+		opacity 0.15s ease-in-out 0.25s,
+		max-height 0.15s ease-in-out 0.4s;
+}
+.timeSelected .schedulingExpiry,
+.timeSelected .schedulingExpiry::before,
+.timeSelected .schedulingExpiry::after {
+	pointer-events: none; /* otherwise blocks input */
+	max-height: 0;
+	opacity: 0;
+}
+
+.submitSection {
+	pointer-events: none; /* otherwise blocks ID selection */
+	max-height: 0;
+	opacity: 0;
+	transition:
+		max-height 0.5s ease-in-out,
+		opacity 0.3s ease-in-out 0.1s;
+}
+.timeSelected .submitSection {
+	pointer-events: unset;
+	max-height: 20rem;
+	opacity: 1;
+}
+.submitNoteInput {
+	max-height: 15rem;
+	min-height: 1.75rem;
+	resize: vertical;
+	margin-top: 0.25rem;
+	width: 100%;
+	box-sizing: border-box;
+	border: 0.1rem dashed black;
+	padding: 0.25rem;
+	transition: border-width 0.25s ease-in-out;
+}
+.submitNoteInput:focus {
+	outline: 0.15rem solid black;
+	outline-offset: 0.1rem;
+}
+.submitButton {
+	display: block;
+	margin-left: auto;
+	color: white;
+	background-color: var(--orgColor);
+	border: 0.25rem solid var(--orgColor);
+	padding: 0.25rem;
+	transition: all 0.25s ease-in-out;
+}
+.submitButton:hover,
+.submitButton:focus {
+	color: var(--orgColor);
+	background-color: white;
+}
+
+.inviteId {
+	user-select: all;
+	text-align: center;
+	margin-top: 0.2rem;
+	display: block;
+	font-size: 0.6rem;
+	height: 1em;
+	transition: all 0.25s ease-in;
+}
+.timeSelected .inviteId {
+	margin-right: auto;
+	transform: translateX(-25%) translateY(-0.75rem);
+	height: 0;
+	margin: 0;
+	transition: all 0.25s ease-in 0.25s;
+}
