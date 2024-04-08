@@ -6,7 +6,9 @@ import SignUp from "./pages/signUp/signUp.page";
 import SignIn from "./pages/signIn/signIn.page";
 import Invite from "./pages/invite/invite.page";
 import AgentLayout from "./pages/_layouts/agent";
+import DashboardLayout from "./pages/_layouts/dashboard";
 import Dashboard_Invites from "./pages/dashboard/invites.page";
+import Dashboard_Calls from "./pages/dashboard/calls.page";
 
 export const router = createBrowserRouter([
 	{
@@ -36,15 +38,21 @@ export const router = createBrowserRouter([
 			},
 			{
 				element: <AgentLayout />,
-				path: "/dashboard",
 				children: [
 					{
-						index: true,
-						loader: async () => redirect("/dashboard/invites"),
-					},
-					{
-						path: "invites",
-						element: <Dashboard_Invites />,
+						element: <DashboardLayout />,
+						path: "/dashboard",
+						children: [
+							{
+								index: true,
+								loader: async () => redirect("/dashboard/invites"),
+							},
+							{
+								path: "invites",
+								element: <Dashboard_Invites />,
+							},
+							{path: "calls", element: <Dashboard_Calls />},
+						],
 					},
 				],
 			},
