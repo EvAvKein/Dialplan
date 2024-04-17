@@ -29,7 +29,9 @@ textarea.input {
 	font-size: 1.5em;
 	color: var(--midColor);
 	cursor: text;
-	transition: all 250ms;
+	transition:
+		color 250ms,
+		font-size 250ms;
 }
 .labelWrapper:focus-within .label,
 .labelWrapper :first-child:not(:placeholder-shown) + .label,
@@ -38,7 +40,9 @@ textarea.input {
 	text-decoration: underline var(--midColor);
 	font-size: 0.65em;
 	cursor: default;
-	transition: all 150ms;
+	transition:
+		color 150ms,
+		font-size 150ms;
 }
 
 .labelWrapper :first-child {
@@ -48,7 +52,7 @@ textarea.input {
 .labelWrapper,
 .input {
 	border-left: 0em solid var(--textColor);
-	transition: all 150ms ease-in-out;
+	transition: border 150ms ease-in-out;
 }
 .labelWrapper:focus-within,
 .input:focus {
