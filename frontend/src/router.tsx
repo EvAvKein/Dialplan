@@ -15,6 +15,11 @@ export const router = createBrowserRouter([
 		element: <Core />,
 		children: [
 			{
+				path: "/invite/:id",
+				element: <Invite />,
+				index: false,
+			},
+			{
 				element: <VisitorLayout />,
 				children: [
 					{
@@ -30,11 +35,6 @@ export const router = createBrowserRouter([
 						element: <SignIn />,
 					},
 				],
-			},
-			{
-				path: "/invite/:id",
-				element: <Invite />,
-				index: false,
 			},
 			{
 				element: <AgentLayout />,
