@@ -12,7 +12,12 @@ test.describe("Sign Up", async () => {
 				await page.goto("/");
 
 				const response = await signUp(context.request, {
-					org: {name: orgData.name.invalid[i], color: orgData.color.invalid[i]},
+					org: {
+						name: orgData.name.invalid[i],
+						color: orgData.color.invalid[i],
+						customInvCss: orgData.customInvCss.invalid[i],
+						customInvCssOverrides: orgData.customInvCssOverrides.invalid[i],
+					},
 					agent: {
 						name: agentData.name.invalid[i],
 						department: agentData.department.invalid[i],
@@ -21,7 +26,7 @@ test.describe("Sign Up", async () => {
 					},
 				});
 
-				await testInvalidBodyResponse(response, 6);
+				await testInvalidBodyResponse(response, 8);
 				expect((await context.cookies()).length).toBeFalsy();
 			});
 
@@ -30,7 +35,12 @@ test.describe("Sign Up", async () => {
 				await page.goto("/");
 
 				const response = await signUp(context.request, {
-					org: {name: orgData.name.valid[1], color: orgData.color.valid[1]},
+					org: {
+						name: orgData.name.valid[1],
+						color: orgData.color.valid[1],
+						customInvCss: orgData.customInvCss.valid[i],
+						customInvCssOverrides: orgData.customInvCssOverrides.valid[i],
+					},
 					agent: {
 						name: agentData.name.valid[1],
 						department: agentData.department.valid[1],

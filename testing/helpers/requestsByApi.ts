@@ -13,6 +13,8 @@ export async function signUp(request: Request, creationData?: partialCreationDuo
 			org: {
 				name: creationData?.org?.name ?? randomAlphanumString(8),
 				color: creationData?.org?.color ?? "654321",
+				customInvCss: creationData?.org?.customInvCss ?? "",
+				customInvCssOverrides: creationData?.org?.customInvCssOverrides ?? false,
 			},
 			agent: {
 				name: creationData?.agent?.name ?? randomAlphanumString(15),

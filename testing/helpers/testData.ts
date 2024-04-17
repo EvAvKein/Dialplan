@@ -30,6 +30,38 @@ export const orgData: validityDataObj<Org, "id"> = {
 		valid: ["123456", "abcdef", "ABCDEF", "1b3D5f"],
 		invalid: ["#123456", "12345", "1234567", "5e6f7g"],
 	},
+	customInvCss: {
+		valid: [
+			"",
+			"* {color: red}",
+			`
+		.agentSection {
+		 background-color: #123456;
+		}
+
+		.orgSection {
+		 background-color: #abcdef;
+		}
+	 
+	 `,
+			`
+			.inviteId {
+				--color: #aaa; /* surprisingly necessary despite clamp */
+				color: var(--color);
+			}
+		`,
+		],
+		invalid: [
+			"@import url('https://example.com/malice.css');",
+			"background-image: url('javascript:alert(\"XSS\")');",
+			"background-image: url('data:text/javascript;base64,YWxlcnQoIlhTUyIpOw==');",
+			"behavior: url('https://example.com/malicious-behavior.htc');",
+		],
+	},
+	customInvCssOverrides: {
+		valid: [true, false, true, false],
+		invalid: [1, 0, "true", "false"] as unknown as dataset<boolean>,
+	},
 };
 
 export const agentData: validityDataObj<Agent, "id" | "orgId" | "internals"> = {
