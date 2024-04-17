@@ -1,7 +1,9 @@
 CREATE TABLE IF NOT EXISTS "Org" (
     "id" UUID PRIMARY KEY NOT NULL,
     "name" TEXT NOT NULL,
-    "color" CHAR(6) NOT NULL
+    "color" CHAR(6) NOT NULL,
+    "customInvCss" TEXT NOT NULL,
+    "customInvCssOverrides" BOOLEAN NOT NULL
     -- "availability" JSONB NOT NULL
 );
 

@@ -22,12 +22,38 @@
 	text-align: center;
 }
 
-.page > div {
+.page > div,
+.page > details > div {
 	font-size: 1.5rem;
 }
 
 .page > * + * {
 	margin-top: 1rem;
+}
+
+details {
+	padding: 0.5rem 0.75rem;
+	border: 0.1rem dashed var(--textColor);
+}
+
+details summary {
+	margin: 0;
+}
+
+#orgCustomCssOverridesLabel {
+	cursor: pointer;
+	margin-block: 0.5rem;
+}
+#orgCustomCssLinks {
+	font-size: 0.75rem;
+}
+#orgCustomCssLinks a {
+	text-decoration: underline;
+}
+#orgCustomCssOverridesLabel,
+#orgCustomCssLinks {
+	display: flex;
+	justify-content: space-between;
 }
 
 #buttonsWrapper {

@@ -46,6 +46,8 @@ export class OrgCreationRequest {
 	constructor(
 		public name: string,
 		public color: string,
+		public customInvCss: string,
+		public customInvCssOverrides: boolean,
 		// public availability: availability,
 	) {}
 }
@@ -53,7 +55,12 @@ export class Org extends OrgCreationRequest {
 	id: string;
 
 	constructor(creationRequest: OrgCreationRequest) {
-		super(creationRequest.name, creationRequest.color /* creationRequest.availability*/);
+		super(
+			creationRequest.name,
+			creationRequest.color,
+			creationRequest.customInvCss,
+			creationRequest.customInvCssOverrides /* creationRequest.availability*/,
+		);
 		this.id = newId();
 	}
 }

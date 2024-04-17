@@ -2,7 +2,7 @@ import {type nestedRecord} from "../../../../shared/helpers/dataRecord";
 import {type OrgAgentCreationDuo} from "../../../../shared/objects/org";
 import {apiFetch} from "../../helpers/apiFetch";
 import {useState} from "react";
-import {LabelledInput, SearchableInput} from "../../components/inputs";
+import {LabelledInput, LabelledTextarea, SearchableInput} from "../../components/inputs";
 import {timezones} from "../../../../shared/objects/timezones";
 import * as regex from "../../../../shared/objects/validationRegex";
 import {useNotifStore} from "../../stores/notifs";
@@ -24,6 +24,8 @@ export default function SignUp() {
 		org: {
 			name: "",
 			color: getComputedStyle(document.body).getPropertyValue("--backgroundColor").slice(1),
+			customInvCss: "",
+			customInvCssOverrides: "false",
 		},
 		agent: {
 			name: "",
@@ -37,6 +39,8 @@ export default function SignUp() {
 		org: {
 			name: false,
 			color: true,
+			customInvCss: true,
+			customInvCssOverrides: true,
 		},
 		agent: {
 			name: false,
@@ -49,6 +53,8 @@ export default function SignUp() {
 		org: {
 			name: regex.org.name,
 			color: regex.org.color,
+			customInvCss: regex.org.customInvCss,
+			customInvCssOverrides: /true|false/,
 		},
 		agent: {
 			name: regex.agent.name,
@@ -61,12 +67,14 @@ export default function SignUp() {
 	function processNewInput<
 		K extends keyof typeof patterns,
 		K2 extends keyof (typeof patterns)[K] = keyof (typeof patterns)[K],
-	>(pageKey: K, fieldKey: K2, newValue: string) {
-		const pattern = patterns[pageKey][fieldKey];
-		const validity = pattern.test(newValue);
+	>(pageKey: K, fieldKey: K2, newValue: string, alwaysValid?: true) {
+		if (!alwaysValid) {
+			const pattern = patterns[pageKey][fieldKey];
+			const validity = pattern.test(newValue);
+			setDataValidity({...dataValidity, [pageKey]: {...dataValidity[pageKey], [fieldKey]: validity}});
+		}
 
 		setFormData({...formData, [pageKey]: {...formData[pageKey], [fieldKey]: newValue}});
-		setDataValidity({...dataValidity, [pageKey]: {...dataValidity[pageKey], [fieldKey]: validity}});
 	}
 
 	async function submit() {
@@ -81,7 +89,7 @@ export default function SignUp() {
 		}
 
 		const response = await apiFetch("POST", "/orgs", {
-			...formData,
+			org: {...formData.org, customInvCssOverrides: formData.org.customInvCssOverrides === "true"},
 			agent: {...formData.agent, internals: {permissions: {}}},
 		} satisfies OrgAgentCreationDuo);
 
@@ -126,6 +134,47 @@ export default function SignUp() {
 								defaultValue={"#" + formData.org.color}
 								handler={(value) => processNewInput("org", "color", value.slice(1))}
 							/>
+							<details>
+								<summary>Custom invitation style (CSS)</summary>
+								<label id={styles.orgCustomCssOverridesLabel}>
+									<span>Override default styles:</span>
+									<input
+										data-testid="orgCustomCssOverridesCheckbox"
+										type="checkbox"
+										defaultValue={formData.org.customInvCssOverrides.toString()}
+										onInput={(event) =>
+											processNewInput("org", "customInvCssOverrides", String(event.currentTarget.checked), true)
+										}
+									/>
+								</label>
+								{/* TODO: replace with syntax-highlighted editor (likely "codemirror") */}
+								<LabelledTextarea
+									label={"Custom CSS"}
+									id={"orgCustomCssInput"}
+									data-testId={"orgCustomCssInput"}
+									collapsedLabel={true}
+									defaultValue={formData.org.customInvCss}
+									handler={(value) => processNewInput("org", "customInvCss", value)}
+								/>
+								<div id={styles.orgCustomCssLinks}>
+									<a
+										className={coreStyles.contentButton}
+										target={"_blank"}
+										rel={"noreferrer"}
+										href="https://github.com/EvAvKein/Dialplan/blob/main/frontend/src/components/inviteCard.tsx"
+									>
+										Markup (TSX)
+									</a>
+									<a
+										className={coreStyles.contentButton}
+										target={"_blank"}
+										rel={"noreferrer"}
+										href="https://github.com/EvAvKein/Dialplan/blob/main/frontend/src/components/inviteCard.css"
+									>
+										Default styles
+									</a>
+								</div>
+							</details>
 						</section>
 					)}
 					{page === "agent" && (

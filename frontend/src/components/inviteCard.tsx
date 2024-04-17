@@ -1,7 +1,7 @@
 import {InvitePayload} from "../../../shared/objects/inv";
 import {secsToReadableDuration} from "../helpers/secsToReadableDuration";
 import {useState} from "react";
-import styles from "./inviteCard.module.css";
+import defaultStyles from "./inviteCard.css?raw";
 
 export function InviteCard({invite}: {invite: InvitePayload}) {
 	document.documentElement.style.setProperty("--orgColor", invite.org.color ? "#" + invite.org.color : "#000000");
@@ -15,59 +15,62 @@ export function InviteCard({invite}: {invite: InvitePayload}) {
 	}
 
 	return (
-		<section className={styles.invCard + (selectedCallTime ? " " + styles.timeSelected : "")}>
-			<section className={styles.orgSection}>
-				<div className={styles.orgLogoPlaceholder}>📷</div>
-				<h1 className={styles.orgName}>{invite.org.name}</h1>
+		<section className={"invCard" + (selectedCallTime ? " timeSelected" : "")}>
+			{!invite.org.customInvCssOverrides && <style>{defaultStyles}</style>}
+			{invite.org.customInvCss && <style>{invite.org.customInvCss}</style>}
+
+			<section className={"orgSection"}>
+				<div className={"orgLogoPlaceholder"}>📷</div>
+				<h1 className={"orgName"}>{invite.org.name}</h1>
 			</section>
 
-			<section className={styles.agentSection}>
-				<div className={styles.agentDepartment}>{invite.agent.department}</div>
-				<div className={styles.agentName}>{invite.agent.name}</div>
+			<section className={"agentSection"}>
+				<div className={"agentDepartment"}>{invite.agent.department}</div>
+				<div className={"agentName"}>{invite.agent.name}</div>
 			</section>
 
-			{invite.message && <p className={styles.message}>{invite.message}</p>}
+			<p className={"message"}>{invite.message}</p>
 
-			<section className={styles.recipientAndCallSection}>
-				<div className={styles.recipientSection}>
-					<div className={styles.recipientName}>{invite.recipient.name}</div>
-					<div className={styles.recipientNumber}>
+			<section className={"recipientAndCallSection"}>
+				<div className={"recipientSection"}>
+					<div className={"recipientName"}>{invite.recipient.name}</div>
+					<div className={"recipientNumber"}>
 						<span>{invite.recipient.phone.countryCode}</span>
 						<span>{invite.recipient.phone.number}</span>
 					</div>
 				</div>
 
-				<div aria-description="Duration of phone call" className={styles.callDuration}>
+				<div aria-description="Duration of phone call" className={"callDuration"}>
 					{secsToReadableDuration(invite.callDuration)}
 				</div>
 			</section>
 
-			<section className={styles.schedulingSection}>
+			<section className={"schedulingSection"}>
 				<button
-					className={styles.schedulingComponentPlaceholder}
+					className={"schedulingComponentPlaceholder"}
 					onClick={() => setSelectedCallTime(selectedCallTime ? "" : "timestamp")}
 				>
 					{selectedCallTime ? "Clear" : "🗓️"}
 				</button>
-				<p aria-description="Call invitation's expiration time" className={styles.schedulingExpiry}>
+				<p aria-description="Call invitation's expiration time" className={"schedulingExpiry"}>
 					{new Date(invite.expiry).toLocaleDateString()}
 				</p>
 			</section>
 
-			<section className={styles.submitSection}>
+			<section className={"submitSection"}>
 				<textarea
 					aria-label={"Optional message to " + invite.org.name}
 					placeholder={"Add message?"}
-					className={styles.submitNoteInput}
+					className={"submitNoteInput"}
 					onInput={(event) => setMessageToOrg(event.currentTarget.value)}
 				/>
 
-				<button className={styles.submitButton} onClick={submitInviteAccept}>
+				<button className={"submitButton"} onClick={submitInviteAccept}>
 					Submit
 				</button>
 			</section>
 
-			<div className={styles.inviteId}>{invite.id}</div>
+			<div className={"inviteId"}>{invite.id}</div>
 		</section>
 	);
 }

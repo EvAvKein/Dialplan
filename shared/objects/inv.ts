@@ -37,7 +37,7 @@ export class Invite extends InviteCreationRequest {
 
 export class InvitePayload {
 	id: string;
-	org: Pick<Org, "name" | "color">;
+	org: Pick<Org, "name" | "color" | "customInvCss" | "customInvCssOverrides">;
 	agent: Pick<Agent, "name" | "department">;
 	recipient: CallRecipient;
 	callDuration: number;
@@ -46,7 +46,12 @@ export class InvitePayload {
 
 	constructor(invite: Invite, org: Org, agent: Agent) {
 		this.id = invite.id;
-		this.org = {name: org.name, color: org.color};
+		this.org = {
+			name: org.name,
+			color: org.color,
+			customInvCss: org.customInvCss,
+			customInvCssOverrides: org.customInvCssOverrides,
+		};
 		this.agent = {name: agent.name, department: agent.department};
 		this.recipient = invite.recipient;
 		this.callDuration = invite.callDuration;

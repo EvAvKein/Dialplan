@@ -24,9 +24,9 @@ export function endpoints_orgs(app: Express, db: Pool, dbP: pgpPool) {
 			.tx(async (statement) => {
 				await statement.none(
 					`INSERT INTO "Org"
-					("id", "name", "color")
-					VALUES ($1, $2, $3);`,
-					[org.id, org.name, org.color],
+					("id", "name", "color", "customInvCss", "customInvCssOverrides")
+					VALUES ($1, $2, $3, $4, $5);`,
+					[org.id, org.name, org.color, org.customInvCss, org.customInvCssOverrides],
 				);
 				await statement.none(
 					`INSERT INTO "Agent"

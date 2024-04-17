@@ -9,6 +9,8 @@ const OrgCreationRequest = z.object({
 	// not exported as it should never be accepted without being part of a OrgAgentCreationDuo
 	name: z.string().trim().regex(org.name),
 	color: z.string().trim().regex(org.color),
+	customInvCss: z.string().trim().regex(org.customInvCss),
+	customInvCssOverrides: z.boolean(),
 	// availability: schemas.availability,
 }) satisfies ZodSchema<classes.OrgCreationRequest>;
 

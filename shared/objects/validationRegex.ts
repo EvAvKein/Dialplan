@@ -10,9 +10,10 @@ export const shared = {
 	timezone: new RegExp(timezoneValues.reduce((prev, current) => prev + "|" + current)),
 };
 
-export const org: Omit<Record<keyof Org, RegExp>, "id"> = {
+export const org: Omit<Record<keyof Org, RegExp>, "id" | "customInvCssOverrides"> = {
 	name: /^(?!\s)[\w '\-]{1,30}(?<!\s)$/u,
 	color: /^[0-9a-fA-F]{6}$/,
+	customInvCss: /^(?!.*(?:behavior:|expression|javascript:|data:|.js|@import|url\\()))[\s\S]{0,10000}$/,
 };
 
 export const agent: Omit<Record<keyof Agent, RegExp>, "id" | "orgId" | "internals"> = {
