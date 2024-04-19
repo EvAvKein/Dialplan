@@ -1,3 +1,5 @@
+/* TODO: improve variable/value management (current was copied except for syntax styles) */
+
 /* Editor base styles */
 div.cm-editor {
 	--ivory: #abb2bf;
