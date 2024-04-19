@@ -10,7 +10,7 @@
 	background-color: transparent;
 	transition: background-color 200ms ease-in-out;
 }
-.contentButton:is(:hover, :focus) {
+.contentButton:is(:hover, :focus, :focus-within) {
 	background-color: color-mix(in srgb, var(--midColor) 33%, transparent 67%);
 }
 
@@ -27,11 +27,11 @@
 	background-color: transparent;
 	transition: all 200ms ease-in-out;
 }
-.borderButton:is(:hover, :focus) {
+.borderButton:is(:hover, :focus, :focus-within) {
 	color: var(--backgroundColor);
 	background-color: var(--textColor);
 }
-.borderButton:is(:hover, :focus) svg {
+.borderButton:is(:hover, :focus, :focus-within) svg {
 	fill: var(--backgroundColor);
 }
 
@@ -43,10 +43,10 @@
 	background-color: var(--accentColor);
 	transition: all 200ms ease-in-out;
 }
-.backgroundButton:is(:hover, :focus) {
+.backgroundButton:is(:hover, :focus, :focus-within) {
 	color: var(--backgroundColor);
 	background-color: var(--textColor);
 }
-.backgroundButton:is(:hover, :focus) svg {
+.backgroundButton:is(:hover, :focus, :focus-within) svg {
 	fill: var(--backgroundColor);
 }
