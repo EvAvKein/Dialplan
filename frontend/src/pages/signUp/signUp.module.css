@@ -31,12 +31,13 @@
 	margin-top: 1rem;
 }
 
-details {
+.orgCustomCssSection {
 	padding: 0.5rem 0.75rem;
 	border: 0.1rem dashed var(--textColor);
 }
 
-details summary {
+.orgCustomCssSection summary {
+	display: revert;
 	margin: 0;
 }
 
@@ -49,7 +50,15 @@ details summary {
 	color: unset;
 	background-color: unset;
 }
+#cssEditor:focus-within {
+	outline: 0.1em solid var(--midColor);
+}
+#cssEditor > * {
+	outline: none;
+}
+
 #orgCustomCssLinks {
+	margin-top: 0.5rem;
 	font-size: 0.75rem;
 }
 #orgCustomCssLinks a {

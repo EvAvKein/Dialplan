@@ -147,9 +147,9 @@ export default function SignUp() {
 								defaultValue={"#" + formData.org.color}
 								handler={(value) => processNewInput("org", "color", value.slice(1))}
 							/>
-							<details>
-								<summary>Custom invitation style (CSS)</summary>
-								<label id={styles.orgCustomCssOverridesLabel}>
+							<details className={styles.orgCustomCssSection}>
+								<summary className={coreStyles.contentButton}>Custom invitation style (CSS)</summary>
+								<label id={styles.orgCustomCssOverridesLabel} className={coreStyles.contentButton}>
 									<span>Override default styles:</span>
 									<input
 										data-testid="orgCustomCssOverridesCheckbox"
