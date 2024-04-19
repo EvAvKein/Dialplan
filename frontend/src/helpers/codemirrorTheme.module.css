@@ -1,0 +1,116 @@
+/* Editor base styles */
+div.cm-editor {
+	--ivory: #abb2bf;
+	--stone: #7d8799;
+	--dark-background: #21252b;
+	--highlight-background: #2c313a;
+	--background: #282c34;
+	--tooltip-background: #353a42;
+	--selection: #3e4451;
+	--cursor: #528bff;
+
+	color: var(--ivory);
+	background-color: var(--background);
+}
+
+/* Syntax styles */
+div.cm-editor .ͼc,
+div.cm-editor .ͼd,
+div.cm-editor .ͼb {
+	color: cornflowerblue;
+}
+div.cm-editor .ͼi,
+div.cm-editor .ͼj {
+	color: goldenrod;
+}
+div.cm-editor .ͼm {
+	color: lightcoral;
+}
+
+/* Cursor and selection styles */
+div.cm-editor .cm-content {
+	caret-color: var(--cursor);
+}
+
+div.cm-editor .cm-cursor,
+div.cm-editor .cm-dropCursor {
+	border-left-color: var(--cursor);
+}
+
+div.cm-editor > .cm-scroller > .cm-layer.cm-selectionLayer .cm-selectionBackground {
+	background-color: indigo;
+}
+div.cm-editor > .cm-scroller:active > .cm-layer.cm-selectionLayer .cm-selectionBackground {
+	background-color: purple;
+}
+
+/* Panel styles */
+div.cm-editor .cm-panels {
+	background-color: var(--dark-background);
+	color: var(--ivory);
+}
+
+div.cm-editor .cm-panels.cm-panels-top {
+	border-bottom: 2px solid black;
+}
+
+div.cm-editor .cm-panels.cm-panels-bottom {
+	border-top: 2px solid black;
+}
+
+/* Search match styles */
+div.cm-editor .cm-searchMatch {
+	background-color: rgba(114, 161, 255, 0.38);
+	outline: 1px solid #457dff;
+}
+
+div.cm-editor .cm-searchMatch.cm-searchMatch-selected {
+	background-color: rgba(97, 153, 255, 0.18);
+}
+
+/* Active line and selection match styles */
+div.cm-editor .cm-activeLine {
+	background-color: rgba(102, 153, 255, 0.07);
+}
+
+div.cm-editor .cm-selectionMatch {
+	background-color: rgba(170, 254, 102, 0.1);
+}
+
+/* Matching and non-matching brackets */
+div.cm-editor .cm-focused .cm-matchingBracket,
+div.cm-editor .cm-focused .cm-nonmatchingBracket {
+	background-color: rgba(171, 208, 248, 0.29);
+}
+
+/* Gutter styles */
+div.cm-editor .cm-gutters {
+	background-color: var(--background);
+	color: var(--stone);
+	border: none;
+}
+
+div.cm-editor .cm-activeLineGutter {
+	background-color: var(--highlight-background);
+}
+
+/* Tooltip styles */
+div.cm-editor .cm-tooltip {
+	border: none;
+	background-color: var(--tooltip-background);
+}
+
+div.cm-editor .cm-tooltip .cm-tooltip-arrow:before {
+	border-top-color: transparent;
+	border-bottom-color: transparent;
+}
+
+div.cm-editor .cm-tooltip .cm-tooltip-arrow:after {
+	border-top-color: var(--tooltip-background);
+	border-bottom-color: var(--tooltip-background);
+}
+
+div.cm-editor .cm-tooltip-autocomplete > ul > li[aria-selected] {
+	background-color: var(--highlight-background);
+	color: var(--ivory);
+}

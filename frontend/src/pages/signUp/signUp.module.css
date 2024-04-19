@@ -44,6 +44,11 @@ details summary {
 	cursor: pointer;
 	margin-block: 0.5rem;
 }
+#cssEditor {
+	font-size: unset;
+	color: unset;
+	background-color: unset;
+}
 #orgCustomCssLinks {
 	font-size: 0.75rem;
 }

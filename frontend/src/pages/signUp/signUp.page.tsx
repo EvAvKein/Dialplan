@@ -1,12 +1,15 @@
 import {type nestedRecord} from "../../../../shared/helpers/dataRecord";
 import {type OrgAgentCreationDuo} from "../../../../shared/objects/org";
 import {apiFetch} from "../../helpers/apiFetch";
-import {useState} from "react";
-import {LabelledInput, LabelledTextarea, SearchableInput} from "../../components/inputs";
+import {useState, useRef, useEffect} from "react";
+import {LabelledInput, SearchableInput} from "../../components/inputs";
+import {basicSetup, EditorView} from "codemirror";
+import {css as codemirrorCss} from "@codemirror/lang-css";
 import {timezones} from "../../../../shared/objects/timezones";
 import * as regex from "../../../../shared/objects/validationRegex";
 import {useNotifStore} from "../../stores/notifs";
 import {useNavigate} from "react-router-dom";
+import codeMirrorStyles from "../../helpers/codemirrorTheme.module.css?raw";
 import coreStyles from "../../core.module.css";
 import styles from "./signUp.module.css";
 
@@ -63,6 +66,16 @@ export default function SignUp() {
 			timezone: regex.agent.timezone,
 		},
 	};
+
+	const cssEditorRef = useRef<HTMLDivElement | null>(null);
+	const [cssEditor] = useState(
+		new EditorView({
+			extensions: [basicSetup, codemirrorCss()],
+		}),
+	);
+	useEffect(() => {
+		cssEditorRef.current?.appendChild(cssEditor.dom);
+	}, []);
 
 	function processNewInput<
 		K extends keyof typeof patterns,
@@ -147,14 +160,13 @@ export default function SignUp() {
 										}
 									/>
 								</label>
-								{/* TODO: replace with syntax-highlighted editor (likely "codemirror") */}
-								<LabelledTextarea
-									label={"Custom CSS"}
-									id={"orgCustomCssInput"}
-									data-testId={"orgCustomCssInput"}
-									collapsedLabel={true}
-									defaultValue={formData.org.customInvCss}
-									handler={(value) => processNewInput("org", "customInvCss", value)}
+								<style>{codeMirrorStyles}</style>
+								<div
+									ref={cssEditorRef}
+									id={styles.cssEditor}
+									onInput={() => {
+										processNewInput("org", "customInvCss", cssEditor.state.doc.toString());
+									}}
 								/>
 								<div id={styles.orgCustomCssLinks}>
 									<a
