@@ -116,7 +116,7 @@ test.describe("Invites", () => {
 
 				await testInputInvalidAndValid(
 					page,
-					"newsecCallDuration",
+					"newCallDuration",
 					inviteData.secCallDuration.invalid[i].toString(),
 					inviteData.secCallDuration.valid[i].toString(),
 					failInviteSubmit,
