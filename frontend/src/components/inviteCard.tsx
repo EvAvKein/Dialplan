@@ -68,7 +68,9 @@ export function InviteCard({invite, handler}: {invite: InvitePayload; handler: (
 				</button>
 			</section>
 
-			<div className={"inviteId"}>{invite.id}</div>
+			<div className={"inviteId"} aria-description={"Invite ID"}>
+				{invite.id}
+			</div>
 		</section>
 	);
 }
