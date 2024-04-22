@@ -1,17 +1,15 @@
-import {InvitePayload} from "../../../shared/objects/inv";
+import {CallCreationRequest, InvitePayload} from "../../../shared/objects/inv";
 import {secsToReadableDuration} from "../helpers/secsToReadableDuration";
 import {useState} from "react";
 import defaultStyles from "./inviteCard.css?raw";
 
-export function InviteCard({invite}: {invite: InvitePayload}) {
+export function InviteCard({invite, handler}: {invite: InvitePayload; handler: (output: CallCreationRequest) => void}) {
 	document.documentElement.style.setProperty("--orgColor", invite.org.color ? "#" + invite.org.color : "#000000");
 
 	const [selectedCallTime, setSelectedCallTime] = useState("");
 	const [messageToOrg, setMessageToOrg] = useState("");
-
-	async function submitInviteAccept() {
-		messageToOrg;
-		window.alert("Call creation endpoint not yet implemented");
+	function emitData() {
+		handler({inviteId: invite.id, time: selectedCallTime, note: messageToOrg});
 	}
 
 	return (
@@ -65,7 +63,7 @@ export function InviteCard({invite}: {invite: InvitePayload}) {
 					onInput={(event) => setMessageToOrg(event.currentTarget.value)}
 				/>
 
-				<button className={"submitButton"} onClick={submitInviteAccept}>
+				<button className={"submitButton"} onClick={emitData}>
 					Submit
 				</button>
 			</section>

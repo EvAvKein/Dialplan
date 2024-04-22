@@ -23,7 +23,12 @@ export default function Invite() {
 			) : invite === null ? (
 				<div className={styles.invNotFound}>Invite not found</div>
 			) : (
-				<InviteCard invite={invite} />
+				<InviteCard
+					invite={invite}
+					handler={() => {
+						window.alert("Call creation endpoint not yet implemented!");
+					}}
+				/>
 			)}
 		</div>
 	);
