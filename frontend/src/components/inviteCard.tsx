@@ -41,7 +41,7 @@ export function InviteCard({invite}: {invite: InvitePayload}) {
 				</div>
 
 				<div aria-description="Duration of phone call" className={"callDuration"}>
-					{secsToReadableDuration(invite.callDuration)}
+					{secsToReadableDuration(invite.secCallDuration)}
 				</div>
 			</section>
 

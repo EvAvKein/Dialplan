@@ -36,6 +36,6 @@ export const inviteNotes = {
 };
 export const invite: Omit<recursiveRecord<Invite, RegExp>, "id" | "orgId" | "agentId" | "expiry"> = {
 	recipient: callRecipient,
-	callDuration: /^[1-9][0-9]{0,2}$/,
+	secCallDuration: /^[1-9][0-9]{0,2}$/,
 	notes: inviteNotes,
 };

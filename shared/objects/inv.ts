@@ -17,7 +17,7 @@ export interface InviteNotes {
 export class InviteCreationRequest {
 	constructor(
 		public recipient: CallRecipient,
-		public callDuration: number,
+		public secCallDuration: number,
 		public expiry: isoStamp,
 		public notes: InviteNotes,
 	) {}
@@ -28,7 +28,7 @@ export class Invite extends InviteCreationRequest {
 	agentId: string;
 
 	constructor(creationRequest: InviteCreationRequest, agentId: string, orgId: string) {
-		super(creationRequest.recipient, creationRequest.callDuration, creationRequest.expiry, creationRequest.notes);
+		super(creationRequest.recipient, creationRequest.secCallDuration, creationRequest.expiry, creationRequest.notes);
 		this.agentId = agentId;
 		this.orgId = orgId;
 		this.id = newId();
@@ -40,7 +40,7 @@ export class InvitePayload {
 	org: Pick<Org, "name" | "color" | "customInvCss" | "customInvCssOverrides">;
 	agent: Pick<Agent, "name" | "department">;
 	recipient: CallRecipient;
-	callDuration: number;
+	secCallDuration: number;
 	expiry: isoStamp;
 	message: string | undefined;
 
@@ -54,7 +54,7 @@ export class InvitePayload {
 		};
 		this.agent = {name: agent.name, department: agent.department};
 		this.recipient = invite.recipient;
-		this.callDuration = invite.callDuration;
+		this.secCallDuration = invite.secCallDuration;
 		this.expiry = invite.expiry;
 		this.message = invite.notes.forRecipient;
 	}

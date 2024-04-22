@@ -25,9 +25,9 @@ export function endpoints_invites(app: Express, db: Pool /*dbP: pgpPool*/) {
 
 		await db
 			.query<Invite>(
-				`INSERT INTO "Invite" ("id", "orgId", "agentId", "recipient", "callDuration", "expiry", "notes")
+				`INSERT INTO "Invite" ("id", "orgId", "agentId", "recipient", "secCallDuration", "expiry", "notes")
 				VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-				[invite.id, invite.orgId, agent.id, invite.recipient, invite.callDuration, invite.expiry, invite.notes],
+				[invite.id, invite.orgId, agent.id, invite.recipient, invite.secCallDuration, invite.expiry, invite.notes],
 			)
 			.then(() => {
 				response.status(201).json(new FetchResponse(invite));

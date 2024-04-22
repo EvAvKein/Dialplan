@@ -18,7 +18,7 @@ const InviteNotes = z.object({
 
 export const InviteCreationRequest = z.object({
 	recipient: Recipient,
-	callDuration: z.number().refine((val) => invite.callDuration.test(val.toString())),
+	secCallDuration: z.number().refine((val) => invite.secCallDuration.test(val.toString())),
 	expiry: z.string().trim().datetime({precision: 0}),
 	notes: InviteNotes,
 }) satisfies ZodSchema<classes.InviteCreationRequest>;

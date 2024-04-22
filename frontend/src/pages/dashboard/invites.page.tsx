@@ -25,7 +25,7 @@ export default function Invites_Dashboard() {
 				number: "",
 			},
 		},
-		callDuration: NaN, // i wanted to avoid declaring a default value, and this is an easy type-safe alternative
+		secCallDuration: NaN, // i wanted to avoid declaring a default value, and this is an easy type-safe alternative
 		expiry: "",
 		notes: {
 			forRecipient: "",
@@ -41,7 +41,7 @@ export default function Invites_Dashboard() {
 				number: false,
 			},
 		},
-		callDuration: false,
+		secCallDuration: false,
 		expiry: false,
 		notes: {
 			forRecipient: true,
@@ -66,7 +66,7 @@ export default function Invites_Dashboard() {
 				regex.recipient.name.test(formData.recipient.name),
 				regex.recipient.phone.countryCode.test(formData.recipient.phone.countryCode),
 				regex.recipient.phone.number.test(formData.recipient.phone.number),
-				formData.callDuration,
+				formData.secCallDuration,
 				formData.expiry,
 			].some((value) => !value)
 		) {
@@ -153,7 +153,7 @@ export default function Invites_Dashboard() {
 									</a>
 								</td>
 								{/* TODO when adding SSR, replace countryCode and space with 0 if it matches the agent's countryCode */}
-								<td>{secsToReadableDuration(invite.callDuration)}</td>
+								<td>{secsToReadableDuration(invite.secCallDuration)}</td>
 								<td>{new Date(invite.expiry).toLocaleString().replace(":00", "")}</td>
 								<td>
 									{invite.notes.forOrg || invite.notes.forRecipient ? (
@@ -257,11 +257,11 @@ export default function Invites_Dashboard() {
 							id={"callDuration"}
 							data-testid={"newCallDuration"}
 							type={"number"}
-							aria-invalid={!dataValidity.callDuration}
-							defaultValue={formData.callDuration.toString()}
+							aria-invalid={!dataValidity.secCallDuration}
+							defaultValue={formData.secCallDuration.toString()}
 							handler={(value) => {
-								setFormData({...formData, callDuration: parseInt(value)});
-								setDataValidity({...dataValidity, callDuration: regex.callDuration.test(value)});
+								setFormData({...formData, secCallDuration: parseInt(value)});
+								setDataValidity({...dataValidity, secCallDuration: regex.secCallDuration.test(value)});
 							}}
 						/>
 						<LabelledInput

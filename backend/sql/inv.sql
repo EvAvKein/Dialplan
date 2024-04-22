@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS "Invite" (
     "orgId" UUID REFERENCES "Org"("id") NOT NULL,
     "agentId" UUID REFERENCES "Agent"("id") NOT NULL,
     "recipient" JSON NOT NULL,
-    "callDuration" SMALLINT NOT NULL,
+    "secCallDuration" SMALLINT NOT NULL,
     "expiry" TIMESTAMP NOT NULL,
     "notes" JSON NOT NULL
 );

@@ -115,7 +115,7 @@ export const inviteData: validityDataObj<Invite, "id" | "orgId" | "agentId"> = {
 			},
 		},
 	},
-	callDuration: {
+	secCallDuration: {
 		valid: [1, 23, 456, 999],
 		invalid: [1234, -123, 12.3, 123.4],
 	},

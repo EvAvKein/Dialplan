@@ -22,7 +22,7 @@ test.describe("Invites", () => {
 								number: inviteData.recipient.phone.number.invalid[i],
 							},
 						},
-						callDuration: inviteData.callDuration.invalid[i],
+						secCallDuration: inviteData.secCallDuration.invalid[i],
 						expiry: inviteData.expiry.invalid[i],
 						notes: {
 							forRecipient: inviteData.notes.forRecipient?.invalid[i],
@@ -52,7 +52,7 @@ test.describe("Invites", () => {
 								number: inviteData.recipient.phone.number.valid[i],
 							},
 						},
-						callDuration: inviteData.callDuration.valid[i],
+						secCallDuration: inviteData.secCallDuration.valid[i],
 						expiry: inviteData.expiry.valid[i],
 						notes: {
 							forRecipient: inviteData.notes.forRecipient?.valid[i],
@@ -116,9 +116,9 @@ test.describe("Invites", () => {
 
 				await testInputInvalidAndValid(
 					page,
-					"newCallDuration",
-					inviteData.callDuration.invalid[i].toString(),
-					inviteData.callDuration.valid[i].toString(),
+					"newsecCallDuration",
+					inviteData.secCallDuration.invalid[i].toString(),
+					inviteData.secCallDuration.valid[i].toString(),
 					failInviteSubmit,
 				);
 
@@ -150,7 +150,7 @@ test.describe("Invites", () => {
 					// TODO: more thorough validation once settled on design
 					await expect(newRow.locator("> :nth-child(2)")).toContainText(inviteData.recipient.name.valid[i]);
 					await expect(newRow.locator("> :nth-child(3)")).toContainText(inviteData.recipient.phone.number.valid[i]);
-					// omitting callDuration test pending upcoming project-wide test refactors
+					// omitting secCallDuration test pending upcoming project-wide test refactors
 					expect(new Date(await newRow.locator("> :nth-child(5)").innerText()).toLocaleString()).toBe(
 						// doing conversion of innerText because the locales are somehow different between the test runner and the tests' browser
 						new Date(inviteData.expiry.valid[i]).toLocaleString(),
