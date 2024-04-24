@@ -31,7 +31,7 @@ describe("Test core components", () => {
 			"month",
 			"week",
 		]) {
-			const {container} = render(Input({handler: () => {}, type}));
+			const {container} = render(<Input handler={() => {}} type={type} />);
 			expect(container.querySelector(`input[type="${type}"]`)).toBeInTheDocument();
 		}
 	});
@@ -39,7 +39,7 @@ describe("Test core components", () => {
 	for (const input of [Input, Textarea]) {
 		it(`${input.name} renders`, () => {
 			const fn = jest.fn();
-			render(input({handler: fn}));
+			render(<Input handler={fn} />);
 			expect(screen.getByRole("textbox")).toBeInTheDocument();
 		});
 
@@ -58,15 +58,15 @@ describe("Test core components", () => {
 });
 
 describe("Test labelled inputs", () => {
-	for (const input of [LabelledInput, LabelledTextarea]) {
-		it(`${input.name} renders with label`, () => {
-			render(LabelledInput({handler: () => {}, label: "Label", id: "id"}));
+	for (const LblInp of [LabelledInput, LabelledTextarea]) {
+		it(`${LblInp.name} renders with label`, () => {
+			render(<LblInp handler={() => {}} label={"Label"} id={"id"} />);
 			expect(screen.getByRole("textbox")).toBeInTheDocument();
 			expect(screen.getByLabelText("Label")).toBeInTheDocument();
 		});
 
-		it(`${input.name} receives focus when label is clicked`, () => {
-			render(input({handler: () => {}, label: "Label", id: "inputId"}));
+		it(`${LblInp.name} receives focus when label is clicked`, () => {
+			render(<LblInp handler={() => {}} label={"Label"} id={"id"} />);
 			const inputElem = screen.getByRole("textbox");
 			const label = screen.getByLabelText("Label");
 
@@ -80,7 +80,7 @@ describe("Test SearchableInput", () => {
 	it("SearchableInput renders without label", () => {
 		const placeholder = randomAlphanumString(10);
 
-		const {container} = render(SearchableInput({handler: () => {}, label: placeholder, id: "id", options: []}));
+		const {container} = render(<SearchableInput handler={() => {}} label={placeholder} id={"id"} options={[]} />);
 
 		const input = screen.getByRole("combobox");
 		expect(input).toBeInTheDocument();
@@ -93,7 +93,7 @@ describe("Test SearchableInput", () => {
 		const labelText = randomAlphanumString(10);
 
 		const {container} = render(
-			SearchableInput({handler: () => {}, label: labelText, id: "id", labelled: true, options: []}),
+			<SearchableInput handler={() => {}} label={labelText} id={"id"} labelled={true} options={[]} />,
 		);
 
 		expect(screen.getByRole("combobox")).toBeInTheDocument();
@@ -101,7 +101,7 @@ describe("Test SearchableInput", () => {
 	});
 
 	it("SearchableInput's input receives focus when label is clicked", () => {
-		render(SearchableInput({handler: () => {}, label: "Label", id: "id", labelled: true, options: []}));
+		render(<SearchableInput handler={() => {}} label={"Label"} id={"id"} labelled={true} options={[]} />);
 
 		fireEvent.click(screen.getByLabelText("Label"));
 		waitFor(() => expect(screen.getByRole("combobox")).toHaveFocus());
@@ -113,12 +113,13 @@ describe("Test SearchableInput", () => {
 		const options = Array.from({length: optionsCount}, () => randomAlphanumString(optionLength));
 
 		const {container} = render(
-			SearchableInput({
-				handler: () => {},
-				label: "SearchableInput",
-				id: "id",
-				options: options.map((value) => ({value, text: value})),
-			}),
+			<SearchableInput
+				handler={() => {}}
+				label={"SearchableInput"}
+				id={"id"}
+				labelled={true}
+				options={options.map((value) => ({value, text: value}))}
+			/>,
 		);
 
 		expect(container.querySelector("datalist")?.childNodes.length).toBe(optionsCount);
