@@ -3,6 +3,7 @@ import {type OrgAgentCreationDuo} from "../../../../shared/objects/org";
 import {apiFetch} from "../../helpers/apiFetch";
 import {useState, useRef, useEffect} from "react";
 import {LabelledInput, SearchableInput} from "../../components/inputs";
+import {InviteCard} from "../../components/inviteCard";
 import {basicSetup, EditorView} from "codemirror";
 import {css as codemirrorCss} from "@codemirror/lang-css";
 import {timezones} from "../../../../shared/objects/timezones";
@@ -22,6 +23,8 @@ export default function SignUp() {
 	type formRecord<T = unknown> = nestedRecord<pages, T>;
 
 	const [page, setPage] = useState<pageKey>("org");
+
+	const [previewOpen, setPreviewOpen] = useState(false);
 
 	const [formData, setFormData] = useState<formRecord<string>>({
 		org: {
@@ -121,7 +124,7 @@ export default function SignUp() {
 	return (
 		<section id={styles.signUpWrapper}>
 			<h2>Sign Up</h2>
-			<form onSubmit={(event) => event.preventDefault()}>
+			<form id={styles.signUpForm} onSubmit={(event) => event.preventDefault()}>
 				<div id={styles.pagesWrapper}>
 					{page === "org" && (
 						<section className={styles.page}>
@@ -264,8 +267,52 @@ export default function SignUp() {
 					)}
 				</div>
 			</form>
-			<section id="invitePreview">
-				{/* will be replaced with the same component as the recipient-view invite, for preview during registration */}
+			<section id={styles.invitePreview} className={previewOpen ? styles.previewOpen : ""}>
+				<button
+					className={coreStyles.backgroundButton + " " + styles.previewToggle}
+					onClick={() => setPreviewOpen(!previewOpen)}
+				>
+					Invite Preview
+				</button>
+				<h3>Invite Preview</h3>
+				<section>
+					<InviteCard
+						invite={{
+							id: "3512c283-sample_id-b01c-dc2ede118f7a",
+							org: {
+								name: formData.org.name || "[Company]",
+								color: formData.org.color,
+								customInvCss: formData.org.customInvCss,
+								customInvCssOverrides: formData.org.customInvCssOverrides === "true",
+							},
+							agent: {
+								name: formData.agent.name || "[Agent]",
+								department: formData.agent.department || "[Department]",
+							},
+							recipient: {
+								name: "[Recipient Name]",
+								phone: {
+									countryCode: "0",
+									number: "12345678",
+								},
+							},
+							secCallDuration: 1234,
+							expiry: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toISOString(),
+							message: "[Message to the invite recipient, optional]",
+						}}
+						handler={(call) => {
+							if (!call.time) {
+								notifs.create({
+									text: "No call time selected, you'd be able allow this (if the recipient types a message) through your org's settings",
+									desirability: false,
+									manualDismiss: true,
+								});
+								return;
+							}
+							notifs.create({text: "Call would be added to your org's and agent's schedule", desirability: true});
+						}}
+					/>
+				</section>
 			</section>
 		</section>
 	);
