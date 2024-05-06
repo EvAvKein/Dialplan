@@ -1,5 +1,5 @@
 .invCard {
-	margin-top: 1rem;
+	margin: 1rem auto 0;
 	color: #121212;
 	background-color: #fefefe;
 	width: clamp(15rem, 100vw, 25rem);
