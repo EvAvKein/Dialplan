@@ -21,6 +21,12 @@ jobs:
       - name: Launch tests
         run: npm run installAll && npm run jest
 
+      - uses: actions/upload-artifact@v3
+        with:
+          name: jest-coverage
+          path: ./coverage
+          retention-days: 30
+
   Playwright:
     name: Playwright (API & E2E)
     runs-on: ubuntu-latest

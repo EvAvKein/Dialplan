@@ -1,5 +1,6 @@
 node_modules
 dist
+.coverage
 
 testing/test-results/
 testing/playwright-report/
