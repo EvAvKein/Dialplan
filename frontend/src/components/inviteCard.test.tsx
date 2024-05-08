@@ -32,6 +32,8 @@ describe("InviteCard", () => {
 	it("Render InviteCard with correct data", () => {
 		render(<InviteCard invite={inv} handler={() => {}} />);
 
+		expect(document.documentElement.style.getPropertyValue("--orgColor")).toBe("#" + inv.org.color);
+
 		expect(screen.getByText(inv.org.name)).toBeTruthy();
 		expect(screen.getByText(inv.agent.department)).toBeTruthy();
 		expect(screen.getByText(inv.agent.name)).toBeTruthy();
@@ -99,6 +101,17 @@ describe("InviteCard", () => {
 			screen.getByText("Submit").click();
 			expect(output.time).toBeTruthy();
 			// TODO: after creating time-selection subcomponent, change above check to checking for valid date (with Date(output.time) )
+		});
+
+		it("Time selection clears time property", async () => {
+			let output: CallCreationRequest = {inviteId: inv.id, time: "timestamp", note: "unset"};
+			render(<InviteCard invite={inv} handler={(values) => (output = values)} />);
+			act(() => screen.getByText("🗓️").click());
+			await new Promise((resolve) => setTimeout(resolve, 50)); // TODO: hacky fix, find proper one
+			screen.getByText("Clear").click();
+			await new Promise((resolve) => setTimeout(resolve, 50)); // TODO: hacky fix, find proper one
+			screen.getByText("Submit").click();
+			expect(output.time).toBe("");
 		});
 
 		it("Message input applies note property", async () => {

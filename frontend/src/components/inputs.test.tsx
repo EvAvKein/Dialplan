@@ -73,6 +73,21 @@ describe("Test labelled inputs", () => {
 			fireEvent.click(label);
 			waitFor(() => expect(inputElem).toHaveFocus());
 		});
+
+		it(`${LblInp.name} conditionally has collapsedLabel class`, () => {
+			const {container: container1} = render(<LblInp handler={() => {}} label={"Label"} id={"id"} />);
+			waitFor(
+				() =>
+					new Promise((resolve) =>
+						setTimeout(() => resolve(expect(container1.querySelector("label")).not.toHaveClass("collapsedLabel")), 300),
+					),
+			);
+
+			const {container: container2} = render(
+				<LblInp handler={() => {}} label={"Label"} id={"id"} collapsedLabel={true} />,
+			);
+			waitFor(() => expect(container2.querySelector("label")).toHaveClass("collapsedLabel"));
+		});
 	}
 });
 
@@ -137,5 +152,26 @@ describe("Test SearchableInput", () => {
 		// console.log(visibleOptions.map((element) => element.textContent));
 		// expect(visibleOptions[0]).toHaveTextContent(options[0]);
 		// expect(visibleOptions.length).toBeLessThan(optionsLength);
+	});
+
+	it("SearchableInput's handler is called when an option is selected", () => {
+		const handler = jest.fn();
+		const optionLength = 5;
+		const optionsCount = 10;
+		const options = Array.from({length: optionsCount}, () => randomAlphanumString(optionLength));
+
+		render(
+			<SearchableInput
+				handler={handler}
+				label={"SearchableInput"}
+				id={"id"}
+				labelled={true}
+				options={options.map((value) => ({value, text: value}))}
+			/>,
+		);
+
+		fireEvent.input(screen.getByRole("combobox"), {target: {value: options[1]}});
+		fireEvent.select(screen.getByRole("combobox"), {target: {value: options[1]}});
+		expect(handler).toHaveBeenCalledWith(options[1]);
 	});
 });

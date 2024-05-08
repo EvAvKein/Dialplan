@@ -4,7 +4,7 @@ import {useState} from "react";
 import defaultStyles from "./inviteCard.css?raw";
 
 export function InviteCard({invite, handler}: {invite: InvitePayload; handler: (output: CallCreationRequest) => void}) {
-	document.documentElement.style.setProperty("--orgColor", invite.org.color ? "#" + invite.org.color : "#000000");
+	document.documentElement.style.setProperty("--orgColor", "#" + invite.org.color);
 
 	const [selectedCallTime, setSelectedCallTime] = useState("");
 	const [messageToOrg, setMessageToOrg] = useState("");
