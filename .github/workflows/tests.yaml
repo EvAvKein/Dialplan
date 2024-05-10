@@ -24,7 +24,7 @@ jobs:
       - name: Launch tests
         run: npm run installAll && npm run jest
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: jest-coverage
           path: ./coverage
@@ -34,7 +34,7 @@ jobs:
     name: Playwright (API & E2E)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Launch project
         run: docker-compose up --detach
@@ -51,7 +51,7 @@ jobs:
           echo "Project server is ready, launching tests..."
           docker-compose -f ./testing/compose.pw.yaml --env-file ./testing/ci.env up --exit-code-from playwright
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-report
