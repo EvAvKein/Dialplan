@@ -30,6 +30,24 @@ jobs:
           path: ./.coverage
           retention-days: 30
 
+  JestCoverageBadge:
+    name: Jest Coverage Badge (README.md)
+    uses: schneegans/dynamic-badges-action@v1.7.0
+    run: |
+      COVERAGE_JSON=$(cat ./.coverage/coverage-summary.json)
+      COVERAGE_LINES=$(echo $COVERAGE_JSON | jq -r '.total.lines.pct')
+      COVERAGE_BRANCHES=$(echo $COVERAGE_JSON | jq -r '.total.branches.pct')
+      COVERAGE_PERCENT=$(echo "scale=0; ($COVERAGE_LINES + $COVERAGE_BRANCHES) / 2" | bc)
+      echo "jestCoverage=$COVERAGE_PERCENT" >> $GITHUB_ENV
+    with:
+      auth: ${{ secrets.DIALPLAN_COVERAGE_SECRET }}
+      gistID: c6512f0c95bc37287d7118b9023b8288
+      filename: dialplanCoverage.json
+      label: Coverage
+      message: "${env.jestCoverage}%"
+      minColorRange: 50
+      maxColorRange: 100
+
   Playwright:
     name: Playwright (API & E2E)
     runs-on: ubuntu-latest

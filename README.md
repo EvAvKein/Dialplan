@@ -1,5 +1,8 @@
 # Dialplan
 
+![Tests](https://github.com/EvAvKein/Dialplan/actions/workflows/tests.yaml/badge.svg)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/evavkein/c6512f0c95bc37287d7118b9023b8288/raw/dialplanCoverage.json)
+
 Schedule calls via invite links! Currently in very early development
 
 ---
