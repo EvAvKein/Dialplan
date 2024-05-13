@@ -45,7 +45,7 @@ jobs:
           gistID: c6512f0c95bc37287d7118b9023b8288
           filename: dialplanCoverage.json
           label: Coverage
-          message: "${env.jestCoverage}%"
+          message: ${env.jestCoverage}%
           minColorRange: 50
           maxColorRange: 100
 
