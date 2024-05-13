@@ -38,17 +38,16 @@ jobs:
           COVERAGE_PERCENT=$(echo "scale=0; ($COVERAGE_LINES + $COVERAGE_BRANCHES) / 2" | bc)
           echo "jestCoverage=$COVERAGE_PERCENT" >> $GITHUB_ENV
 
-  JestCoverageBadge:
-    name: Jest Coverage Badge (README.md)
-    uses: schneegans/dynamic-badges-action@v1.7.0
-    with:
-      auth: ${{ secrets.DIALPLAN_COVERAGE_SECRET }}
-      gistID: c6512f0c95bc37287d7118b9023b8288
-      filename: dialplanCoverage.json
-      label: Coverage
-      message: "${env.jestCoverage}%"
-      minColorRange: 50
-      maxColorRange: 100
+      - name: Set coverage badge (README.md)
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.DIALPLAN_COVERAGE_SECRET }}
+          gistID: c6512f0c95bc37287d7118b9023b8288
+          filename: dialplanCoverage.json
+          label: Coverage
+          message: "${env.jestCoverage}%"
+          minColorRange: 50
+          maxColorRange: 100
 
   Playwright:
     name: Playwright (API & E2E)
