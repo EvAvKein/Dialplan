@@ -9,5 +9,6 @@
 	"rules": {
 		"no-mixed-spaces-and-tabs": "off", // prettier mixes them in ternaries and doesn't care to fix it (even for compatibility with eslint), so i'm just gonna let prettier handle the tabs/spaces thing (https://github.com/prettier/prettier/issues/5811#issuecomment-458936781)
 		"@typescript-eslint/no-unused-vars": ["error", {"ignoreRestSiblings": true}]
-	}
+	},
+	"ignorePatterns": ["node_modules/", "playwright-report/"]
 }
