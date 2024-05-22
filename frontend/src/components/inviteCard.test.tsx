@@ -108,7 +108,7 @@ describe("InviteCard", () => {
 			render(<InviteCard invite={inv} handler={(values) => (output = values)} />);
 			act(() => screen.getByText("🗓️").click());
 			await new Promise((resolve) => setTimeout(resolve, 50)); // TODO: hacky fix, find proper one
-			screen.getByText("Clear").click();
+			act(() => screen.getByText("Clear").click());
 			await new Promise((resolve) => setTimeout(resolve, 50)); // TODO: hacky fix, find proper one
 			screen.getByText("Submit").click();
 			expect(output.time).toBe("");
@@ -123,7 +123,7 @@ describe("InviteCard", () => {
 					handler={(values) => act(() => (output = values))}
 				/>,
 			);
-			fireEvent.input(screen.getByPlaceholderText(/message/), {target: {value: noteText}});
+			act(() => fireEvent.input(screen.getByPlaceholderText(/message/), {target: {value: noteText}}));
 			await new Promise((resolve) => setTimeout(resolve, 50)); // TODO: hacky fix, find proper one
 			screen.getByText("Submit").click();
 			expect(output).toEqual({inviteId: inv.id, time: "", note: noteText});
@@ -135,7 +135,7 @@ describe("InviteCard", () => {
 			render(<InviteCard invite={inv} handler={(values) => (output = values)} />);
 			act(() => screen.getByText("🗓️").click());
 			await new Promise((resolve) => setTimeout(resolve, 50)); // TODO: hacky fix, find proper one
-			fireEvent.input(screen.getByPlaceholderText(/message/), {target: {value: noteText}});
+			act(() => fireEvent.input(screen.getByPlaceholderText(/message/), {target: {value: noteText}}));
 			screen.getByText("Submit").click();
 			expect(output.inviteId).toBe(inv.id);
 			expect(output.time).toBeTruthy(); // TODO: update to Date()-based check after implementing time-selection subcomponent
