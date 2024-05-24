@@ -52,30 +52,12 @@
 }
 
 #inviteForm {
-	font-size: 1.2rem;
 	color: var(--textColor);
 	background-color: var(--backgroundColor);
 	box-sizing: border-box;
 	width: clamp(17.5em, 95vw, 22.5em);
 	padding: 0.5em;
 	border: 0.1rem solid var(--midColor);
-}
-
-#inviteForm > * + * {
-	margin-top: 0.5em;
-}
-
-#inviteForm #recipientPhoneWrapper {
-	display: flex;
-	align-items: center;
-}
-
-#inviteForm #recipientPhoneWrapper > :first-child {
-	flex-basis: 27.5%;
-}
-
-#inviteForm #recipientPhoneWrapper > :nth-child(2) {
-	flex-basis: 72.5%;
 }
 
 #inviteForm button {

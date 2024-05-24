@@ -1,0 +1,8 @@
+#agentFormWrapper > * + * {
+	margin-top: 1rem;
+}
+
+#agentFormWrapper > div,
+#agentFormWrapper > details > div {
+	font-size: 1.5rem;
+}

@@ -3,7 +3,12 @@ import {type InviteCreationRequest, type Invite} from "../../../../shared/object
 import {useEffect, useState} from "react";
 import {apiFetch} from "../../helpers/apiFetch";
 import {secsToReadableDuration} from "../../helpers/secsToReadableDuration";
-import {LabelledInput} from "../../components/inputs";
+import {
+	InputState,
+	recursiveInputStateRecordIsValid,
+	recursiveInputStateRecordToValues,
+} from "../../helpers/inputState";
+import {InviteCreation} from "../../components/forms/inviteCreation";
 import {useNotifStore} from "../../stores/notifs";
 import {invite as regex, inviteNotes as notesRegex} from "../../../../shared/objects/validationRegex";
 import Modal from "../../components/modal";
@@ -17,35 +22,23 @@ export default function Invites_Dashboard() {
 	const [invitesFetchError, setInvitesFetchError] = useState<string | null>(null);
 	const [inviteCreationModal, setInviteCreationModal] = useState<boolean>(false);
 
-	const [formData, setFormData] = useState<InviteCreationRequest>({
+	const [formState, setFormState] = useState<recursiveRecord<InviteCreationRequest, InputState>>({
 		recipient: {
-			name: "",
+			name: new InputState("", regex.recipient.name, 30),
 			phone: {
-				countryCode: "" /* TODO: when implementing SSR, make the default the agent's code */,
-				number: "",
+				countryCode: new InputState(
+					"",
+					regex.recipient.phone.countryCode,
+					3,
+				) /* TODO: when implementing SSR, make the default the agent's code */,
+				number: new InputState("", regex.recipient.phone.number, 9),
 			},
 		},
-		secCallDuration: NaN, // i wanted to avoid declaring a default value, and this is an easy type-safe alternative
-		expiry: "",
+		secCallDuration: new InputState("", regex.secCallDuration, 3),
+		expiry: new InputState("", /\\*/),
 		notes: {
-			forRecipient: "",
-			forOrg: "",
-		},
-	});
-
-	const [dataValidity, setDataValidity] = useState<recursiveRecord<InviteCreationRequest, boolean>>({
-		recipient: {
-			name: false,
-			phone: {
-				countryCode: false,
-				number: false,
-			},
-		},
-		secCallDuration: false,
-		expiry: false,
-		notes: {
-			forRecipient: true,
-			forOrg: true,
+			forRecipient: new InputState("", notesRegex.forRecipient, 250, true),
+			forOrg: new InputState("", notesRegex.forOrg, 500, true),
 		},
 	});
 
@@ -61,19 +54,15 @@ export default function Invites_Dashboard() {
 	}
 
 	async function submit() {
-		if (
-			[
-				regex.recipient.name.test(formData.recipient.name),
-				regex.recipient.phone.countryCode.test(formData.recipient.phone.countryCode),
-				regex.recipient.phone.number.test(formData.recipient.phone.number),
-				formData.secCallDuration,
-				formData.expiry,
-			].some((value) => !value)
-		) {
+		if (!recursiveInputStateRecordIsValid(formState)) {
 			notifs.create({text: "Invalid data", desirability: false});
 			return;
 		}
-		await apiFetch<Invite>("POST", "/invites", formData)
+
+		await apiFetch<Invite>("POST", "/invites", {
+			...recursiveInputStateRecordToValues(formState),
+			secCallDuration: Number(formState.secCallDuration.value),
+		})
 			.then((response) => {
 				if (response.error) {
 					notifs.create({text: response.error.message, desirability: false});
@@ -186,125 +175,7 @@ export default function Invites_Dashboard() {
 
 				<Modal visibleTruthiness={inviteCreationModal} dismissHandler={() => setInviteCreationModal(false)}>
 					<form id={styles.inviteForm} onSubmit={(e) => e.preventDefault()}>
-						<LabelledInput
-							label={"Recipient name"}
-							id={"recipientName"}
-							data-testid={"newRecipientName"}
-							autoFocus={true}
-							aria-invalid={!dataValidity.recipient.name}
-							defaultValue={formData.recipient.name}
-							handler={(value) => {
-								setFormData({...formData, recipient: {...formData.recipient, name: value}});
-								setDataValidity({
-									...dataValidity,
-									recipient: {...dataValidity.recipient, name: regex.recipient.name.test(value)},
-								});
-							}}
-						/>
-						<section id={styles.recipientPhoneWrapper}>
-							<LabelledInput
-								label={"Prefix"}
-								id={"countryCode"}
-								data-testid={"newCountryCode"}
-								type={"number"}
-								aria-invalid={!dataValidity.recipient.phone.countryCode}
-								defaultValue={formData.recipient.phone.countryCode}
-								handler={(value) => {
-									setFormData({
-										...formData,
-										recipient: {...formData.recipient, phone: {...formData.recipient.phone, countryCode: value}},
-									});
-									setDataValidity({
-										...dataValidity,
-										recipient: {
-											...dataValidity.recipient,
-											phone: {
-												...dataValidity.recipient.phone,
-												countryCode: regex.recipient.phone.countryCode.test(value),
-											},
-										},
-									});
-								}}
-							/>
-							|
-							<LabelledInput
-								label={"Phone number"}
-								id={"phoneNumber"}
-								data-testid={"newPhoneNumber"}
-								type={"number"} // avoiding "tel" because it allows non-number characters
-								aria-invalid={!dataValidity.recipient.phone.number}
-								defaultValue={formData.recipient.phone.number}
-								handler={(value) => {
-									setFormData({
-										...formData,
-										recipient: {...formData.recipient, phone: {...formData.recipient.phone, number: value}},
-									});
-									setDataValidity({
-										...dataValidity,
-										recipient: {
-											...dataValidity.recipient,
-											phone: {
-												...dataValidity.recipient.phone,
-												number: regex.recipient.phone.number.test(value),
-											},
-										},
-									});
-								}}
-							/>
-						</section>
-						<LabelledInput
-							label={"Call duration (minutes)"}
-							id={"callDuration"}
-							data-testid={"newCallDuration"}
-							type={"number"}
-							aria-invalid={!dataValidity.secCallDuration}
-							defaultValue={formData.secCallDuration.toString()}
-							handler={(value) => {
-								setFormData({...formData, secCallDuration: parseInt(value)});
-								setDataValidity({...dataValidity, secCallDuration: regex.secCallDuration.test(value)});
-							}}
-						/>
-						<LabelledInput
-							label={"Invite Expiry"}
-							id={"expiry"}
-							data-testid={"newExpiry"}
-							type={"datetime-local"}
-							aria-invalid={!dataValidity.expiry}
-							defaultValue={formData.expiry.replace(":00Z", "")}
-							handler={(value) => {
-								setFormData({...formData, expiry: value + ":00Z"}); // adding ":00Z" to make it a valid ISO string for backend's Zod validation
-								setDataValidity({...dataValidity, expiry: true}); // no need to validate, the datetime-local type ensures it's valid (for frontend)
-							}}
-						/>
-						<LabelledInput
-							label={"Notes for recipient"}
-							id={"notesForRecipient"}
-							data-testid={"newNotesForRecipient"}
-							aria-invalid={!dataValidity.notes.forRecipient}
-							defaultValue={formData.notes.forRecipient}
-							handler={(value) => {
-								setFormData({...formData, notes: {...formData.notes, forRecipient: value}});
-								setDataValidity({
-									...dataValidity,
-									notes: {...dataValidity.notes, forRecipient: notesRegex.forRecipient.test(value)},
-								});
-							}}
-						/>
-						<LabelledInput
-							label={"Notes for organization"}
-							id={"notesForOrg"}
-							data-testid={"newNotesForOrg"}
-							type={"textarea"}
-							aria-invalid={!dataValidity.notes.forOrg}
-							defaultValue={formData.notes.forOrg}
-							handler={(value) => {
-								setFormData({...formData, notes: {...formData.notes, forOrg: value}});
-								setDataValidity({
-									...dataValidity,
-									notes: {...dataValidity.notes, forOrg: notesRegex.forOrg.test(value)},
-								});
-							}}
-						/>
+						<InviteCreation formState={formState} setFormState={setFormState} />
 						<button className={coreStyles.backgroundButton} data-testid={"newInviteSubmit"} onClick={submit}>
 							Send Invite
 						</button>

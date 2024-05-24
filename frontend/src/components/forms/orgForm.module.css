@@ -1,0 +1,47 @@
+#orgFormWrapper > * + * {
+	margin-top: 1rem;
+}
+
+#orgFormWrapper > div,
+#orgFormWrapper > details > div {
+	font-size: 1.5rem;
+}
+
+.orgCustomCssSection {
+	padding: 0.5rem 0.75rem;
+	border: 0.1rem dashed var(--textColor);
+}
+
+.orgCustomCssSection summary {
+	display: revert;
+	margin: 0;
+}
+
+#orgCustomCssOverridesLabel {
+	cursor: pointer;
+	margin-block: 0.5rem;
+}
+#cssEditor {
+	font-size: unset;
+	color: unset;
+	background-color: unset;
+}
+#cssEditor:focus-within {
+	outline: 0.1em solid var(--midColor);
+}
+#cssEditor > * {
+	outline: none;
+}
+
+#orgCustomCssLinks {
+	margin-top: 0.5rem;
+	font-size: 0.75rem;
+}
+#orgCustomCssLinks a {
+	text-decoration: underline;
+}
+#orgCustomCssOverridesLabel,
+#orgCustomCssLinks {
+	display: flex;
+	justify-content: space-between;
+}

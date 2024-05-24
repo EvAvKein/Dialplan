@@ -1,16 +1,14 @@
-import {type nestedRecord} from "../../../../shared/helpers/dataRecord";
-import {type OrgAgentCreationDuo} from "../../../../shared/objects/org";
+import {Agent, Org, type OrgAgentCreationDuo} from "../../../../shared/objects/org";
 import {apiFetch} from "../../helpers/apiFetch";
-import {useState, useRef, useEffect} from "react";
-import {LabelledInput, SearchableInput} from "../../components/inputs";
+import {useState} from "react";
+import {InputState, recursiveInputStateRecordIsValid} from "../../helpers/inputState";
 import {InviteCard} from "../../components/inviteCard";
-import {basicSetup, EditorView} from "codemirror";
-import {css as codemirrorCss} from "@codemirror/lang-css";
-import {timezones} from "../../../../shared/objects/timezones";
 import * as regex from "../../../../shared/objects/validationRegex";
 import {useNotifStore} from "../../stores/notifs";
 import {useNavigate} from "react-router-dom";
-import codeMirrorStyles from "../../helpers/codemirrorTheme.module.css?raw";
+import {recursiveRecord} from "../../../../shared/helpers/dataRecord";
+import {AgentForm} from "../../components/forms/agentForm";
+import {OrgForm} from "../../components/forms/orgForm";
 import coreStyles from "../../core.module.css";
 import styles from "./signUp.module.css";
 
@@ -20,82 +18,32 @@ export default function SignUp() {
 
 	type pages = Omit<OrgAgentCreationDuo, "agent"> & {agent: Omit<OrgAgentCreationDuo["agent"], "internals">};
 	type pageKey = keyof pages;
-	type formRecord<T = unknown> = nestedRecord<pages, T>;
 
 	const [page, setPage] = useState<pageKey>("org");
 
 	const [previewOpen, setPreviewOpen] = useState(false);
 
-	const [formData, setFormData] = useState<formRecord<string>>({
-		org: {
-			name: "",
-			color: getComputedStyle(document.body).getPropertyValue("--backgroundColor").slice(1),
-			customInvCss: "",
-			customInvCssOverrides: "false",
-		},
-		agent: {
-			name: "",
-			department: "",
-			countryCode: "",
-			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-		},
-	});
+	const [orgState, setOrgState] = useState<recursiveRecord<Omit<Org, "id" | "internals">, InputState>>({
+		name: new InputState("", regex.org.name, 30),
+		color: new InputState(
+			getComputedStyle(document.body).getPropertyValue("--backgroundColor").slice(1),
+			regex.org.color,
+			7,
+			true,
+		),
+		customInvCss: new InputState("", regex.org.customInvCss, null, true),
+		customInvCssOverrides: new InputState("false", /true|false/, null, true),
+	} as const);
 
-	const [dataValidity, setDataValidity] = useState<formRecord<boolean>>({
-		org: {
-			name: false,
-			color: true,
-			customInvCss: true,
-			customInvCssOverrides: true,
-		},
-		agent: {
-			name: false,
-			department: false,
-			countryCode: false,
-			timezone: true,
-		},
-	});
-	const patterns: formRecord<RegExp> = {
-		org: {
-			name: regex.org.name,
-			color: regex.org.color,
-			customInvCss: regex.org.customInvCss,
-			customInvCssOverrides: /true|false/,
-		},
-		agent: {
-			name: regex.agent.name,
-			department: regex.agent.department,
-			countryCode: regex.agent.countryCode,
-			timezone: regex.agent.timezone,
-		},
-	};
-
-	const cssEditorRef = useRef<HTMLDivElement | null>(null);
-	const [cssEditor] = useState(
-		new EditorView({
-			extensions: [basicSetup, codemirrorCss()],
-		}),
-	);
-	useEffect(() => {
-		cssEditorRef.current?.appendChild(cssEditor.dom);
-	}, []);
-
-	function processNewInput<
-		K extends keyof typeof patterns,
-		K2 extends keyof (typeof patterns)[K] = keyof (typeof patterns)[K],
-	>(pageKey: K, fieldKey: K2, newValue: string, alwaysValid?: true) {
-		if (!alwaysValid) {
-			const pattern = patterns[pageKey][fieldKey];
-			const validity = pattern.test(newValue);
-			setDataValidity({...dataValidity, [pageKey]: {...dataValidity[pageKey], [fieldKey]: validity}});
-		}
-
-		setFormData({...formData, [pageKey]: {...formData[pageKey], [fieldKey]: newValue}});
-	}
+	const [agentState, setAgentState] = useState<recursiveRecord<Omit<Agent, "id" | "orgId" | "internals">, InputState>>({
+		name: new InputState("", regex.agent.name, 30),
+		department: new InputState("", regex.agent.department, 50),
+		countryCode: new InputState("", regex.agent.countryCode, 3),
+		timezone: new InputState(Intl.DateTimeFormat().resolvedOptions().timeZone, regex.agent.timezone, null, true),
+	} as const);
 
 	async function submit() {
-		const formDataValid = Object.values(dataValidity).every((page) => Object.values(page).every((field) => field));
-
+		const formDataValid = recursiveInputStateRecordIsValid(orgState) && recursiveInputStateRecordIsValid(agentState);
 		if (!formDataValid) {
 			notifs.create({
 				text: "Please fill all fields correctly",
@@ -104,21 +52,30 @@ export default function SignUp() {
 			return;
 		}
 
-		const response = await apiFetch("POST", "/orgs", {
-			org: {...formData.org, customInvCssOverrides: formData.org.customInvCssOverrides === "true"},
-			agent: {...formData.agent, internals: {permissions: {}}},
-		} satisfies OrgAgentCreationDuo);
+		const formData: OrgAgentCreationDuo = {
+			org: {
+				name: orgState.name.value,
+				color: orgState.color.value,
+				customInvCss: orgState.customInvCss.value,
+				customInvCssOverrides: orgState.customInvCssOverrides.value === "true",
+			},
+			agent: {
+				name: agentState.name.value,
+				department: agentState.department.value,
+				countryCode: agentState.countryCode.value,
+				timezone: agentState.timezone.value,
+				internals: {permissions: {}},
+			},
+		};
+		const response = await apiFetch("POST", "/orgs", formData);
 
-		if (response.error?.message) {
-			notifs.create({
-				text: response.error.message,
-				desirability: false,
-				manualDismiss: true,
-			});
-			return;
-		}
-
-		navigate("/dashboard");
+		response.error?.message
+			? notifs.create({
+					text: response.error.message,
+					desirability: false,
+					manualDismiss: true,
+			  })
+			: navigate("/dashboard");
 	}
 
 	return (
@@ -129,113 +86,13 @@ export default function SignUp() {
 					{page === "org" && (
 						<section className={styles.page}>
 							<h3>Organization Data</h3>
-							<h4></h4>
-							<LabelledInput
-								label={"Name"}
-								id={"orgNameInput"}
-								data-testId={"orgNameInput"}
-								aria-invalid={!dataValidity.org.name}
-								autoFocus={true}
-								collapsedLabel={true}
-								defaultValue={formData.org.name}
-								handler={(value) => processNewInput("org", "name", value)}
-							/>
-							<LabelledInput
-								label={"Color"}
-								id={"orgColorInput"}
-								data-testId={"orgColorInput"}
-								aria-invalid={!dataValidity.org.color}
-								type={"color"}
-								collapsedLabel={true}
-								defaultValue={"#" + formData.org.color}
-								handler={(value) => processNewInput("org", "color", value.slice(1))}
-							/>
-							<details className={styles.orgCustomCssSection}>
-								<summary className={coreStyles.contentButton}>Custom invitation style (CSS)</summary>
-								<label id={styles.orgCustomCssOverridesLabel} className={coreStyles.contentButton}>
-									<span>Override default styles:</span>
-									<input
-										data-testid="orgCustomCssOverridesCheckbox"
-										type="checkbox"
-										defaultValue={formData.org.customInvCssOverrides.toString()}
-										onInput={(event) =>
-											processNewInput("org", "customInvCssOverrides", String(event.currentTarget.checked), true)
-										}
-									/>
-								</label>
-								<style>{codeMirrorStyles}</style>
-								<div
-									ref={cssEditorRef}
-									id={styles.cssEditor}
-									onInput={() => {
-										processNewInput("org", "customInvCss", cssEditor.state.doc.toString());
-									}}
-								/>
-								<div id={styles.orgCustomCssLinks}>
-									<a
-										className={coreStyles.contentButton}
-										target={"_blank"}
-										rel={"noreferrer"}
-										href="https://github.com/EvAvKein/Dialplan/blob/main/frontend/src/components/inviteCard.tsx"
-									>
-										Markup (TSX)
-									</a>
-									<a
-										className={coreStyles.contentButton}
-										target={"_blank"}
-										rel={"noreferrer"}
-										href="https://github.com/EvAvKein/Dialplan/blob/main/frontend/src/components/inviteCard.css"
-									>
-										Default styles
-									</a>
-								</div>
-							</details>
+							<OrgForm formState={orgState} setFormState={setOrgState} />
 						</section>
 					)}
 					{page === "agent" && (
 						<section className={styles.page}>
 							<h3>Your Data</h3>
-							<LabelledInput
-								label={"Name"}
-								id={"agentNameInput"}
-								data-testId={"agentNameInput"}
-								aria-invalid={!dataValidity.agent.name}
-								autoFocus={true}
-								collapsedLabel={true}
-								defaultValue={formData.agent.name}
-								handler={(value) => processNewInput("agent", "name", value)}
-							/>
-							<LabelledInput
-								label={"Department"}
-								id={"agentDepartmentInput"}
-								data-testId={"agentDepartmentInput"}
-								aria-invalid={!dataValidity.agent.department}
-								collapsedLabel={true}
-								defaultValue={formData.agent.department}
-								handler={(value) => processNewInput("agent", "department", value)}
-							/>
-							<LabelledInput
-								label={"Country Code (Phone)"}
-								id={"agentCountryCodeInput"}
-								data-testId={"agentCountryCodeInput"}
-								aria-invalid={!dataValidity.agent.countryCode}
-								type={"number"}
-								collapsedLabel={true}
-								defaultValue={formData.agent.countryCode}
-								handler={(value) => processNewInput("agent", "countryCode", value)}
-							/>
-							<SearchableInput
-								label={"Timezone"}
-								id={"agentTimezoneInput"}
-								data-testId={"agentTimezoneInput"}
-								aria-invalid={!dataValidity.agent.timezone}
-								type={"search"}
-								labelled={true}
-								collapsedLabel={true}
-								defaultValue={formData.agent.timezone}
-								options={timezones}
-								handler={(value) => processNewInput("agent", "timezone", value)}
-							/>
+							<AgentForm formState={agentState} setFormState={setAgentState} />
 						</section>
 					)}
 				</div>
@@ -244,14 +101,11 @@ export default function SignUp() {
 						<button
 							data-testid="nextSignUpPage"
 							className={coreStyles.borderButton}
-							onClick={() => {
-								Object.values(dataValidity.org).every((valid) => valid)
+							onClick={() =>
+								recursiveInputStateRecordIsValid(orgState)
 									? setPage("agent")
-									: notifs.create({
-											text: "Please fill all fields correctly",
-											desirability: false,
-									  });
-							}}
+									: notifs.create({text: "Please fill all fields correctly", desirability: false})
+							}
 						>
 							Next
 						</button>
@@ -280,14 +134,14 @@ export default function SignUp() {
 						invite={{
 							id: "3512c283-sample_id-b01c-dc2ede118f7a",
 							org: {
-								name: formData.org.name || "[Company]",
-								color: formData.org.color,
-								customInvCss: formData.org.customInvCss,
-								customInvCssOverrides: formData.org.customInvCssOverrides === "true",
+								name: orgState.name.value || "[Company]",
+								color: orgState.color.value,
+								customInvCss: orgState.customInvCss.value,
+								customInvCssOverrides: orgState.customInvCssOverrides.value === "true",
 							},
 							agent: {
-								name: formData.agent.name || "[Agent]",
-								department: formData.agent.department || "[Department]",
+								name: agentState.name.value || "[Agent]",
+								department: agentState.department.value || "[Department]",
 							},
 							recipient: {
 								name: "[Recipient Name]",

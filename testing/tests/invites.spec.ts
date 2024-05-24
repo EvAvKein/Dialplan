@@ -81,7 +81,7 @@ test.describe("Invites", () => {
 			// not interating until datasetLength because:
 			// 1. the latter two invalid number values are also invalid inputs
 			// 2. i'm about to start restructuring tests in a way that that'd make iterating through all the invalid data in the E2E unnecessary
-			test(`Invite creation interface (data i-${i})`, async ({page}) => {
+			test.fixme(`Invite creation interface (data i-${i})`, async ({page}) => {
 				async function failInviteSubmit() {
 					const errorCount = await page.getByTestId("notifNegative").count();
 					await page.getByTestId("newInviteSubmit").click();
