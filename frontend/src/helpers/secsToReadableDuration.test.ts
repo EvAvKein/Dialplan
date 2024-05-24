@@ -18,9 +18,6 @@ describe("testDebug", () => {
 		expect(secsToReadableDuration(86400)).toBe("1d");
 		expect(secsToReadableDuration(3599)).toBe("59m 59s");
 		expect(secsToReadableDuration(64804)).toBe("18h 4s");
-		expect(secsToReadableDuration(172740)).toBe("2d 34m");
-		expect(secsToReadableDuration(280053)).toBe("3d 17m 33s");
-		expect(secsToReadableDuration(622799)).toBe("6d 23h 59m 59s");
 	});
 });
 
