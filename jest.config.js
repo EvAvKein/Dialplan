@@ -15,7 +15,7 @@ const config = {
 	collectCoverage: true,
 	coverageProvider: "v8",
 	coverageDirectory: ".coverage",
-	coverageReporters: ["json-summary", "json", "text-summary"],
+	coverageReporters: ["json-summary", "json", "text"],
 	coveragePathIgnorePatterns: ["/node_modules/"],
 };
 
