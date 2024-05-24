@@ -1,3 +1,5 @@
+import {recursiveRecord} from "../../../shared/helpers/dataRecord";
+
 export class InputState {
 	attempted: boolean = false;
 	constructor(
@@ -11,7 +13,7 @@ export class InputState {
 		const value = this.trimByLimit(newValue);
 		this.value = value;
 		this.attempted = true;
-		this.valid = this.test(value);
+		return (this.valid = this.test(value));
 	}
 
 	test(newValue: string) {
@@ -20,4 +22,30 @@ export class InputState {
 	trimByLimit(newValue: string) {
 		return this.charLimit === null ? newValue : newValue.slice(0, this.charLimit);
 	}
+}
+
+export function recursiveInputStateRecordToValues<obj extends recursiveRecord>(
+	record: recursiveRecord<obj, InputState>,
+): recursiveRecord<obj, string> {
+	const valuesObj: recursiveRecord<obj, string> = {} as recursiveRecord<obj, string>;
+
+	for (const key in record) {
+		const keyValue = record[key];
+
+		keyValue instanceof InputState
+			? ((valuesObj[key] as string) = keyValue.value)
+			: ((valuesObj[key] as object) = recursiveInputStateRecordToValues(record[key] as object));
+	}
+
+	return valuesObj;
+}
+
+export function recursiveInputStateRecordIsValid(record: recursiveRecord<object, InputState>): boolean {
+	return Object.values(record).every((value) => {
+		if (value instanceof InputState) {
+			return value.valid;
+		}
+
+		return typeof value === "object" && value !== null ? recursiveInputStateRecordIsValid(value) : true;
+	});
 }

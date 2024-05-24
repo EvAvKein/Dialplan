@@ -1,4 +1,5 @@
-import {InputState} from "./inputState";
+import {recursiveRecord} from "../../../shared/helpers/dataRecord";
+import {InputState, recursiveInputStateRecordIsValid, recursiveInputStateRecordToValues} from "./inputState";
 
 describe("InputState", () => {
 	it("Initial state set correctly", () => {
@@ -78,5 +79,96 @@ describe("InputState", () => {
 		expect(state3.value).toEqual("Hell");
 		expect(state3.attempted).toEqual(true);
 		expect(state3.valid).toEqual(true);
+	});
+});
+
+type recursiveTestObj = {
+	key1: string;
+	key2: {
+		subKey1: string;
+		subKey2: {
+			subSubKey: string;
+		};
+	};
+};
+type recursiveInputStateTestObj = recursiveRecord<recursiveTestObj, InputState>;
+
+it("recursiveInputStateRecordToValues", () => {
+	const inputState1 = new InputState("Hello", /^[A-Za-z]+$/);
+	const inputState2 = new InputState("12345", /^[0-9]+$/);
+	const inputState3 = new InputState("World", /^[A-Za-z0-9]+$/);
+
+	const record: recursiveRecord<recursiveTestObj, InputState> = {
+		key1: inputState1,
+		key2: {
+			subKey1: inputState2,
+			subKey2: {
+				subSubKey: inputState3,
+			},
+		},
+	};
+	const expected: recursiveRecord<recursiveTestObj, string> = {
+		key1: inputState1.value,
+		key2: {
+			subKey1: inputState2.value,
+			subKey2: {
+				subSubKey: inputState3.value,
+			},
+		},
+	};
+
+	const result = recursiveInputStateRecordToValues(record);
+	expect(result).toEqual(expected);
+});
+
+describe("recursiveInputStateRecordIsValid", () => {
+	it("recursiveInputStateRecordIsValid returns true only if all are valid", () => {
+		expect(
+			recursiveInputStateRecordIsValid({
+				key1: new InputState("Hello", /^[A-Za-z]+$/),
+				key2: {
+					subKey1: new InputState("12345", /^[0-9]+$/),
+					subKey2: {
+						subSubKey: new InputState("World", /^[A-Za-z]+$/),
+					},
+				},
+			} satisfies recursiveInputStateTestObj),
+		).toEqual(false);
+
+		expect(
+			recursiveInputStateRecordIsValid({
+				key1: new InputState("Hello", /^[A-Za-z]+$/, null, true),
+				key2: {
+					subKey1: new InputState("12345", /^[0-9]+$/, 10, true),
+					subKey2: {
+						subSubKey: new InputState("World", /^[A-Za-z]+$/),
+					},
+				},
+			} satisfies recursiveInputStateTestObj),
+		).toEqual(false);
+
+		expect(
+			recursiveInputStateRecordIsValid({
+				key1: new InputState("Hello", /^[A-Za-z]+$/, null, true),
+				key2: {
+					subKey1: new InputState("12345", /^[0-9]+$/, 10, true),
+					subKey2: {
+						subSubKey: new InputState("World", /^[A-Za-z]+$/, null, true),
+					},
+				},
+			} satisfies recursiveInputStateTestObj),
+		).toEqual(true);
+
+		expect(
+			recursiveInputStateRecordIsValid({
+				key1: new InputState("Hello", /^[A-Za-z]+$/, null, true),
+				key2: {
+					subKey1: "non-InputState value",
+					subKey2: {
+						subSubKey: new InputState("World", /^[A-Za-z]+$/, null, true),
+					},
+				},
+			}),
+		).toEqual(true);
 	});
 });
