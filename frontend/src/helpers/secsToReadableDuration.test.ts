@@ -9,6 +9,21 @@ function expectConversion(secs: number, expected: string) {
 	expect(secsToReadableDuration(secs)).toBe(expected);
 }
 
+describe("testDebug", () => {
+	it("attempts (by GH-Copliot) to brute-force coverage, after i told it local Istanbul reports 100% but CI only 20%", () => {
+		expect(secsToReadableDuration(0.9)).toBe("");
+		expect(secsToReadableDuration(1.1)).toBe("1s");
+		expect(secsToReadableDuration(60)).toBe("1m");
+		expect(secsToReadableDuration(3600)).toBe("1h");
+		expect(secsToReadableDuration(86400)).toBe("1d");
+		expect(secsToReadableDuration(3599)).toBe("59m 59s");
+		expect(secsToReadableDuration(64804)).toBe("18h 4s");
+		expect(secsToReadableDuration(172740)).toBe("2d 34m");
+		expect(secsToReadableDuration(280053)).toBe("3d 17m 33s");
+		expect(secsToReadableDuration(622799)).toBe("6d 23h 59m 59s");
+	});
+});
+
 describe("secsToReadableDuration", () => {
 	it("Round decimals down", () => {
 		expectConversion(0.9, "");
