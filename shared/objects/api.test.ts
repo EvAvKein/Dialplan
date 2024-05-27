@@ -17,7 +17,7 @@ describe("FetchResponse", () => {
 		const response = new FetchResponse(data);
 
 		expect(response.data).toEqual(data);
-		expect(response.error).toBeUndefined();
+		expect(Object.keys(response)).not.toContain("error");
 	});
 
 	it("create an instance with only error", () => {
@@ -31,8 +31,8 @@ describe("FetchResponse", () => {
 
 	it("create an instance with no data and no error", () => {
 		const response = new FetchResponse();
+		const keys = Object.keys(response);
 
-		expect(response.data).toBeUndefined();
-		expect(response.error).toBeUndefined();
+		expect(keys).toHaveLength(0);
 	});
 });
