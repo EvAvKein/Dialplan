@@ -18,10 +18,11 @@ interface inputProps extends InputHTMLAttributes<HTMLInputElement> {
 	handler: (text: string) => void;
 }
 export function Input(props: inputProps) {
+	const {handler, ...inputProps} = props;
 	return (
 		<input
 			onInput={(event) => props.handler(event.currentTarget.value)}
-			{...props} // intentionally after onInput, allows overriding it and getting access to event arg
+			{...inputProps} // intentionally after onInput, allows overriding it and getting access to event arg
 			className={styles.input + " " + (props.className ?? "")}
 		/>
 	);
@@ -48,9 +49,10 @@ export function LabelWrapper<T>(props: T & labelWrapperProps & {children: React.
 
 type labelledInputProps = labelWrapperProps & Omit<inputProps, "placeholder">;
 export function LabelledInput(props: labelledInputProps) {
+	const {label, collapsedLabel, ...inputProps} = props;
 	return (
 		<LabelWrapper {...props}>
-			<Input {...props} placeholder={" "} />
+			<Input {...inputProps} placeholder={" "} />
 		</LabelWrapper>
 	);
 }
@@ -70,12 +72,13 @@ interface searchableInputProps extends Omit<labelledInputProps, "list"> {
 	labelled?: true;
 }
 export function SearchableInput(props: searchableInputProps) {
+	const {labelled, ...inputProps} = props;
 	return (
 		<div>
 			{props.labelled ? (
-				<LabelledInput {...props} list={props.id} id={props.id + "InputComponent"} />
+				<LabelledInput {...inputProps} list={props.id} id={props.id + "InputComponent"} />
 			) : (
-				<Input {...props} list={props.id} id={props.id + "InputComponent"} placeholder={props.label} />
+				<Input {...inputProps} list={props.id} id={props.id + "InputComponent"} placeholder={props.label} />
 			)}
 			<datalist id={props.id} onSelect={(event) => props.handler(event.currentTarget.nodeValue ?? "")}>
 				{props.options.map(({value, text}) => (
