@@ -31,7 +31,7 @@ export function OrgForm({formState, setFormState}: props) {
 			<LabelledInput
 				label={"Name"}
 				id={"orgNameInput"}
-				data-testId={"orgNameInput"}
+				data-testid={"orgNameInput"}
 				aria-invalid={!formState.name.valid}
 				autoFocus={true}
 				collapsedLabel={true}
@@ -41,7 +41,7 @@ export function OrgForm({formState, setFormState}: props) {
 			<LabelledInput
 				label={"Color"}
 				id={"orgColorInput"}
-				data-testId={"orgColorInput"}
+				data-testid={"orgColorInput"}
 				aria-invalid={!formState.color.valid}
 				type={"color"}
 				collapsedLabel={true}

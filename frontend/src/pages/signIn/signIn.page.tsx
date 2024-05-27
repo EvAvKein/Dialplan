@@ -53,7 +53,7 @@ export default function SignIn() {
 					/>
 					<LabelledInput
 						id={"orgIdInput"}
-						data-testId={"orgIdInput"}
+						data-testid={"orgIdInput"}
 						label={"OrgId"}
 						collapsedLabel={true}
 						defaultValue={formData.orgId}

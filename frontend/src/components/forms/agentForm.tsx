@@ -16,7 +16,7 @@ export function AgentForm({formState, setFormState}: props) {
 			<LabelledInput
 				label={"Name"}
 				id={"agentNameInput"}
-				data-testId={"agentNameInput"}
+				data-testid={"agentNameInput"}
 				aria-invalid={!formState.name.valid}
 				autoFocus={true}
 				collapsedLabel={true}
@@ -26,7 +26,7 @@ export function AgentForm({formState, setFormState}: props) {
 			<LabelledInput
 				label={"Department"}
 				id={"agentDepartmentInput"}
-				data-testId={"agentDepartmentInput"}
+				data-testid={"agentDepartmentInput"}
 				aria-invalid={!formState.department.valid}
 				collapsedLabel={true}
 				value={formState.department.value}
@@ -35,7 +35,7 @@ export function AgentForm({formState, setFormState}: props) {
 			<LabelledInput
 				label={"Country Code (Phone)"}
 				id={"agentCountryCodeInput"}
-				data-testId={"agentCountryCodeInput"}
+				data-testid={"agentCountryCodeInput"}
 				aria-invalid={!formState.countryCode.valid}
 				type={"number"}
 				collapsedLabel={true}
@@ -45,7 +45,7 @@ export function AgentForm({formState, setFormState}: props) {
 			<SearchableInput
 				label={"Timezone"}
 				id={"agentTimezoneInput"}
-				data-testId={"agentTimezoneInput"}
+				data-testid={"agentTimezoneInput"}
 				aria-invalid={!formState.timezone.valid}
 				type={"search"}
 				labelled={true}
